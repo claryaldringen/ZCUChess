@@ -167,14 +167,11 @@ void play_move(Move move, bool real)
 	}
 	else
 	{
+		check_en_passant(move);
 		do_simple_move(move);
 	}
 
-	if(real)
-	{
-		check_castling(move);
-		check_en_passant(move);
-	}
+	if(real)check_castling(move);
 }
 
 
@@ -276,7 +273,7 @@ void do_castling(Move move)
 bool is_en_passant(Move move)
 {
 	int figure = abs(chessboard[move.from[COL]][move.from[ROW]]);
-	if(figure == PAWN && chessboard[move.to[COL]][move.to[ROW]] == 0 && move.from[COL] != move.from[ROW])return true;
+	if(figure == PAWN && chessboard[move.to[COL]][move.to[ROW]] == 0 && move.from[COL] != move.to[COL])return true;
 	return false;
 }
 
