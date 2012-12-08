@@ -52,9 +52,11 @@ Move parse_move(char*);
 
 Move get_move();
 
-void play_move();
+void play_move(Move, bool);
 
 bool is_castling(Move);
+
+bool can_do_castling(Move);
 
 void do_castling(Move);
 

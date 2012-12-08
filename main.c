@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 			printf("Špatně zadaný tah.\n");
 			continue;
 		}
-		play_move(move);
+		play_move(move, true);
 		move = get_move();
 		//play_move(move);
 		show_chessboard();
@@ -72,7 +72,7 @@ bool is_checkmate()
 		memcpy(temp_chessboard, chessboard, sizeof(chessboard));
 		for(int i=0; i<moves.count; i++)
 		{
-			play_move(moves.move[i]);
+			play_move(moves.move[i], false);
 			check = is_check(check_side);
 			memcpy(chessboard, temp_chessboard, sizeof(chessboard));
 			if(check != check_side)return false;
@@ -99,11 +99,7 @@ int is_check(int side)
 		moves = get_all_moves(sides[s]);
 		for(int i=0; i<moves.count; i++)
 		{
-			if(chessboard[moves.move[i].to[COL]][moves.move[i].to[ROW]] == (sides[s]*KING))
-			{
-				printf("Šach\n");
-				return sides[s+1];
-			}
+			if(chessboard[moves.move[i].to[COL]][moves.move[i].to[ROW]] == (sides[s]*KING))return sides[s+1];
 		}
 	}
 	return 0;
@@ -159,12 +155,9 @@ Move parse_move(char* input)
 }
 
 
-void play_move(Move move)
+void play_move(Move move, bool real)
 {
-	check_castling(move);
-	check_en_passant(move);
-
-	if(is_castling(move))
+	if(is_castling(move) && can_do_castling(move))
 	{
 		do_castling(move);
 	}
@@ -175,6 +168,12 @@ void play_move(Move move)
 	else
 	{
 		do_simple_move(move);
+	}
+
+	if(real)
+	{
+		check_castling(move);
+		check_en_passant(move);
 	}
 }
 
@@ -205,6 +204,38 @@ bool is_castling(Move move)
 	if(side == WHITE && move.from[COL] == 4 && move.from[ROW] == 0 && (move.to[COL] == 0 || move.to[COL] == 7) && move.to[ROW] == 0)return true;
 	if(side == BLACK && move.from[COL] == 4 && move.from[ROW] == 7 && (move.to[COL] == 0 || move.to[COL] == 7) && move.to[ROW] == 7)return true;
 	return false;
+}
+
+
+bool can_do_castling(Move move)
+{
+	int row = 0;
+	int temp_chessboard[8][8];
+	int side = get_side_coeficient(move.from[COL], move.from[ROW]);
+	if(is_check(side))return false;
+
+	if(side == BLACK)row = 7;
+
+	int castling_target[3] = {7,0,0};
+	int start_col[3] = {4,4,3};
+	int end_col[3] = {5,3,2};
+
+	memcpy(temp_chessboard, chessboard, sizeof(chessboard));
+	for(int i=0; i<3; i++)
+	{
+		if(move.to[COL] == castling_target[i])
+		{
+			chessboard[start_col[i]][row] = EMPTY;
+			chessboard[end_col[i]][row] = -1*side*KING;
+			if(is_check(side))
+			{
+				memcpy(chessboard, temp_chessboard, sizeof(chessboard));
+				return false;
+			}
+		}
+	}
+	memcpy(chessboard, temp_chessboard, sizeof(chessboard));
+	return true;
 }
 
 
@@ -605,7 +636,7 @@ bool is_check_after_move(Move move)
 	int check;
 	int temp_chessboard[8][8];
 	memcpy(temp_chessboard, chessboard, sizeof(chessboard));
-	play_move(move);
+	play_move(move, false);
 	check = is_check(side);
 	memcpy(chessboard, temp_chessboard, sizeof(chessboard));
 	if(check == side)return true;
