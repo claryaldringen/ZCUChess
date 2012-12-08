@@ -66,6 +66,8 @@ void do_en_passant(Move);
 
 void do_simple_move(Move);
 
+void upgrade_pawn();
+
 void check_castling();
 
 void check_en_passant(Move);

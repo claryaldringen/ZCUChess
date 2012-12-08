@@ -290,8 +290,34 @@ void do_en_passant(Move move)
 
 void do_simple_move(Move move)
 {
-	chessboard[move.to[COL]][move.to[ROW]] = chessboard[move.from[COL]][move.from[ROW]];
+	if(chessboard[move.from[COL]][move.from[ROW]] == PAWN && move.to[ROW] == BLACK_ROW)
+	{
+		chessboard[move.to[COL]][move.to[ROW]] = get_figure();
+	}
+	else if(chessboard[move.from[COL]][move.from[ROW]] == -1*PAWN && move.to[ROW] == WHITE_ROW)
+	{
+		chessboard[move.to[COL]][move.to[ROW]] = -1*QUEEN;
+	}
+	else chessboard[move.to[COL]][move.to[ROW]] = chessboard[move.from[COL]][move.from[ROW]];
 	chessboard[move.from[COL]][move.from[ROW]] = 0;
+
+}
+
+
+int get_figure()
+{
+	char input;
+	int figure = 0;
+	while(figure == EMPTY)
+	{
+		printf("Jakou chcete figuru? (D - dáma, V - věž, S - střelec, K - kůň): ");
+		gets(&input);
+		if(input == 'd' || input == 'D')figure = QUEEN;
+		if(input == 'v' || input == 'V')figure = ROOK;
+		if(input == 'k' || input == 'K')figure = KNIGHT;
+		if(input == 's' || input == 'S')figure = BISHOP;
+	}
+	return figure;
 }
 
 
