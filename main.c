@@ -34,8 +34,9 @@ int main(int argc, char** argv)
 			continue;
 		}
 		play_move(move, true);
+		if(is_checkmate_or_stalemate())break;
 		move = get_move();
-		//play_move(move);
+		play_move(move, true);
 		show_chessboard();
 	}
 	return (EXIT_SUCCESS);
@@ -337,8 +338,46 @@ void check_en_passant(Move move)
 
 Move get_move()
 {
+	Moves moves;
 	Move move;
+	int value;
+	int max_value = 100000;
+	Position position;
+
+	moves = get_all_moves(BLACK);
+	position = save_position();
+	for(int i=0; i<moves.count; i++)
+	{
+		play_move(moves.move[i], true);
+		value = minimax(WHITE, 2);
+		printf("%d: ", value);
+		print_move(moves.move[i]);
+		if(value < max_value)
+		{
+			max_value = value;
+			move = moves.move[i];
+		}
+		load_position(position);
+	}
 	return move;
+}
+
+
+Position save_position()
+{
+	Position position;
+	memcpy(position.chessboard, chessboard, sizeof(chessboard));
+	memcpy(position.castlings, castlings, sizeof(castlings));
+	memcpy(position.en_passant, en_passant, sizeof(en_passant));
+	return position;
+}
+
+
+void load_position(Position position)
+{
+	memcpy(chessboard, position.chessboard, sizeof(chessboard));
+	memcpy(castlings, position.castlings, sizeof(castlings));
+	memcpy(en_passant, position.en_passant, sizeof(en_passant));
 }
 
 
@@ -707,12 +746,56 @@ void show_chessboard()
 	}
 }
 
+
 void print_move(Move move)
 {
 	printf("%c%d %c%d\n", move.from[COL]+ASCII_VALUE_OF_A, move.from[ROW]+1, move.to[COL]+ASCII_VALUE_OF_A, move.to[ROW]+1);
 }
 
 
+int get_position_value()
+{
+	int value = 0;
+	int side = 0;
+	int figure;
+	for(int col=0; col<8; col++)
+	{
+		for(int row=0; row<8; row++)
+		{
+			figure = abs(chessboard[col][row]);
+			side = get_side_coeficient(col, row);
+			if(figure == PAWN)value = value - PAWN_VALUE*side;
+			if(figure == ROOK)value = value - ROOK_VALUE*side;
+			if(figure == KNIGHT)value = value - KNIGHT_VALUE*side;
+			if(figure == BISHOP)value = value - BISHOP_VALUE*side;
+			if(figure == QUEEN)value = value - QUEEN_VALUE*side;
+			value = value - position[col][row]*side;
+		}
+	}
+	return value;
+}
 
 
+int minimax(int side, int depth)
+{
+	Moves moves = get_all_moves(side);
+	Position position;
+	int value, max_value;
+	
+	if(side == BLACK)max_value = 100000;
+	else max_value = -100000;
+
+	if(is_checkmate())return side*16000;
+	if(depth <= 0)return get_position_value();
+
+	position = save_position();
+	for(int i=0; i<moves.count; i++)
+	{
+		play_move(moves.move[i], true);
+		value = minimax(side*(-1),depth-1);
+		if((side == BLACK && value < max_value) || (side == WHITE && value > max_value))max_value = value;
+		load_position(position);
+	}
+	return max_value;
+}
 

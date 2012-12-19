@@ -20,6 +20,12 @@
 #define QUEEN 5
 #define KING 6
 
+#define PAWN_VALUE 100
+#define ROOK_VALUE 400
+#define KNIGHT_VALUE 300
+#define BISHOP_VALUE 350
+#define QUEEN_VALUE 750
+
 #define SHORT_WHITE 0
 #define LONG_WHITE 1
 #define SHORT_BLACK 2
@@ -42,7 +48,25 @@ typedef struct {
 	Move *move;
 } Moves;
 
+
+typedef struct {
+	int chessboard[8][8];
+	int castlings[4];
+	int en_passant[2];
+} Position;
+
 int chessboard[8][8];
+
+int position[8][8] = {
+		{0, 1, 2, 3, 3, 2, 1, 0},
+		{1, 2, 3, 4, 4, 3, 2, 1},
+		{2, 3, 4, 5, 5, 4, 3, 2},
+		{3, 4, 5, 6, 6, 5, 4, 3},
+		{3, 4, 5, 6, 6, 5, 4, 3},
+		{2, 3, 4, 5, 5, 4, 3, 2},
+		{1, 2, 3, 4, 4, 3, 2, 1},
+		{0, 1, 2, 3, 3, 2, 1, 0}
+	};
 
 bool is_checkmate_or_stalemate();
 
@@ -120,4 +144,13 @@ void show_chessboard();
 
 void print_move(Move move);
 
+int get_position_value();
+
+int get_figure();
+
+Position save_position();
+
+void load_position(Position);
+
+int minimax(int, int);
 
