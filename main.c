@@ -105,7 +105,11 @@ int is_check(int side)
 		moves = get_all_moves(sides[s]);
 		for(int i=0; i<moves.count; i++)
 		{
-			if(chessboard[moves.move[i].to[COL]][moves.move[i].to[ROW]] == (sides[s]*KING))return sides[s+1];
+			if(chessboard[moves.move[i].to[COL]][moves.move[i].to[ROW]] == (sides[s]*KING))
+			{
+				free(moves.move);
+				return sides[s+1];
+			}
 		}
 		free(moves.move);
 	}
@@ -442,7 +446,11 @@ bool is_move_possible(Move move)
 	Moves moves = get_possible_moves(move.from[COL], move.from[ROW]);
 	for(int i=0; i<moves.count; i++)
 	{
-		if(move.to[COL] == moves.move[i].to[COL] && move.to[ROW] == moves.move[i].to[ROW] && !is_check_after_move(move))return true;
+		if(move.to[COL] == moves.move[i].to[COL] && move.to[ROW] == moves.move[i].to[ROW] && !is_check_after_move(move))
+		{
+			if(moves.count > 0)free(moves.move);
+			return true;
+		}
 	}
 	if(moves.count > 0)free(moves.move);
 	return false;
@@ -603,6 +611,7 @@ Moves get_possible_moves_for_queen(int col, int row)
 	{
 		add_move(&moves, bishop_moves.move[i]);
 	}
+	if(bishop_moves.count > 0)free(bishop_moves.move);
 	return moves;
 }
 
@@ -717,33 +726,18 @@ bool is_check_after_move(Move move)
 
 void add_move(Moves *moves, Move move)
 {
-	/*int size = sizeof(moves->move);
-	Move *temp_moves = malloc(size);
-	if(moves->count > 0)memcpy(temp_moves, moves->move, size);
-	moves->count++;
-	moves->move = malloc(moves->count * sizeof(move));
-	if(moves->count > 1)memcpy(moves->move, temp_moves, sizeof(temp_moves));
-	moves->move[moves->count-1] = move;*/
-	
-	Move *tempmoves;
-	tempmoves = malloc(moves->count * sizeof(move));
-	for(int i=0; i<moves->count; i++)
-	{
-		tempmoves[i] = moves->move[i];
-	}
+	int size = 0;
 	if(moves->count > 0)
 	{
-		free(moves->move);
+		size = (moves->count+1)*sizeof(move);
+		moves->move = (Move*) realloc(moves->move, size);
 	}
-
-	moves->count++;
-	moves->move = malloc(moves->count * sizeof(move));
-	for(int i=0; i < moves->count-1; i++)
+	else
 	{
-		moves->move[i] = tempmoves[i];
+		moves->move = malloc(sizeof(move));
 	}
-	moves->move[moves->count-1] = move;
-	free(tempmoves);	
+	moves->move[moves->count] = move;
+	moves->count++;
 }
 
 
@@ -798,16 +792,17 @@ int get_position_value()
 
 int minimax(int side, int depth)
 {
-	Moves moves = get_all_moves(side);
+	Moves moves;
 	Position position;
 	int value, max_value;
-	
+
 	if(side == BLACK)max_value = 100000;
 	else max_value = -100000;
 
 	if(is_checkmate())return side*16000;
 	if(depth <= 0)return get_position_value();
 
+	moves = get_all_moves(side);
 	position = save_position();
 	for(int i=0; i<moves.count; i++)
 	{
