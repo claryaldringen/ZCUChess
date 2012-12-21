@@ -76,8 +76,13 @@ bool is_checkmate()
 			play_move(moves.move[i], false);
 			check = is_check(check_side);
 			memcpy(chessboard, temp_chessboard, sizeof(chessboard));
-			if(check != check_side)return false;
+			if(check != check_side)
+			{
+				free(moves.move);
+				return false;
+			}
 		}
+		free(moves.move);
 		return true;
 	}
 	return false;
@@ -102,6 +107,7 @@ int is_check(int side)
 		{
 			if(chessboard[moves.move[i].to[COL]][moves.move[i].to[ROW]] == (sides[s]*KING))return sides[s+1];
 		}
+		free(moves.move);
 	}
 	return 0;
 }
@@ -125,6 +131,7 @@ Moves get_all_moves(int side)
 				{
 					add_move(&all_moves, moves.move[i]);
 				}
+				if(moves.count > 0)free(moves.move);
 				moves.count = 0;
 			}
 		}
@@ -349,7 +356,7 @@ Move get_move()
 	for(int i=0; i<moves.count; i++)
 	{
 		play_move(moves.move[i], true);
-		value = minimax(WHITE, 2);
+		value = minimax(WHITE, 3);
 		printf("%d: ", value);
 		print_move(moves.move[i]);
 		if(value < max_value)
@@ -359,6 +366,7 @@ Move get_move()
 		}
 		load_position(position);
 	}
+	free(moves.move);
 	return move;
 }
 
@@ -436,6 +444,7 @@ bool is_move_possible(Move move)
 	{
 		if(move.to[COL] == moves.move[i].to[COL] && move.to[ROW] == moves.move[i].to[ROW] && !is_check_after_move(move))return true;
 	}
+	if(moves.count > 0)free(moves.move);
 	return false;
 }
 
@@ -708,13 +717,24 @@ bool is_check_after_move(Move move)
 
 void add_move(Moves *moves, Move move)
 {
+	/*int size = sizeof(moves->move);
+	Move *temp_moves = malloc(size);
+	if(moves->count > 0)memcpy(temp_moves, moves->move, size);
+	moves->count++;
+	moves->move = malloc(moves->count * sizeof(move));
+	if(moves->count > 1)memcpy(moves->move, temp_moves, sizeof(temp_moves));
+	moves->move[moves->count-1] = move;*/
+	
 	Move *tempmoves;
 	tempmoves = malloc(moves->count * sizeof(move));
 	for(int i=0; i<moves->count; i++)
 	{
 		tempmoves[i] = moves->move[i];
 	}
-	//if(sizeof(moves->move) > 0)free(moves->move);
+	if(moves->count > 0)
+	{
+		free(moves->move);
+	}
 
 	moves->count++;
 	moves->move = malloc(moves->count * sizeof(move));
@@ -723,7 +743,7 @@ void add_move(Moves *moves, Move move)
 		moves->move[i] = tempmoves[i];
 	}
 	moves->move[moves->count-1] = move;
-	free(tempmoves);
+	free(tempmoves);	
 }
 
 
@@ -796,6 +816,7 @@ int minimax(int side, int depth)
 		if((side == BLACK && value < max_value) || (side == WHITE && value > max_value))max_value = value;
 		load_position(position);
 	}
+	free(moves.move);
 	return max_value;
 }
 
