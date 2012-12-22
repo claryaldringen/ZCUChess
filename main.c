@@ -352,7 +352,7 @@ Move get_move()
 	Moves moves;
 	Move move;
 	int value;
-	int max_value = 100000;
+	int alpha = 100000;
 	Position position;
 
 	moves = get_all_moves(BLACK);
@@ -360,12 +360,12 @@ Move get_move()
 	for(int i=0; i<moves.count; i++)
 	{
 		play_move(moves.move[i], true);
-		value = minimax(WHITE, 3);
+		value = alphabeta(WHITE, 2, -100000, alpha);
 		printf("%d: ", value);
 		print_move(moves.move[i]);
-		if(value < max_value)
+		if(value < alpha)
 		{
-			max_value = value;
+			alpha = value;
 			move = moves.move[i];
 		}
 		load_position(position);
@@ -790,28 +790,33 @@ int get_position_value()
 }
 
 
-int minimax(int side, int depth)
+int alphabeta(int side, int depth, int alpha, int beta)
 {
 	Moves moves;
 	Position position;
-	int value, max_value;
-
-	if(side == BLACK)max_value = 100000;
-	else max_value = -100000;
+	int value;
 
 	if(is_checkmate())return side*16000;
 	if(depth <= 0)return get_position_value();
-
+	
 	moves = get_all_moves(side);
 	position = save_position();
 	for(int i=0; i<moves.count; i++)
 	{
 		play_move(moves.move[i], true);
-		value = minimax(side*(-1),depth-1);
-		if((side == BLACK && value < max_value) || (side == WHITE && value > max_value))max_value = value;
+		value = alphabeta(side*(-1), depth-1, beta, alpha);
 		load_position(position);
+		if((side == BLACK && value < alpha) || (side == WHITE && value > alpha))
+		{
+			alpha = value;
+			if((side == BLACK && value >= beta) || (side == WHITE && value <= beta))
+			{	
+				free(moves.move);
+				return beta;
+			}
+		}
 	}
 	free(moves.move);
-	return max_value;
+	return alpha;
 }
 
