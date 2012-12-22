@@ -37,6 +37,7 @@ int main(int argc, char** argv)
 		if(is_checkmate_or_stalemate())break;
 		move = get_move();
 		play_move(move, true);
+		print_move(move);
 		show_chessboard();
 	}
 	return (EXIT_SUCCESS);
@@ -360,9 +361,9 @@ Move get_move()
 	for(int i=0; i<moves.count; i++)
 	{
 		play_move(moves.move[i], true);
-		value = alphabeta(WHITE, 2, -100000, alpha);
-		printf("%d: ", value);
-		print_move(moves.move[i]);
+		value = alphabeta(WHITE, 3, -100000, alpha);
+		//printf("%d: ", value);
+		//print_move(moves.move[i]);
 		if(value < alpha)
 		{
 			alpha = value;
@@ -490,7 +491,7 @@ Moves get_possible_moves_for_pawn(int col, int row)
 			move.to[ROW] = row-1*koeficient;
 			add_move(&moves, move);
 		}
-		if(chessboard[col][row-2*koeficient] == 0)
+		if(chessboard[col][row-2*koeficient] == 0 && chessboard[col][row-1*koeficient] == 0)
 		{
 			if((koeficient == -1 && row == 1) || (koeficient == 1 && row == 6))
 			{
@@ -809,7 +810,7 @@ int alphabeta(int side, int depth, int alpha, int beta)
 		if((side == BLACK && value < alpha) || (side == WHITE && value > alpha))
 		{
 			alpha = value;
-			if((side == BLACK && value >= beta) || (side == WHITE && value <= beta))
+			if((side == BLACK && value <= beta) || (side == WHITE && value >= beta))
 			{	
 				free(moves.move);
 				return beta;
