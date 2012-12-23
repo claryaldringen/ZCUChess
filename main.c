@@ -16,6 +16,7 @@
 int chessboard[8][8];
 bool castlings[4] = {true, true, true, true};
 int en_passant[2];
+bool human_move;
 
 int main(int argc, char** argv)
 {
@@ -24,6 +25,7 @@ int main(int argc, char** argv)
 	init_chessboard();
 	while(!is_checkmate_or_stalemate())
 	{
+		human_move = true;
 		gets(input);
 		if(is_exit(input))break;
 
@@ -35,6 +37,7 @@ int main(int argc, char** argv)
 		}
 		play_move(move, true);
 		if(is_checkmate_or_stalemate())break;
+		human_move = false;
 		move = get_move();
 		play_move(move, true);
 		print_move(move);
@@ -318,6 +321,7 @@ int get_figure()
 {
 	char input;
 	int figure = 0;
+	if(!human_move)return QUEEN;
 	while(figure == EMPTY)
 	{
 		printf("Jakou chcete figuru? (D - dáma, V - věž, S - střelec, K - kůň): ");
