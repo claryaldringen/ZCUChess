@@ -152,5 +152,9 @@ Position save_position();
 
 void load_position(Position);
 
-int minimax(int, int);
+int near_checkmate(int);
+
+int far_checkmate(int);
+
+int alphabeta(int, int, int, int);
 

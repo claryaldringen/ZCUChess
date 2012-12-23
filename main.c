@@ -370,6 +370,7 @@ Move get_move()
 		//print_move(moves.move[i]);
 		if(value < alpha)
 		{
+			value = alphabeta(WHITE, 3, -100000, near_checkmate(alpha));
 			alpha = value;
 			move = moves.move[i];
 		}
@@ -794,6 +795,21 @@ int get_position_value()
 	return value;
 }
 
+int near_checkmate(int value)
+{
+	if(value > 15000)value++;
+	if(value < 15000)value--;
+	return value;
+}
+
+
+int far_checkmate(int value)
+{
+	if(value > 15000)value--;
+	if(value < 15000)value++;
+	return value;
+}
+
 
 int alphabeta(int side, int depth, int alpha, int beta)
 {
@@ -810,6 +826,7 @@ int alphabeta(int side, int depth, int alpha, int beta)
 	{
 		play_move(moves.move[i], true);
 		value = alphabeta(side*(-1), depth-1, beta, alpha);
+		value = far_checkmate(alphabeta(side*(-1), depth-1, near_checkmate(beta), near_checkmate(alpha)));
 		load_position(position);
 		if((side == BLACK && value < alpha) || (side == WHITE && value > alpha))
 		{
