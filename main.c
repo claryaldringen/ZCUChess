@@ -28,7 +28,6 @@ int main(int argc, char** argv)
 		human_move = true;
 		gets(input);
 		if(is_exit(input))break;
-
 		move = parse_move(input);
 		if(move.status == false)
 		{
@@ -137,6 +136,8 @@ Moves get_all_moves(int side)
 				moves = get_possible_moves(col, row);
 				for(int i = 0; i<moves.count; i++)
 				{
+					moves.move[i].from[COL] = col;
+					moves.move[i].from[ROW] = row;
 					add_move(&all_moves, moves.move[i]);
 				}
 				if(moves.count > 0)free(moves.move);
@@ -307,9 +308,9 @@ void do_simple_move(Move move)
 	{
 		chessboard[move.to[COL]][move.to[ROW]] = get_figure();
 	}
-	else if(chessboard[move.from[COL]][move.from[ROW]] == -1*PAWN && move.to[ROW] == WHITE_ROW)
+	else if(chessboard[move.from[COL]][move.from[ROW]] == -PAWN && move.to[ROW] == WHITE_ROW)
 	{
-		chessboard[move.to[COL]][move.to[ROW]] = -1*QUEEN;
+		chessboard[move.to[COL]][move.to[ROW]] = -QUEEN;
 	}
 	else chessboard[move.to[COL]][move.to[ROW]] = chessboard[move.from[COL]][move.from[ROW]];
 	chessboard[move.from[COL]][move.from[ROW]] = 0;
@@ -365,14 +366,16 @@ Move get_move()
 	for(int i=0; i<moves.count; i++)
 	{
 		play_move(moves.move[i], true);
-		value = alphabeta(WHITE, 3, -100000, alpha);
-		//printf("%d: ", value);
-		//print_move(moves.move[i]);
-		if(value < alpha)
+		if(is_check(BLACK) == 0)
 		{
 			value = alphabeta(WHITE, 3, -100000, near_checkmate(alpha));
-			alpha = value;
-			move = moves.move[i];
+			//printf("%d: ", value);
+			//print_move(moves.move[i]);
+			if(value < alpha)
+			{
+				alpha = value;
+				move = moves.move[i];
+			}
 		}
 		load_position(position);
 	}
@@ -819,20 +822,24 @@ int alphabeta(int side, int depth, int alpha, int beta)
 
 	if(is_checkmate())return side*16000;
 	if(depth <= 0)return get_position_value();
-	
+
 	moves = get_all_moves(side);
 	position = save_position();
 	for(int i=0; i<moves.count; i++)
 	{
 		play_move(moves.move[i], true);
-		value = alphabeta(side*(-1), depth-1, beta, alpha);
+		if(is_check(side) != 0)
+		{
+			load_position(position);
+			continue;
+		}
 		value = far_checkmate(alphabeta(side*(-1), depth-1, near_checkmate(beta), near_checkmate(alpha)));
 		load_position(position);
 		if((side == BLACK && value < alpha) || (side == WHITE && value > alpha))
 		{
 			alpha = value;
 			if((side == BLACK && value <= beta) || (side == WHITE && value >= beta))
-			{	
+			{
 				free(moves.move);
 				return beta;
 			}
