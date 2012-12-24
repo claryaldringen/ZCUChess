@@ -67,12 +67,11 @@ bool is_checkmate()
 	Moves moves;
 	int check;
 	int temp_chessboard[8][8];
-	int check_side = is_check(ANYONE);
+	int check_side = get_side_with_check(&moves);
 
 	moves.count = 0;
 	if(check_side != 0)
 	{
-		moves = get_all_moves(check_side);
 		memcpy(temp_chessboard, chessboard, sizeof(chessboard));
 		for(int i=0; i<moves.count; i++)
 		{
@@ -117,6 +116,30 @@ int is_check(int side)
 		free(moves.move);
 	}
 	return 0;
+}
+
+
+int get_side_with_check(Moves *moves)
+{
+	int start = 0;
+	int end = 2;
+	int sides[3] = {BLACK, WHITE, BLACK};
+
+	moves->count = 0;
+
+	for(int s=start; s<end; s++)
+	{
+		*moves = get_all_moves(sides[s]);
+		for(int i=0; i<moves->count; i++)
+		{
+			if(chessboard[moves->move[i].to[COL]][moves->move[i].to[ROW]] == (sides[s]*KING))
+			{
+				return sides[s+1];
+			}
+		}
+		free(moves->move);
+	}
+	return 0;	
 }
 
 
@@ -356,7 +379,7 @@ void check_en_passant(Move move)
 Move get_move()
 {
 	Moves moves;
-	Move move;
+	Move move = NULL;
 	int value;
 	int alpha = 100000;
 	Position position;

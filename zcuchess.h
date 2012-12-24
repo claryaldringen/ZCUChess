@@ -102,6 +102,8 @@ bool is_checkmate();
 
 int is_check(int);
 
+int get_side_with_check(Moves*);
+
 int translate_row(char);
 
 void init_chessboard();
