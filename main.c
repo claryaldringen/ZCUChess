@@ -11,6 +11,7 @@
 #include <string.h>
 #include <strings.h>
 #include <math.h>
+#include <time.h>
 #include "zcuchess.h"
 
 int chessboard[8][8];
@@ -379,29 +380,43 @@ void check_en_passant(Move move)
 Move get_move()
 {
 	Moves moves;
-	Move move = NULL;
+	Move move;
 	int value;
-	int alpha = 100000;
+	int alpha;
 	Position position;
+	double time = 0;
+	int depth = 0;
+	clock_t start;
+	clock_t end;
 
+	start = clock();
 	moves = get_all_moves(BLACK);
 	position = save_position();
-	for(int i=0; i<moves.count; i++)
+	while(time < 2000000)
 	{
-		play_move(moves.move[i], true);
-		if(is_check(BLACK) == 0)
+		alpha = 100000;
+		depth++;
+		for(int i=0; i<moves.count; i++)
 		{
-			value = alphabeta(WHITE, 3, -100000, near_checkmate(alpha));
-			//printf("%d: ", value);
-			//print_move(moves.move[i]);
-			if(value < alpha)
+			play_move(moves.move[i], true);
+			if(is_check(BLACK) == 0)
 			{
-				alpha = value;
-				move = moves.move[i];
+				value = far_checkmate(alphabeta(WHITE, depth, -100000, near_checkmate(alpha)));
+				printf("%d: ", value);
+				print_move(moves.move[i]);
+				if(value < alpha)
+				{
+					alpha = value;
+					move = moves.move[i];
+				}
 			}
+			load_position(position);
 		}
-		load_position(position);
+		end = clock();
+		time = (double)(end - start);
+		printf("Cas: %d %d %f\n", start, end, time);
 	}
+	printf("Hloubka: %d \n", depth);
 	free(moves.move);
 	return move;
 }
