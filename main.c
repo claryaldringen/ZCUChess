@@ -41,6 +41,8 @@ int main(int argc, char** argv)
 		move = get_move();
 		play_move(move, true);
 		print_move(move);
+		if(is_check(WHITE))printf("Šach bílý\n");
+		if(is_check(BLACK))printf("Šach černý\n");
 		show_chessboard();
 	}
 	return (EXIT_SUCCESS);
@@ -68,24 +70,26 @@ bool is_checkmate()
 	Moves moves;
 	int check;
 	int temp_chessboard[8][8];
-	int check_side = get_side_with_check(&moves);
+	int check_side = get_side_with_check();
 
-	moves.count = 0;
 	if(check_side != 0)
 	{
+		moves = get_all_moves(check_side);
 		memcpy(temp_chessboard, chessboard, sizeof(chessboard));
 		for(int i=0; i<moves.count; i++)
 		{
+			//printf("Hledani matu: \n");
+			//print_move(moves.move[i]);
 			play_move(moves.move[i], false);
 			check = is_check(check_side);
 			memcpy(chessboard, temp_chessboard, sizeof(chessboard));
-			if(check != check_side)
+			if(!check)
 			{
-				free(moves.move);
+				if(moves.count > 0)free(moves.move);
 				return false;
 			}
 		}
-		free(moves.move);
+		if(moves.count > 0)free(moves.move);
 		return true;
 	}
 	return false;
@@ -110,35 +114,36 @@ int is_check(int side)
 		{
 			if(chessboard[moves.move[i].to[COL]][moves.move[i].to[ROW]] == (sides[s]*KING))
 			{
-				free(moves.move);
-				return sides[s+1];
+				if(moves.count > 0)free(moves.move);
+				return 1;
 			}
 		}
-		free(moves.move);
+		if(moves.count > 0)free(moves.move);
 	}
 	return 0;
 }
 
 
-int get_side_with_check(Moves *moves)
+int get_side_with_check()
 {
+	Moves moves;
 	int start = 0;
 	int end = 2;
 	int sides[3] = {BLACK, WHITE, BLACK};
 
-	moves->count = 0;
-
+	moves.count = 0;
 	for(int s=start; s<end; s++)
 	{
-		*moves = get_all_moves(sides[s]);
-		for(int i=0; i<moves->count; i++)
+		moves = get_all_moves(sides[s]);
+		for(int i=0; i<moves.count; i++)
 		{
-			if(chessboard[moves->move[i].to[COL]][moves->move[i].to[ROW]] == (sides[s]*KING))
+			if(chessboard[moves.move[i].to[COL]][moves.move[i].to[ROW]] == (sides[s]*KING))
 			{
+				if(moves.count > 0)free(moves.move);
 				return sides[s+1];
 			}
 		}
-		free(moves->move);
+		if(moves.count > 0)free(moves.move);
 	}
 	return 0;	
 }
@@ -296,15 +301,15 @@ void do_castling(Move move)
 	}
 	if(side == BLACK && move.to[COL] == 0)
 	{
-		chessboard[2][7] = KING;
-		chessboard[3][7] = ROOK;
+		chessboard[2][7] = -KING;
+		chessboard[3][7] = -ROOK;
 		chessboard[0][7] = EMPTY;
 		chessboard[4][7] = EMPTY;
 	}
 	if(side == BLACK && move.to[COL] == 7)
 	{
-		chessboard[6][7] = KING;
-		chessboard[5][7] = ROOK;
+		chessboard[6][7] = -KING;
+		chessboard[5][7] = -ROOK;
 		chessboard[7][7] = EMPTY;
 		chessboard[4][7] = EMPTY;
 	}
@@ -402,8 +407,8 @@ Move get_move()
 			if(is_check(BLACK) == 0)
 			{
 				value = far_checkmate(alphabeta(WHITE, depth, -100000, near_checkmate(alpha)));
-				printf("%d: ", value);
-				print_move(moves.move[i]);
+				//printf("%d: ", value);
+				//print_move(moves.move[i]);
 				if(value < alpha)
 				{
 					alpha = value;
@@ -417,7 +422,7 @@ Move get_move()
 		printf("Cas: %d %d %f\n", start, end, time);
 	}
 	printf("Hloubka: %d \n", depth);
-	free(moves.move);
+	if(moves.count > 0)free(moves.move);
 	return move;
 }
 
@@ -766,7 +771,7 @@ bool is_check_after_move(Move move)
 	play_move(move, false);
 	check = is_check(side);
 	memcpy(chessboard, temp_chessboard, sizeof(chessboard));
-	if(check == side)return true;
+	if(check)return true;
 	return false;
 }
 
@@ -878,12 +883,12 @@ int alphabeta(int side, int depth, int alpha, int beta)
 			alpha = value;
 			if((side == BLACK && value <= beta) || (side == WHITE && value >= beta))
 			{
-				free(moves.move);
+				if(moves.count > 0)free(moves.move);
 				return beta;
 			}
 		}
 	}
-	free(moves.move);
+	if(moves.count > 0)free(moves.move);
 	return alpha;
 }
 
