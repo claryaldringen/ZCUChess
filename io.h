@@ -19,7 +19,7 @@
 
 	void print_move(Move move);
 
-	int translate_row(char);
+	int translate_col(char);
 
 	bool is_help(char*);
 

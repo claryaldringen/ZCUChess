@@ -46,11 +46,7 @@ int main(int argc, char** argv)
 		if(is_exit(input))break;
 		if(is_help(input))continue;
 		move = parse_move(input);
-		if(move.status == false)
-		{
-			printf("Špatně zadaný tah.\n");
-			continue;
-		}
+		if(move.status == false)continue;
 		play_move(move, true);
 		if(is_checkmate_or_stalemate())break;
 		human_move = false;
@@ -59,7 +55,6 @@ int main(int argc, char** argv)
 		print_move(move);
 		if(is_check(WHITE))printf("Šach bílý\n");
 		if(is_check(BLACK))printf("Šach černý\n");
-		show_chessboard();
 	}
 	return (EXIT_SUCCESS);
 }
@@ -67,11 +62,18 @@ int main(int argc, char** argv)
 Move parse_move(char* input)
 {
 	Move move;
-	move.from[COL] = translate_row(input[0]);
+	move.from[COL] = translate_col(input[0]);
 	move.from[ROW] = atoi(&input[1]) - 1;
-	move.to[COL] = translate_row(input[3]);
+	move.to[COL] = translate_col(input[3]);
 	move.to[ROW] = atoi(&input[4]) - 1;
+	if(move.from[ROW] == -1 || move.to[COL] == -1)
+	{
+		printf("Chyba vstupu: pravděpodobně jste udělali překlep na české klávesnici. Opakujte prosím zadání.\n");
+		move.status = false;
+		return move;
+	}
 	move.status = check_move(move);
+	if(move.status == false)printf("Špatně zadaný tah.\n");
 	return move;
 }
 

@@ -28,7 +28,7 @@ bool is_help(char* input)
 }
 
 
-int translate_row(char character)
+int translate_col(char character)
 {
 	int number = (int)(character - ASCII_VALUE_OF_A);
 	if(number > 7 || number < 0)number = -1;
