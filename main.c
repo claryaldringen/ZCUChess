@@ -5,8 +5,10 @@
  * Created on 1. prosinec 2012, 13:47
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "types.h"
 #include "zcuchess.h"
@@ -34,12 +36,15 @@ int main(int argc, char** argv)
 {
 	char input[6];
 	Move move;
+
+	show_header();
 	init_chessboard();
 	while(!is_checkmate_or_stalemate())
 	{
 		human_move = true;
 		gets(input);
 		if(is_exit(input))break;
+		if(is_help(input))continue;
 		move = parse_move(input);
 		if(move.status == false)
 		{

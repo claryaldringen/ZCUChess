@@ -17,6 +17,17 @@ bool is_exit(char* input)
 }
 
 
+bool is_help(char* input)
+{
+	if(strcmp(input, "help") == 0)
+	{
+		show_help();
+		return true;
+	}
+	return false;
+}
+
+
 int translate_row(char character)
 {
 	int number = (int)(character - ASCII_VALUE_OF_A);
@@ -41,4 +52,17 @@ void show_chessboard()
 void print_move(Move move)
 {
 	printf("%c%d %c%d\n", move.from[COL]+ASCII_VALUE_OF_A, move.from[ROW]+1, move.to[COL]+ASCII_VALUE_OF_A, move.to[ROW]+1);
+}
+
+
+void show_header()
+{
+	printf(HEADER);
+	show_help();
+}
+
+
+void show_help()
+{
+	printf(HELP);
 }
