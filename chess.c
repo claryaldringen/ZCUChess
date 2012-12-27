@@ -462,6 +462,7 @@ bool check_move(Move move)
 {
 	if(move.from[COL] == -1 || move.from[ROW] == -1 || move.to[COL] == -1 || move.to[ROW] == -1)return false;
 	if(move.from[ROW] > 7 || move.to[ROW] > 7)return false;
+	if(chessboard[move.from[COL]][move.from[ROW]] < 1)return false;
 	return is_move_possible(move);
 }
 
