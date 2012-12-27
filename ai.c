@@ -1,3 +1,18 @@
+
+/*
+ *	ZČU Chess
+ *	Jednoduchý šachový program.
+ *	
+ * Modul ai.c
+ * Tento modul obsahuje umělou inteligenci pro šachovou hru.
+ * 
+ * Dialekt: C99
+ * Kompiler: Jakýkoliv kompatibilní s C99
+ * 
+ * Autor: Martin Zadražil, 2012
+ * Licence: GNU/GPL
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -12,6 +27,9 @@
 #include "ai.h"
 
 
+/**
+ * Vrací nejlepší tah počítače.
+ */
 Move get_move()
 {
 	Moves moves;
@@ -27,18 +45,17 @@ Move get_move()
 	start = clock();
 	moves = get_all_moves(BLACK);
 	position = save_position();
-	while(time < 2000000)
+	while(time < TWO_SEC)
 	{
-		alpha = 100000;
+		alpha = BIG_ALPHA;
 		depth++;
 		for(int i=0; i<moves.count; i++)
 		{
+			show_thinking();
 			play_move(moves.move[i], true);
 			if(is_check(BLACK) == 0)
 			{
-				value = far_checkmate(alphabeta(WHITE, depth, -100000, near_checkmate(alpha)));
-				//printf("%d: ", value);
-				//print_move(moves.move[i]);
+				value = far_checkmate(alphabeta(WHITE, depth, -BIG_ALPHA, near_checkmate(alpha)));
 				if(value < alpha)
 				{
 					alpha = value;
@@ -49,14 +66,15 @@ Move get_move()
 		}
 		end = clock();
 		time = (double)(end - start);
-		printf("Cas: %d %d %f\n", start, end, time);
 	}
-	printf("Hloubka: %d \n", depth);
 	if(moves.count > 0)free(moves.move);
 	return move;
 }
 
 
+/**
+ * Vrací hodnotu pozice.
+ */
 int get_position_value()
 {
 	int value = 0;
@@ -79,29 +97,48 @@ int get_position_value()
 	return value;
 }
 
+/**
+ * Úprava hodnoty pozice v blízkosti matu - počítač upřednostní mat dřívějším tahem
+ * 
+ * @param value Hodnota pozice
+ */
 int near_checkmate(int value)
 {
-	if(value > 15000)value++;
-	if(value < 15000)value--;
+	if(value > HIGH_VALUE)value++;
+	if(value < -HIGH_VALUE)value--;
 	return value;
 }
 
 
+/**
+ * Úprava hodnoty pozice dále od matu - počítač upřednostní mat dřívějším tahem
+ * 
+ * @param value Hodnota pozice
+ */
 int far_checkmate(int value)
 {
-	if(value > 15000)value--;
-	if(value < 15000)value++;
+	if(value > HIGH_VALUE)value--;
+	if(value < -HIGH_VALUE)value++;
 	return value;
 }
 
 
+/**
+ * Vrací nejlepší hodnotu pozice s ohledem na zahrané tahy do hlobky depth.
+ * Implementováno alfabeta algoritmem.
+ * 
+ * @param side Strana, která je na tahu (BLACK, WHITE)
+ * @param depth Hloubka propočtu
+ * @param alpha Mez alfa - cokoliv horšího se nepočítá
+ * @param beta Mez beta - nejlepší hodnota z minulé iterace
+ */
 int alphabeta(int side, int depth, int alpha, int beta)
 {
 	Moves moves;
 	Position position;
 	int value;
 
-	if(is_checkmate())return side*16000;
+	if(is_checkmate())return side*MAT_VALUE;
 	if(depth <= 0)return get_position_value();
 
 	moves = get_all_moves(side);
@@ -121,12 +158,12 @@ int alphabeta(int side, int depth, int alpha, int beta)
 			alpha = value;
 			if((side == BLACK && value <= beta) || (side == WHITE && value >= beta))
 			{
-				if(moves.count > 0)free(moves.move);
+				free_moves(moves);
 				return beta;
 			}
 		}
 	}
-	if(moves.count > 0)free(moves.move);
+	free_moves(moves);
 	return alpha;
 }
 

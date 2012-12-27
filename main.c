@@ -1,8 +1,16 @@
+
 /*
- * File:   main.c
- * Author: clary
- *
- * Created on 1. prosinec 2012, 13:47
+ *	ZČU Chess
+ *	Jednoduchý šachový program.
+ *	
+ * Modul main.c
+ * Hlavní modul aplikace, obsahuje funkci main, funkce pro práci s pamětí a pomocné funkce.
+ * 
+ * Dialekt: C99
+ * Kompiler: Jakýkoliv kompatibilní s C99
+ * 
+ * Autor: Martin Zadražil, 2012
+ * Licence: GNU/GPL
  */
 
 #include <stdio.h>
@@ -32,6 +40,12 @@ int position_bonus[8][8] = {
 	};
 
 
+/**
+ * Hlavní funkce programu.
+ * 
+ * @param argc Počet parametrů
+ * @param argv Pole parametrů
+ */
 int main(int argc, char** argv)
 {
 	char input[6];
@@ -53,12 +67,19 @@ int main(int argc, char** argv)
 		move = get_move();
 		play_move(move, true);
 		print_move(move);
+		show_check();
 		if(is_check(WHITE))printf("Šach bílý\n");
 		if(is_check(BLACK))printf("Šach černý\n");
 	}
 	return (EXIT_SUCCESS);
 }
 
+
+/**
+ * Zparsuje tah zadaný z klávesnice.
+ * 
+ * @param input
+ */
 Move parse_move(char* input)
 {
 	Move move;
@@ -78,6 +99,9 @@ Move parse_move(char* input)
 }
 
 
+/**
+ * Vrátí aktuální stav hry.
+ */
 Position save_position()
 {
 	Position position;
@@ -88,6 +112,11 @@ Position save_position()
 }
 
 
+/**
+ * Nastaví hru do daného stavu.
+ * 
+ * @param position Aktuální stav hry
+ */
 void load_position(Position position)
 {
 	memcpy(chessboard, position.chessboard, sizeof(chessboard));
@@ -96,6 +125,12 @@ void load_position(Position position)
 }
 
 
+/**
+ * Přidá tah do množiny tahů.
+ * 
+ * @param moves Množina tahů
+ * @param move Tah
+ */
 void add_move(Moves *moves, Move move)
 {
 	int size = 0;
@@ -110,4 +145,15 @@ void add_move(Moves *moves, Move move)
 	}
 	moves->move[moves->count] = move;
 	moves->count++;
+}
+
+
+/**
+ * Uvolní paměť, kterou zabírá množina tahů.
+ * 
+ * @param moves Množina tahů
+ */
+void free_moves(Moves moves)
+{
+	if(moves.count > 0)free(moves.move);
 }

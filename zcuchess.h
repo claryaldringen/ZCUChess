@@ -47,6 +47,8 @@
 	void load_position(Position);
 
 	void add_move(Moves*, Move);
+
+	void free_moves(Moves);
 	
 #endif
 

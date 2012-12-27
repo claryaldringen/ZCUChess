@@ -27,5 +27,9 @@
 
 	void show_header();
 
+	void show_check();
+
+	void show_thinking();
+
 #endif	/* IO_H */
 

@@ -1,3 +1,18 @@
+
+/*
+ *	ZČU Chess
+ *	Jednoduchý šachový program.
+ *	
+ * Modul chess.c
+ * Tento modul obsahuje základní rutiny umožňující šachovou hru jako takovou.
+ * 
+ * Dialekt: C99
+ * Kompiler: Jakýkoliv kompatibilní s C99
+ * 
+ * Autor: Martin Zadražil, 2012
+ * Licence: GNU/GPL
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -10,6 +25,9 @@
 #include "chess.h"
 
 
+/**
+ * Inicializace šachovnice do výchozího postavení.
+ */
 void init_chessboard()
 {
 	set_empty_chessboard();
@@ -18,6 +36,9 @@ void init_chessboard()
 }
 
 
+/**
+ * Vrací true nebo false podle toho, jestli nastal šachmat.
+ */
 bool is_checkmate_or_stalemate()
 {
 	bool checkmate = is_checkmate();
@@ -26,6 +47,13 @@ bool is_checkmate_or_stalemate()
 }
 
 
+/**
+ * Vrací true nebo false podle toho, jestli nastal šachmat.
+ * - Zjistí stranu, která je v šachu
+ * - Pokud je nějaká strana v šachu, zahraje za ni všechny možné tahy
+ *   a pokud nalezne takový tah, kterým se lze šachu zbavit, znamená to
+ *   že se nejedná o šachmat.
+ */
 bool is_checkmate()
 {
 	Moves moves;
@@ -39,30 +67,34 @@ bool is_checkmate()
 		memcpy(temp_chessboard, chessboard, sizeof(chessboard));
 		for(int i=0; i<moves.count; i++)
 		{
-			//printf("Hledani matu: \n");
-			//print_move(moves.move[i]);
 			play_move(moves.move[i], false);
 			check = is_check(check_side);
 			memcpy(chessboard, temp_chessboard, sizeof(chessboard));
 			if(!check)
 			{
-				if(moves.count > 0)free(moves.move);
+				free_moves(moves);
 				return false;
 			}
 		}
-		if(moves.count > 0)free(moves.move);
+		free_moves(moves);
 		return true;
 	}
 	return false;
 }
 
 
+/**
+ * Zjistí jestli je daná strana v šachu.
+ * - Zjišťuje, zda nějaký tah soupeře končí na políčku s králem dané strany.
+ * 
+ * @param side Strana (BLACK, WHITE)
+ */
 int is_check(int side)
 {
 	Moves moves;
 	int start = 0;
 	int end = 2;
-	int sides[3] = {BLACK, WHITE, BLACK};
+	int sides[2] = {BLACK, WHITE};
 
 	moves.count = 0;
 	if(side == WHITE)end = 1;
@@ -75,16 +107,20 @@ int is_check(int side)
 		{
 			if(chessboard[moves.move[i].to[COL]][moves.move[i].to[ROW]] == (sides[s]*KING))
 			{
-				if(moves.count > 0)free(moves.move);
+				free_moves(moves);
 				return 1;
 			}
 		}
-		if(moves.count > 0)free(moves.move);
+		free_moves(moves);
 	}
 	return 0;
 }
 
 
+/**
+ * Vrátí stranu, která je v šachu (BLACK nebo WHITE), případně 0 není-li šach.
+ * - Zjišťuje, zda nějaký tah soupeře končí na políčku s králem dané strany.
+ */
 int get_side_with_check()
 {
 	Moves moves;
@@ -100,16 +136,21 @@ int get_side_with_check()
 		{
 			if(chessboard[moves.move[i].to[COL]][moves.move[i].to[ROW]] == (sides[s]*KING))
 			{
-				if(moves.count > 0)free(moves.move);
+				free_moves(moves);
 				return sides[s+1];
 			}
 		}
-		if(moves.count > 0)free(moves.move);
+		free_moves(moves);
 	}
 	return 0;	
 }
 
 
+/**
+ * Vrátí všechny možné tahy pro danou stranu.
+ * 
+ * @param side Strana (BLACK, WHITE)
+ */
 Moves get_all_moves(int side)
 {
 	Moves all_moves;
@@ -130,7 +171,7 @@ Moves get_all_moves(int side)
 					moves.move[i].from[ROW] = row;
 					add_move(&all_moves, moves.move[i]);
 				}
-				if(moves.count > 0)free(moves.move);
+				free_moves(moves);
 				moves.count = 0;
 			}
 		}
@@ -139,6 +180,12 @@ Moves get_all_moves(int side)
 }
 
 
+/**
+ * Zahraje tah.
+ * 
+ * @param move Tah
+ * @param real Příznak, je li tah rálný či simulační
+ */
 void play_move(Move move, bool real)
 {
 	if(is_castling(move) && can_do_castling(move))
@@ -159,6 +206,11 @@ void play_move(Move move, bool real)
 }
 
 
+/**
+ * Kontroluje, zda nebyla porušena možnost rošády a pokud ano, nastaví globální příznak.
+ * 
+ * @param move Tah
+ */
 void check_castling(Move move)
 {
 	if(move.from[COL] == 0 && move.from[ROW] == 0)castlings[LONG_WHITE] = false;
@@ -179,6 +231,11 @@ void check_castling(Move move)
 }
 
 
+/**
+ * Vrací true v případě, že je tah rošádou.
+ * 
+ * @param move Tah
+ */
 bool is_castling(Move move)
 {
 	int side = get_side_coeficient(move.from[COL], move.from[ROW]);
@@ -188,6 +245,15 @@ bool is_castling(Move move)
 }
 
 
+/**
+ * Vrací true v případě že můžeme udělat rošádu.
+ * - Kontroluje, jestli není král při začátku rošády v šachu
+ * - Kontroluje, zda se král neocitne v šachu v průběhu rošády
+ * - Kontroluje, zda není král v šachu po rošádě
+ * 
+ * @param move
+ * @return 
+ */
 bool can_do_castling(Move move)
 {
 	int row = 0;
@@ -220,6 +286,11 @@ bool can_do_castling(Move move)
 }
 
 
+/**
+ * Provede rošádu.
+ * 
+ * @param move Tah
+ */
 void do_castling(Move move)
 {
 	int side = get_side_coeficient(move.from[COL], move.from[ROW]);
@@ -254,6 +325,11 @@ void do_castling(Move move)
 }
 
 
+/**
+ * Vrátí true, jedná-li se o braní mimochodem.
+ * 
+ * @param move Tah
+ */
 bool is_en_passant(Move move)
 {
 	int figure = abs(chessboard[move.from[COL]][move.from[ROW]]);
@@ -262,6 +338,11 @@ bool is_en_passant(Move move)
 }
 
 
+/**
+ * Provede braní mimochodem.
+ * 
+ * @param move Tah
+ */
 void do_en_passant(Move move)
 {
 	do_simple_move(move);
@@ -269,6 +350,11 @@ void do_en_passant(Move move)
 }
 
 
+/**
+ * Provede normální tah, kontroluje, zda pěšec došel na konec šachovbnice a vymění figuru.
+ * 
+ * @param move Tah
+ */
 void do_simple_move(Move move)
 {
 	if(chessboard[move.from[COL]][move.from[ROW]] == PAWN && move.to[ROW] == BLACK_ROW)
@@ -281,10 +367,12 @@ void do_simple_move(Move move)
 	}
 	else chessboard[move.to[COL]][move.to[ROW]] = chessboard[move.from[COL]][move.from[ROW]];
 	chessboard[move.from[COL]][move.from[ROW]] = 0;
-
 }
 
 
+/**
+ * Nahradí pěšce, který došel na konec šachovnice, za nějakou figuru.
+ */
 int get_figure()
 {
 	char input;
@@ -303,6 +391,11 @@ int get_figure()
 }
 
 
+/**
+ * Kontroluje, zda může být nějaký pěšec sebrán mimochodem a pokud ano, uloží ho do globální proměnné.
+ * 
+ * @param move Tah
+ */
 void check_en_passant(Move move)
 {
 	int side = get_side_coeficient(move.from[COL], move.from[ROW]);
@@ -320,6 +413,9 @@ void check_en_passant(Move move)
 }
 
 
+/**
+ * Nastaví střed šachovnice na prázdná políčka.
+ */
 void set_empty_chessboard()
 {
 	for(int col=0; col<9; col++)
@@ -332,6 +428,11 @@ void set_empty_chessboard()
 }
 
 
+/**
+ * Nastaví počáteční rozložení figur dle typu.
+ * 
+ * @param type Typ figur (WHITE_ROW - bílé, BLACK_ROW - černé)
+ */
 void set_figures(int type)
 {
 	int koeficient;
@@ -352,6 +453,11 @@ void set_figures(int type)
 }
 
 
+/**
+ * Vrací true v případě, že je tah platný.
+ * 
+ * @param move Tah
+ */
 bool check_move(Move move)
 {
 	if(move.from[COL] == -1 || move.from[ROW] == -1 || move.to[COL] == -1 || move.to[ROW] == -1)return false;
@@ -360,6 +466,11 @@ bool check_move(Move move)
 }
 
 
+/**
+ * Vrací true, nachází-li se tah v množině možných tahů a není-li po zahrání král v šachu.
+ * 
+ * @param move Tah
+ */
 bool is_move_possible(Move move)
 {
 	Moves moves = get_possible_moves(move.from[COL], move.from[ROW]);
@@ -367,15 +478,21 @@ bool is_move_possible(Move move)
 	{
 		if(move.to[COL] == moves.move[i].to[COL] && move.to[ROW] == moves.move[i].to[ROW] && !is_check_after_move(move))
 		{
-			if(moves.count > 0)free(moves.move);
+			free_moves(moves);
 			return true;
 		}
 	}
-	if(moves.count > 0)free(moves.move);
+	free_moves(moves);
 	return false;
 }
 
 
+/**
+ * Vrací množinu možných tahů zahratelných z dané pozice.
+ * 
+ * @param col Sloupec 
+ * @param row Řádek
+ */
 Moves get_possible_moves(int col, int row)
 {
 	Moves moves;
@@ -391,6 +508,15 @@ Moves get_possible_moves(int col, int row)
 }
 
 
+/**
+ * Vrací množinu možných tahů pro pěšce na dané pozici.
+ * - Kontroluje, zda můžeme o 1 pole vpřed
+ * - Kontroluje, zda můžeme o 2 pole vpřed
+ * - Kontroluje, zda můžeme táhnout diagonálně
+ * 
+ * @param col Sloupec
+ * @param row Řádek
+ */
 Moves get_possible_moves_for_pawn(int col, int row)
 {
 	int koeficient = get_side_coeficient(col, row);
@@ -435,6 +561,16 @@ Moves get_possible_moves_for_pawn(int col, int row)
 }
 
 
+/**
+ * Vrací true, může-li pěšec z dané pozice táhnout diagonálně.
+ * - Kontroluje, je-li na políčku, kam chci táhnout, nepřítel
+ * - Kontroluje, je-li na políčku vedle nepřítel, jehož můžu sebrat mimochodem
+ * 
+ * @param col Sloupec
+ * @param row Řádek
+ * @param order Směr diagonály (LEFT, RIGHT)
+ * @return 
+ */
 bool is_pawn_diagonally_move_possible(int col, int row, int order)
 {
 	int coeficient_of_from = get_side_coeficient(col, row);
@@ -445,6 +581,12 @@ bool is_pawn_diagonally_move_possible(int col, int row, int order)
 }
 
 
+/**
+ * Vrací množinu možných tahů pro věž z dané pozice.
+ * 
+ * @param col Sloupec
+ * @param row Řádek
+ */
 Moves get_possible_moves_for_rook(int col, int row)
 {
 	int koeficient = get_side_coeficient(col, row);
@@ -470,6 +612,12 @@ Moves get_possible_moves_for_rook(int col, int row)
 }
 
 
+/**
+ * Vrací množinu možných tahů pro jezdce z dané pozice
+ * 
+ * @param col Sloupec
+ * @param row Řádek
+ */
 Moves get_possible_moves_for_knight(int col, int row)
 {
 	int rows[8] = {-1, -2, -1, -2, 1, 2, 1, 2};
@@ -493,6 +641,12 @@ Moves get_possible_moves_for_knight(int col, int row)
 }
 
 
+/**
+ * Vrací množinu možných tahů pro střelce z dané pozice.
+ * 
+ * @param col Sloupec
+ * @param row Řádek
+ */
 Moves get_possible_moves_for_bishop(int col, int row)
 {
 	int koeficient = get_side_coeficient(col, row);
@@ -522,6 +676,12 @@ Moves get_possible_moves_for_bishop(int col, int row)
 }
 
 
+/**
+ * Vrací množinu možných tahů pro dámu z dané pozice.
+ * 
+ * @param col Sloupec
+ * @param row Řádek
+ */
 Moves get_possible_moves_for_queen(int col, int row)
 {
 	Moves moves = get_possible_moves_for_rook(col, row);
@@ -530,11 +690,19 @@ Moves get_possible_moves_for_queen(int col, int row)
 	{
 		add_move(&moves, bishop_moves.move[i]);
 	}
-	if(bishop_moves.count > 0)free(bishop_moves.move);
+	free_moves(bishop_moves);
 	return moves;
 }
 
 
+/**
+ * Vrací množinu možných tahů pro krále z dané pozice.
+ * - Nalezne všechny normální tahy krále
+ * - Přidá rošádové tahy
+ * 
+ * @param col Sloupec
+ * @param row Řádek
+ */
 Moves get_possible_moves_for_king(int col, int row)
 {
 	Moves moves;
@@ -562,6 +730,14 @@ Moves get_possible_moves_for_king(int col, int row)
 }
 
 
+/**
+ * K množině tahů přidá rošádové tahy z dané pozice.
+ * - Kontroluje, zda-lze provést jednotlivé rošády a pokud ano, přidá je k množině tahů
+ * 
+ * @param moves Množina tahů
+ * @param col Sloupec
+ * @param row Řádek
+ */
 void add_castling_moves(Moves *moves, int col, int row)
 {
 	Move move;
@@ -603,6 +779,16 @@ void add_castling_moves(Moves *moves, int col, int row)
 }
 
 
+/**
+ * K množině tahů přidá tah a vrátí true, je-li na konečné pozici tahu nepřítel.
+ * 
+ * @param moves Množina tahů
+ * @param from_col Sloupec odkud táhneme
+ * @param from_row Řádek odkud táhneme
+ * @param to_col Sloupec kam táhneme
+ * @param to_row Řádek kam táhneme
+ * @param coeficient Koeficient strany za kterou táhneme
+ */
 bool add_move_and_break(Moves *moves, int from_col, int from_row, int to_col, int to_row, int coeficient)
 {
 	Move move;
@@ -629,6 +815,11 @@ bool add_move_and_break(Moves *moves, int from_col, int from_row, int to_col, in
 }
 
 
+/**
+ * Vrací true, pokud jsem se po tahu dostal do šachu.
+ * 
+ * @param move
+ */
 bool is_check_after_move(Move move)
 {
 	int side = get_side_coeficient(move.from[COL], move.from[ROW]);
@@ -643,6 +834,12 @@ bool is_check_after_move(Move move)
 }
 
 
+/**
+ * Vrací koeficient strany (BLACK, WHITE) stojící na dané pozici.
+ * 
+ * @param col Sloupec
+ * @param row Řádek
+ */
 int get_side_coeficient(int col, int row)
 {
 	if(chessboard[col][row] < 0)return BLACK;
