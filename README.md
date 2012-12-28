@@ -49,4 +49,3 @@ U dámy je potřeba snad jen zabránit předčasnému vývinu - soupeř pak pros
 U krále je v zahájení a střední hře důležitá především bezpečnost. Jde jednak o umístění, zachované právo rošády, pěšcový kryt krále a napadnutelnost polí v okolí. V koncovce se úloha krále radikálně mění a stává se z něj aktivně bojující figura, která musí opustit úkryt a bojovat o střed. V matové koncovce se pak král silnější strany snaží přiblížit soupeřovu  králi.
 Ohodnocovací funkce napsaná pomocí statických tabulek je velmi rychlá, ale má jednu vážnou slabinu. Tabulky jsou napsány obecně, mohou tedy být dobré pro běžnou pozici, ale stačí několik netypických tahů a správné ohodnocení políček například pro jezdce může být úplně jiné. Řešením je místo samotného pole oceňovat pohyblivost figur, napadnutelná pole a tak podobně. To vše je ovšem za cenu vyšší časové náročnosti.
 
-
