@@ -16,6 +16,57 @@ Umělá inteligence a teorie šachové hry
 
 Šachy jsou čistě matematickou úlohou, k jejímuž vyřešení se dá v každém případě dopočítat. Za vyřešení úlohy můžeme považovat mat v případě vyhrané pozice, pat v případě remízové pozice nebo alespoň co největší oddalování porážky v případě prohrané pozice. Klíčovou funkcí je statická ohodnocovací funkce, která vrátí číselnou hodnotudané pozice. Nejednodušší algoritmus, který nehraje úplně náhodně, vygeneruje všechny tahy ze zadané pozice, každý z nich zahraje a vzniklou pozici ohodnotí statickou ohodnocovací funkcí. Pokud je hodnota pozice vyšší než dosud nejvyšší, uloží ji i tah, kterým jsme se na ni dostali. Poté zahraje tah zpět a tak dále, dokud nevyzkoušíme všechny tahy. Tento algoritmus je sice lepší než náhodné generování tahů, ale díru do světa rozhodně neudělá. Sebere klidně dámou krytého pěšce, nepokryje jednotahový mat a podobně.
 Vylepšením je přidat rekurzi. Zahrajeme všechny tahy z dané pozice, na tyto tahy zahrajeme odpověď soupeře, pak zase naší odpověď a tak dále až do nějaké hloubky n, kde zavoláme statickou ohodnocovací funcki. Tento algoritmus se jmenuje minimax. Na šachovnici je v základním postavení 16 pěšců, každý z nich může táhnout nejvýše šestkrát, poté se promění v nějakou figuru. Když nepočítáme krále, které není možné sebrat, je na šachovnici 30 figur a každá z nich může být sebrána maximálně jednou. Pokud se během 50ti tahů (50 tahů bílého a 50 tahů černého, celkem 100 půltahů) netáhne pěšcem ani nesebere žádná figura, je partie považovaná za remízu. Díky tomu můžeme shora odhadnout hloubku šachové partie na (16 * 6 + 30 + 1) * 100 = 12700 půltahů. Algoritmus minimax s hloubkou propočtu 12700 bude teoreticky hrát šachy úplně dokonale, alespoň v tom smyslu, že žádnou remízovou pozici neprohraje, každou vyhranou pozici nejen vyhraje, ale dokonce tím nejrychlejším způsobem a při prohrané pozici bude porážku alespoň maximálně oddalovat.
+Paměťová složitost mnimaxu není příliš velká, neboť v zásobníku rekurzivního propočtu je v danou chvíli pouze jedna varianta. Kdyby se tedy minmaxu opravdu podařilo nalézt variantu dlouhou 12 700 půltahů a jedna instance minimaxu zabrala 1 kB, vešli bychom se i s volajícím kódem pohodlně do 13 MB. Na propočet stromu tak bohaté hry, jakou šachy bezesporu jsou, nám tedy stačí pouze pár megabajtů operační paměti. Bohužel časová složitost minimaxu je exponenciální v^h, kde v je větvící faktor a h hloubka propočtu. Předpokládejme, že z pozice můžeme vygenerovat 20 tahů (například z výchozího postavení 16 tahů pěšci, 4 tahy jezdci) a že dokážeme spočítat milion ohodnocovacích funckí za sekundu. Propočet do hloubky 2 pak potrvá 0,008 sekundy, propočet do hloubky 5 3.2 sekundy, propočet do hloubky 10 zhruba 118 a půl dne. Při hloubce 12 700 by to pak bylo 3,81 * 10^16509 let, konce výpočtu by se tedy nejspíš nedočkala ani naše galaxie.
+Časovou složitost můžeme zlepšit. Potřebujeme-li zmenšit výsledek vzorce v^h, můžeme zmenšovat h, což je hloubka propočtu a na kvalitu hry má zásadní vliv. Druhou možností je zmenšit v, což je větvící faktor a některé varianty vůbec nepočítat. I přesto se můžeme dostat ke správnému výsledku.
+
+V pozici na diagramu je na tahu bílý, jedná se o známou pozici ze zahájení jménem španělská hra (1. e4 e5 2. Jf3 Jc6 3. Sb5), kde se černý brání obvyklým tahem 3. ...a6. Napadl tedy bílému střelce a ten musí hrozbu nějak pokrýt. Běžné tahy jsou nyní 4. Sa4 a Sxc6, hrát by se dalo i Sc4 a snad ještě hodně defétistické Se2, všechny ostatní tahy jsou již vyloženě špatné. Z této pozice dáme programu za úkol provést propočet do hloubky 2 půltahy. Vygeneruje tahy a zkouší jeden po druhém zahrát. Generátor tahů je lehce modifikovaný, tak aby vracel braní před ostatními tahy. Program tedy nejprve propočítá 4. Sxc6, projde všechny odpovědi černého a zjistí, že po nejlepším 4. ...dxc6 je pozice přibližně vyrovnaná. Bílý sice ztratil výhodu dvojice střelců, ale zase černému znehodnotil pěšcovou strukturu. Ohodnocení prvního tahu zatím proběhlo tak, jako v algoritmu minimax. Rozdíl nastane až u druhého tahu bílého 4. Sxa6. Jedná se o zjevnou chybu, kterou bílý odevzdává střelce za pouhého pěšce, ale minimax by musel projít všechny odpovědi, aby si to uvědomil. Tedy poctivě počítat a ohodnocovat nejen 4. ...bxa6 a Vxa6, ale i zcela nesmyslné tahy jako 4. ...Jh6 nebo g5. Modifikovanému algoritmu stačí jediná: 4. ...Vxa6 nebo bxa6. Navíc generátor tahů, který preferuje braní, vrátí jeden z uvedených tahů hned jako první. Jak program pozná, že může propočet odpovědí na 4. Sxa6 přerušit a prohlásit tah za neperspektivní? Z propočtu 4. Sxc6 si zapamatoval hodnotu nejlepší odpovědi 4. ...dxc6, tedy zhruba 0 tj. vyrovnanou pozici. Při propočtu dalších tahů (4. Sxa6) uvedenou hodnotu použijeme jako práh. Pokud jej jakákoli odpověď (4. ...bxa6 nebo Vxa6) přesáhne, propočet tahu (4. Sxa6) ukončíme, neboť již víme, že je špatný. Jinými slovy: pokud víme, že tah je špatný (= horší než nějaký jiný - zde 4. Sxc6), nemá smysl dále zkoumat, jestli není náhodou ještě o něco horší, než jsme zatím zjistili. 
+Pokud počítáme do hloubky 3 a více, dojde při prořezávání na oba hráče a jsou zde proto meze pro obě strany. DOlní se říká alfa, horní beta, odtud také název algoritmu alfabeta metoda (nebo alfabeta ořezávání). Pokud během propočtu narazíme na variantu, která je horší než alfa, můžeme ji zahodit. Vyjde-li nám varianta lepší než beta, může se jí zase vyhnout soupeř a zahrát tah, který je lepší pro něj. Časová složitost alfabety silně závisí na pořadí tahů, což ovlivňuje, jak rychle se nám podaří sevřít meze alfa a beta. Časová složitost optimální alfabety je v^h/2, můžeme se s ní tedy za stejný čas dostat dvakrát hlouběji než s minimaxem. Je tedy žádoucí aby nejnadějnější varianty počítal algoritmus jako první. Existuje několik heuristik, jak odhadnout už v generátoru tahů, které varianty by mohly být nejlepší.
+
+Sežer co můžeš
+
+Způsobí-li tah změnu materiálu, posuneme ho na více dopředu. Preferovat můžeme rovněž braní nižší figurou.
+
+Historická heuristika
+
+Je založena na myšlence, že pokud byl tah dobrý v jedné variantě, nejspíš bude dobrý i v jiné. Tři typy této metody mohou být:
+
+Globální tabulka tahů
+
+Program si musí nějak pamatovat tahy. Informace odkud a kam se táhne, případně typ nové figury po proměně pěšce se při troše snahy vejde do 16 bitů. Vytvoříme si tedy pole velikosti 216, pro každý možný tah jeden byte. Na počátku propočtu pole obsahuje samé nuly. Když se nějaký tah ukáže jako dobrý (větší než aktuální hodnota alfa). Zvětším hodnotu jeho políčka v poli. Když potom po vygenerování třídíme tahy, uvažujeme ještě také hodnotu této heuristiky. Jak přesně se mají zvětšovat hodnoty v tabulce je složitá otázka. Je zřejmé, že dobré tahy z pozic vzdálenějších od kořene mají menší význam než dobré tahy z pozic blízkých kořeni. Je to tím, že průměrná pozice z propočtu je bližší kořeni než nějakému listu ze vzdálené větve.
+
+Nejlepší tahy pro danou hloubku
+
+Pro každou hloubku zanoření v propočtu si zapamatujeme poslední dva zlepšující tahy. Tyto tahy dostanou při propočtu v tomto zanoření speciální bonus. Oproti globální tabulce má metoda tu výhodu, že se více týká aktuální pozice a příslušné hloubky, chová se tedy lokálně. Tím pádem většinou preferuje zlepšující tahy z blízkých uzlů a u nich je opravdu dost velká pravděpodobnost, že budou dobré i v počítané pozici. Nevýhodou je, že ohodnocuje jen relativně málo tahů (přesně 2).
+
+Hlavní varianta
+
+Program si uchovává v tabulce dosavadní hlavní variantu, tedy větev výpočtu při optimální hře (optimální ve smyslu ohodnoceni listů) obou hráčů. Tah, který přísluší k hlavní variantě bude zřejmě dobrý i v celé řadě jiných variant, a proto získává bonus. Varianty se ukládají do matice, využívá se ale jen horní trojúhelník. V jednom políčku matice je jeden tah. Jsme-li při propočtu v nějakém uzlu, počítáme v tomto okamžiku vlastně hodnotu všech pozic na cestě z kořene do našeho uzlu. V i-tém řádku (od diagonály dál) si uchováváme nejlepší dosavadní variantu z i-té pozice na cestě od kořene. Dejme tomu, že v hloubce i došlo k nalezení zlepšujícího tahu. V řádku i máme původní nejlepší variantu (od naší pozice dál) a v řádku i+1 je zlepšující varianta.. Za této situace musíme zkopírovat i+1-ní řádek na pozici i-tého (z něj zůstane jen první tah na diagonále). 
+
+Nevýhodou alfabety je její pevná hloubka. Jsme-li v zahájení nebo střední hře, bude tahů k ohodnocení velmi mnoho. Hloubka výpočtu v této části hry by tedy neměla být příliš vysoká, jinak se k výsledku nedopočítáme v rozumném čase. Naopak v koncovce, kdy je pouze pár přípustných tahů lze hloubku propočtu zvýšit.
+Tento problém řeší kaskádová metoda. Jedná se vlastně o alfabeta metodu, která postupně počítá do hloubky 1,2,3,...,n. Na první pohled se může zdát zbytečné počítat pokaždé znovu, nicméně kaskádová metoda má několik výhod:
+
+Zpomalení je malé
+
+Protože je složitost alfabety exponenciální, zpomalí kaskádová metoda program cca jeden a půlkrát. Dejme tomu, že průměrný větvící faktor šachu je 38, při dobrém alfabeta ořezávání se dostaneme na větvicí faktor zhruba odmocnina z 38, dejme tomu 7. !7^n-1 je zhruba o řád menší než 7^n.
+
+Lepší časová kontrola
+
+V praxi obvykle nezní zadání "dej mi nejlepší tah do hloubky 5", ale "dej mi nejlepší tah, máš na to 5 sekund". Potom je velmi obtížné stanovit hloubku propočtu, které dosáhneme v daném čase. U kaskádové metody prostě provádíme iterace tak dlouho, dokud máme čas. To nám právě umožní v koncovce (případně kdykoliv, kdyže je množina možných tahů dostatečně malá) počítat do větší hloubky.
+
+Třídění tahů
+
+Kaskádová metoda poskytuje lepší možnosti třídění tahů. Propočet do hloubky 1 začneme s tahy setříděnými podle jednoduchých heuristik v generátoru tahů. Nejlepší tah poté přemístíme na začátek, pokračujeme propočtem do hloubky 2, nejlepší taj z hloubky 2 opět přemístíme na začátek a tak dále. Tím se nám podaří velmi rychle sevřít interval alfa a beta okolo nejnadějnějších tahů, což kaskádovou metodu ještě dále zrychlí. Případů, kdy zahájíme propočet několika špatnými tahy bude velmi málo - obvykle se jedná o pozice s možností složité oběti nebo komplikovaného tahu.
+
+Metoda okénka
+
+Alfabeta metoda svírá interval alfa a beta velmi defenzivně - tak aby se vždy dopočítala ke správnému výsledku. Celý výpočet můžeme zrychlit tím, že meze alfa a beta ještě více sevřeme - vytvoříme interval alfa2 a beta2, který bude podmonžinou původního alfa a beta. Pokud jsme měli pravdu, ušetřili jsme na výpočtu nějaký čas, pokud ne, interval prostě přeteče a v následující iteraci kaskádové metody se počítá interval s již opravenými mezemi.
+
+Prohlubování
+
+
+
+
+
 
 Reprezentace pozice
 
