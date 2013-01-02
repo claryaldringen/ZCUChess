@@ -1,9 +1,16 @@
-\documentclass[11pt]{article}
+\documentclass[11pt, titlepage]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
 \usepackage{a4wide}
+\usepackage{graphicx}
+\author{Martin Zadražil}
+\title{Semestrální práce z PC a PT}
 
 \begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
 
 \section{Zadání}
 
@@ -31,8 +38,12 @@ Paměťová složitost mnimaxu není příliš velká, neboť v zásobníku reku
 
 Časovou složitost můžeme zlepšit. Potřebujeme-li zmenšit výsledek vzorce \begin{math}v^h\end{math}, můžeme zmenšovat h, což je hloubka propočtu a na kvalitu hry má zásadní vliv. Druhou možností je zmenšit v, což je větvící faktor a některé varianty vůbec nepočítat. I přesto se můžeme dostat ke správnému výsledku.
 
+\begin{center}
+	\includegraphics[width=8cm, height=8cm]{diagram1.ps}
+\end{center}
+
 V pozici na diagramu je na tahu bílý, jedná se o známou pozici ze zahájení jménem španělská hra (1. e4 e5 2. Jf3 Jc6 3. Sb5), kde se černý brání obvyklým tahem 3. ...a6. Napadl tedy bílému střelce a ten musí hrozbu nějak pokrýt. Běžné tahy jsou nyní 4. Sa4 a Sxc6, hrát by se dalo i Sc4 a snad ještě hodně defétistické Se2, všechny ostatní tahy jsou již vyloženě špatné. Z této pozice dáme programu za úkol provést propočet do hloubky 2 půltahy. Vygeneruje tahy a zkouší jeden po druhém zahrát. Generátor tahů je lehce modifikovaný, tak aby vracel braní před ostatními tahy. Program tedy nejprve propočítá 4. Sxc6, projde všechny odpovědi černého a zjistí, že po nejlepším 4. ...dxc6 je pozice přibližně vyrovnaná. Bílý sice ztratil výhodu dvojice střelců, ale zase černému znehodnotil pěšcovou strukturu. Ohodnocení prvního tahu zatím proběhlo tak, jako v algoritmu minimax. Rozdíl nastane až u druhého tahu bílého 4. Sxa6. Jedná se o zjevnou chybu, kterou bílý odevzdává střelce za pouhého pěšce, ale minimax by musel projít všechny odpovědi, aby si to uvědomil. Tedy poctivě počítat a ohodnocovat nejen 4. ...bxa6 a Vxa6, ale i zcela nesmyslné tahy jako 4. ...Jh6 nebo g5. Modifikovanému algoritmu stačí jediná: 4. ...Vxa6 nebo bxa6. Navíc generátor tahů, který preferuje braní, vrátí jeden z uvedených tahů hned jako první. Jak program pozná, že může propočet odpovědí na 4. Sxa6 přerušit a prohlásit tah za neperspektivní? Z propočtu 4. Sxc6 si zapamatoval hodnotu nejlepší odpovědi 4. ...dxc6, tedy zhruba 0 tj. vyrovnanou pozici. Při propočtu dalších tahů (4. Sxa6) uvedenou hodnotu použijeme jako práh. Pokud jej jakákoli odpověď (4. ...bxa6 nebo Vxa6) přesáhne, propočet tahu (4. Sxa6) ukončíme, neboť již víme, že je špatný. Jinými slovy: pokud víme, že tah je špatný (= horší než nějaký jiný - zde 4. Sxc6), nemá smysl dále zkoumat, jestli není náhodou ještě o něco horší, než jsme zatím zjistili.
-Pokud počítáme do hloubky 3 a více, dojde při prořezávání na oba hráče a jsou zde proto meze pro obě strany. Dolní se říká alfa, horní beta, odtud také název algoritmu alfabeta metoda (nebo alfabeta ořezávání). Pokud během propočtu narazíme na variantu, která je horší než alfa, můžeme ji zahodit. Vyjde-li nám varianta lepší než beta, může se jí zase vyhnout soupeř a zahrát tah, který je lepší pro něj. Časová složitost alfabety silně závisí na pořadí tahů, což ovlivňuje, jak rychle se nám podaří sevřít meze alfa a beta. Časová složitost optimální alfabety je \begin{math}v^h/2\end{math}, můžeme se s ní tedy za stejný čas dostat dvakrát hlouběji než s minimaxem. Je tedy žádoucí aby nejnadějnější varianty počítal algoritmus jako první. Existuje několik heuristik, jak odhadnout už v generátoru tahů, které varianty by mohly být nejlepší:
+Pokud počítáme do hloubky 3 a více, dojde při prořezávání na oba hráče a jsou zde proto meze pro obě strany. Dolní se říká alfa, horní beta, odtud také název algoritmu alfabeta metoda (nebo alfabeta ořezávání). Pokud během propočtu narazíme na variantu, která je horší než alfa, můžeme ji zahodit. Vyjde-li nám varianta lepší než beta, může se jí zase vyhnout soupeř a zahrát tah, který je lepší pro něj. Časová složitost alfabety silně závisí na pořadí tahů, což ovlivňuje, jak rychle se nám podaří sevřít meze alfa a beta. Časová složitost optimální alfabety je \begin{math}v^{h/2}\end{math}, můžeme se s ní tedy za stejný čas dostat dvakrát hlouběji než s minimaxem. Je tedy žádoucí aby nejnadějnější varianty počítal algoritmus jako první. Existuje několik heuristik, jak odhadnout už v generátoru tahů, které varianty by mohly být nejlepší:
 \begin{itemize}
 	\item Sežer co můžeš: Způsobí-li tah změnu materiálu, posuneme ho na více dopředu. Preferovat můžeme rovněž braní nižší figurou.
 	\item Historická heuristika je založena na myšlence, že pokud byl tah dobrý v jedné variantě, nejspíš bude dobrý i v jiné. Tři typy této metody mohou být:
@@ -45,7 +56,7 @@ Tento problém řeší kaskádová metoda. Jedná se vlastně o alfabeta metodu,
 
 \subsubsection{Zpomalení je malé}
 
-Protože je složitost alfabety exponenciální, zpomalí kaskádová metoda program cca jeden a půlkrát. Dejme tomu, že průměrný větvící faktor šachu je 38, při dobrém alfabeta ořezávání se dostaneme na větvicí faktor zhruba odmocnina z 38, dejme tomu 7. \begin{math}!7^n-1\end{math}je zhruba o řád menší než \begin{math}7^n\end{math}.
+Protože je složitost alfabety exponenciální, zpomalí kaskádová metoda program cca jeden a půlkrát. Dejme tomu, že průměrný větvící faktor šachu je 38, při dobrém alfabeta ořezávání se dostaneme na větvicí faktor zhruba odmocnina z 38, dejme tomu 7. \begin{math}!7^{n-1}\end{math}je zhruba o řád menší než \begin{math}7^n\end{math}.
 
 \subsubsection{Lepší časová kontrola}
 
@@ -108,29 +119,32 @@ V této haš tabulce nemusíme řešit kolize - nová nebo cennější hodnota p
 Každá šachová partie začíná vždy stejnou pozicí. Je celkem pochopitelné, že šachisté velmi pečlivě studují jednotlivé varianty vzniklé ze základního postavení již v klidu doma s počítačem nebo v klubu během tréninku a ne až v omezeném čase během partie. O konkrétních zahájeních byly napsány stovky knih, věnovali se jim ti nejlepší šachisté teoretici. Během zahájení běžně vznikají velmi komplikované pozice, ve kterých se nevyznají ani velmistři, a malá nenápadná a těžko odhalitelná chyba může vést k rychlé prohře nebo alespoň k výhodě soupeře. Rozmotat přímo za šachovnicí několik delších a trochu rozvětvených vynucených variant (které během desítek let vymysleli šachoví teoretici) bývá bez předchozí přípravy nad síly i těch nejlepších hráčů a dnešních programů, ale naučit se řešení nazpaměť a pochopit ho se dokáže při troše snahy i průměrný klubový šachista nebo třeba náš program.
 Program naučíme zahájení tak, že někam uložíme pozice běžné v zahájení a/nebo jejich haš funkce a k nim sadu tahů, které od programu v uvedené pozici očekáváme. Každému tahu zároveň přiřadíme pravděpodobnost jeho zahrání. Například pro základní postavení může seznam vypadat takto:
 \begin{itemize}
-	\item 30% 1. e4
-	\item 30% 1. d4
-	\item 15% 1. c4
-	\item 13% 1. Jf3
-	\item 5% 1. f4
-	\item 2% 1. b3
-	\item 1% 1. b4
-	\item 1% 1. g3
-	\item 1% 1. e3
-	\item 1% 1. d3
-	\item 1% 1. Jc3
+	\item 30\% 1. e4
+	\item 30\% 1. d4
+	\item 15\% 1. c4
+	\item 13\% 1. Jf3
+	\item 5\% 1. f4
+	\item 2\% 1. b3
+	\item 1\% 1. b4
+	\item 1\% 1. g3
+	\item 1\% 1. e3
+	\item 1\% 1. d3
+	\item 1\% 1. Jc3
 \end{itemize}
 
 Největší pravděpodobnost budou mít dobré a obvykle hrané tahy, méně běžným a nepříliš ambiciózním tahům, které však pozici bílého nijak neohrožují dáme jen malou pravděpodobnost (hodí se občas k vyprovokování lidského soupeře) a tahy vyloženě špatné jako například 1.f3? nebo 1.h3? nebudeme uvádět vůbec, program je tedy nebude hrát.
 Podobný seznam pravděpodobností ohodnocených tahů budeme mít pro každou naučenou pozici uložený v nějaké datové struktuře postavené nad hašovací funkcí pozice. Tahů z pozic je proměnlivé množství. Typická vyhledávací datová strukturaproto nebude obsahovat přímo tahy. Místo nich v ní budou indexy do pole tahů zakončené nulou. Ukážeme si to na příkladu se setříděným polem a hašovací funkcí která není na naší množině uložených pozic prostá. Obsahovat bude jen 3 pozice: základní postavení (haš = 368) se třemi tahy 1. e4 (40%), 1. d4 (40%) a 1. c4 (20%), pozici po 1. e4 (haš = 129) se dvěma tahy 1. ...c5 (50%) a 1. ... e5 (50%) a nakonec pozici po 1. e4 e5
 
+\vskip 0.5cm
+\noindent
 \begin{tabular}{|l|l|l|}
 \hline
-haš 129, index 0 & haš 368, index 3 & haš 368, index 5
+haš 129, index 0 & haš 368, index 3 & haš 368, index 5 \\
 \hline
-pozice po 1. e4 & pozice po 1. e4 e5 & základní postavení
+pozice po 1. e4 & pozice po 1. e4 e5 & základní postavení \\
 \hline
 \end{tabular}
+\vskip 0.5cm
 
 Takto by vypadala vyhledávací struktura. Pozice bychom si pamatovali nejspíš fyzicky odděleně, například na stejném indexu v jiném poli, zde je proto máme v druhém řádku. Dejme tomu, že hledáme tah ze základního postavení. Spočítáme si hašovací funkci 368. Nějakým algoritmem pro vyhledávání v setříděném poli s rovnoměrným rozdělením dat (logaritmicky půlením nebo ještě lépe dělením podle hodnoty haš funkcí) najdeme políčko se správnou hodnotou haš funkce, dejme tomu, že máme smůlu a bude to prostřední políčko. Zjistíme, že pozice není naše, neboť došlo ke kolizi haš funkcí. Koukneme se while cyklem doleva, tam už je jiná hodnota haš funkce. Tak tedy doprava na poslední políčko, zde odpovídá haš funkce a i pozice je správně, budeme tedy hledat tahy na indexu 5 v poli tahů. Tabulka tahů pak může vypadat nějak takto:
 
@@ -138,9 +152,34 @@ V poli od pozice 5 až k následující nule jsou tahy e4, d4 a c4, vygenerujeme
 
 S ubývajícím počtem figur a blížícím se koncem partie se pozice postupně zjednodušuje. Při propočtu ubývá možných variant, spousta z nich vede do stejné pozice, jiné zase brzy končí matem nebo remízou. Program by měl tudíž v jisté chvíli začít počítat dokonale. Pokud však zkusíme standardnímu prohledávacímu algoritmu předložit třeba nějakou pozici z koncovky střelce a jezdce proti samotnému králi, kKvalitní program koncovku sice zvládne - zatlačí soupeřova krále do rohu barvy střelce a tam mu nasadí mat, ale rozhodně nenajde ten nejrychlejší postup a maty třeba 20. tahem zdálky prostě neuvidí. V opravdu těžkých koncovkách typu dáma proti dvěma lehkým figurám pak běžný kvalitní myslící algoritmus již bude chybovat a některé vyhrané pozice vyhrát nedokáže. V omezeném čase není možné ani v poměrně jednoduché koncovce projít celý graf hry z kořene k listům, díky kolizím v hašovací funkci navíc budeme řadu variant počítat opakovaně, takže s dokonalou hrou nemůžeme počítat ani v elementární koncovce dámy proti samotnému králi.
 Naštěstí je to s pozicemi z koncovek podobné, jako s těmi ze zahájení. Dají se naučit. Všech možných pozic několikafigurové koncovky je sice z lidského pohledu mnoho, ale počítač má posunutá měřítka. Jednoduchý horní odhad pro počet pozic n-figurové koncovky je \begin{math}2 * 64^n\end{math}, neboť každá figurka může být na jednom ze 64 polí a možnosti se násobí. Úvodní dvojka je tam kvůli právu tahu, buď hraje bílý nebo černý. Náš odhad bychom mohli i zpřesnit na 2 * 64 * 63 * 62 * ... * (64 - n + 1), protože dvě figurky nemohou být na stejném políčku, takže 1. figurka má 64 možností, druhá jen 63 atd. Mohli bychom také vyškrtat nepřípustné pozice, ztotožnit stejné figury atd., ale úvodní vzorec nám zároveň dává návod, jak velmi jednoduše a efektivně každé pozici zkoumané koncovky přidělit číslo od 0 do \begin{math}2 * 64^{n-1}\end{math} (její místo v tabulce příslušné koncovky) a naopak ke každému číslu z uvedeného intervalu přiřadit pozici.
-Stanovíme si pořadí figur naší koncovky podle jejich barvy a materiální hodnoty. Například pro koncovku jezdce a střelce to může být pořadí bílý král, bílý střelec, bílý jezdec, černý král. Očíslujeme políčka šachovnice od 0 do 63, a1 bude 0, a2 1 atd., h8 bude 63. Máme-li n jednoznačně seřazených figur, označíme čísla políček, na nichž se nacházejí \begin{math}p_0\end{math} až \begin{math}p_{n-1}\end{math}. U koncovek s opakováním jednoho druhu kamene (například koncovka krále proti dvěma střelcům) budeme jako první uvažovat figuru s vyšším indexem políčka. Číslo pozice pak bude \begin{math}p0 + 64 * p_1 + 64^2 * p_2 + ... + 64^{n-1} * p_{n-1} + (\end{math}hraje bílý ? \begin{math}64^n : 0)\end{math}.
+Stanovíme si pořadí figur naší koncovky podle jejich barvy a materiální hodnoty. Například pro koncovku jezdce a střelce to může být pořadí bílý král, bílý střelec, bílý jezdec, černý král. Očíslujeme políčka šachovnice od 0 do 63, a1 bude 0, a2 1 atd., h8 bude 63. Máme-li n jednoznačně seřazených figur, označíme čísla políček, na nichž se nacházejí \begin{math}p_0\end{math} až \begin{math}p_{n-1}\end{math}. U koncovek s opakováním jednoho druhu kamene (například koncovka krále proti dvěma střelcům) budeme jako první uvažovat figuru s vyšším indexem políčka. Číslo pozice pak bude \begin{math}p_0 + 64 * p_1 + 64^2 * p_2 + ... + 64^{n-1} * p_{n-1} + (\end{math}hraje bílý ? \begin{math}64^n : 0)\end{math}.
+
+\begin{center}
+	\includegraphics[width=8cm, height=8cm]{diagram2.ps}
+\end{center}
 
 Na obrázku je příklad pozice z koncovky dvou střelců. Pořadí figur bude KSSk, tedy bílý král a oba střelci a nakonec černý král. Na tahu je bílý a na naší šachovnici hraje nahoru, střelci jsou tedy na d3 a e3, bílý král na f3 a černý na e5. V následující tabulce je výpočet čísla pozice v rámci dané koncovky. Výsledek je 26 293 525.
+
+\vskip 0.5cm
+\noindent
+\begin{tabular}{|l|c|c|r|r|}
+\hline
+	{\bf Figurka} & {\bf Pole} & {\bf Index} & {\bf Hodnota} & {\bf Výsledek} \\
+\hline
+	Bílý král & f3 & 21 & 21 & 21 \\
+\hline
+	První bílý střelec & e3 & 20 & \begin{math}20 * 64\end{math} & 1 280 \\
+\hline
+	Druhý bílý střelec & d3 & 19 & \begin{math}219 * 64^2\end{math}	& 77 824 \\
+\hline
+	Černý král & e5 & 36 & 36 * \begin{math}264^3\end{math} & 9 437 184 \\
+\hline
+	\multicolumn{3}{|l|}{Bílý na tahu} & \begin{math}264^4\end{math} & 16 777 216 \\
+\hline
+	\multicolumn{4}{|l|}{Suma} & 26 293 525 \\
+\hline
+\end{tabular}
+\vskip 0.5cm
 
 Opačný převod z čísla na pozici bude analogický, číslo rozložíme na cifry v 64-kové soustavě a to budou indexy políček jednotlivých kamenů.
 
@@ -177,7 +216,7 @@ int borders[DEPTH]
 int index_in_stack
 \end{verbatim}
 
-Tahy jsou uloženy v jediném globálním jednorozměrném poli, přičemž tahy z aktuálně propočítávané pozice mají index borders[index_in_stack] až borders[index_in_stack+1]-1. Konstanta DEPTH je nejvyšší možná hloubka zanoření rekurze. Na dnešních počítačích by mělo stačit 32. Velikost konstanty MANY pak půjde shora odhadnout jako součin maximálního počtu tahů z pozice * DEPTH. Program při tomto postupu sice může trochu plýtvat pamětí, ale achillovou patou šachových programů obvykle nebývá nedostatek paměti, nýbrž nedostatek času na dostatečně hluboký výpočet. Toto řešení ušetří cenné mikrosekundy, které by stálo dynamické přealokovávání pole v cyklu.
+Tahy jsou uloženy v jediném globálním jednorozměrném poli, přičemž tahy z aktuálně propočítávané pozice mají index borders[index\_in\_stack] až borders[index\_in\_stack+1]-1. Konstanta DEPTH je nejvyšší možná hloubka zanoření rekurze. Na dnešních počítačích by mělo stačit 32. Velikost konstanty MANY pak půjde shora odhadnout jako součin maximálního počtu tahů z pozice * DEPTH. Program při tomto postupu sice může trochu plýtvat pamětí, ale achillovou patou šachových programů obvykle nebývá nedostatek paměti, nýbrž nedostatek času na dostatečně hluboký výpočet. Toto řešení ušetří cenné mikrosekundy, které by stálo dynamické přealokovávání pole v cyklu.
 
 \subsection{Ohodnocovací funkce}
 
@@ -205,19 +244,19 @@ Program je rozdělen na 4 moduly:
 \begin{itemize}
 	\item int chessboard[8][8]\item reprezentace šachovnice potažmo pozice.
 	\item bool castlings[4]\item pole s příznaky rošád, které ještě můžeme provést (malá bílá, velká bílá, malá černá, velká černá).
-	\item int en_passant[2]\item Udržujea aktuální pozici pěšce, kterého můžeme sebrat mimochodem. Na indexu 0 je sloupec, na indexu 1 je řádek
-	\item bool human_move\item přiznak, zda-li je na tahu člověk.
-	\item int position_bonus[8][8]\item tabulka s pozičními bonusy pro statickou ohodnocvací funkci.
+	\item int en\_passant[2]\item Udržujea aktuální pozici pěšce, kterého můžeme sebrat mimochodem. Na indexu 0 je sloupec, na indexu 1 je řádek
+	\item bool human\_move\item přiznak, zda-li je na tahu člověk.
+	\item int position\_bonus[8][8]\item tabulka s pozičními bonusy pro statickou ohodnocvací funkci.
 \end{itemize}
 
 \subsection{Reprezentace šachovnice, pozice a hodnot figur}
 Pro názornost byla za reprezentaci šachovnice, potažmo pozic, zvolena matice 8x8. Bílé figury jsou reprezentovány celým kladným číslem následovně:
 \begin{itemize}
-	\item 1 Pěšec (konstanta PAWN), hodnota 100 (konstanta PAWN_VALUE)
-	\item 2 Věž (konstanta ROOK), hodnota 400 (konstanta ROOK_VALUE)
-	\item 3 Jezdec (konstanta KNIGHT), hodnota 300 (konstanta KNIGHT_VALUE)
-	\item 4 Střelec (konstanta BISHOP), hodnota 350 (konstanta BISHOP_VALUE)
-	\item 5 Dáma (konstanta QUEEN), hodnota 750 (konstanta QUEEN_VALUE)
+	\item 1 Pěšec (konstanta PAWN), hodnota 100 (konstanta PAWN\_VALUE)
+	\item 2 Věž (konstanta ROOK), hodnota 400 (konstanta ROOK\_VALUE)
+	\item 3 Jezdec (konstanta KNIGHT), hodnota 300 (konstanta KNIGHT\_VALUE)
+	\item 4 Střelec (konstanta BISHOP), hodnota 350 (konstanta BISHOP\_VALUE)
+	\item 5 Dáma (konstanta QUEEN), hodnota 750 (konstanta QUEEN\_VALUE)
 	\item 6 Král (konstanta KING)
 \end{itemize}
 Černé figury jsou reprezentovány stejně, akorát s opačním znaménkem. Číslo 0 (konstanta EMPTY) pak reprezentuje prázdné pole.
@@ -266,7 +305,7 @@ Program hraje šachy dostatečně dobře na to aby v nich porazil svého tvůrce
 Při běhu programu docházelo ke značným únikům paměti, které se nakonec podařilo najít a vyřešit za pomoci programu valgrind.
 
 \subsection{Možná vylepšení}
-Podle profileru tráví program až čtvrtinu času ve funcki add_move (přidání tahu do množiny tahů). Toto by se dalo vyřešit globálním zásobníkem tahů. Protože je globální zásobník tahů statický, nebylo by zároveň potřeba řešit úniky paměti.
+Podle profileru tráví program až čtvrtinu času ve funcki add\_move (přidání tahu do množiny tahů). Toto by se dalo vyřešit globálním zásobníkem tahů. Protože je globální zásobník tahů statický, nebylo by zároveň potřeba řešit úniky paměti.
 Dalším vylepšením zlepšující hloubku propočtu by bylo nsazení nějakých heuristik do generátoru tahů a třídění tahů pro průběhu kaskádové metody. V podstatě nasazení jakýchkoli heuristik uvedených u kaskádové metody v analýze.
 Hru programu by samozřejmě zlepšila také implementace databáze zahájení a koncovek.
 Dalším drobným zrychlením by bylo rozvinutí pole 8x8, reprezentujícího šachovnici, na jednorozměrné pole o 64 prvcích. Vůbec nejzajímavější by bylo použít reprezentaci v podobě bitové mapy, ale to by si vyžádalo několik měsíců studia.
