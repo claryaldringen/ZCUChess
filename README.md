@@ -345,5 +345,6 @@ Hru programu by samozřejmě zlepšila také implementace databáze zahájení a
 Dalším drobným zrychlením by bylo rozvinutí pole 8x8, reprezentujícího šachovnici, na jednorozměrné pole o 64 prvcích. Vůbec nejzajímavější by bylo použít reprezentaci v podobě bitové mapy, ale to by si vyžádalo několik měsíců studia.
 Z uživatelského hlediska by se jistě hodila možnost dát uživateli na výběr barvu strany, za kterou chce hrát, či možnost partii uložit do souboru a opětovně načíst.
 
+Program byl vyvíjen v integrovaném vývojovém prostředí NetBeans IDE 7.2.1 na platformě Xubuntu linux. Mezi další nástroje použité při vývoji patří Valgrind, verzovací systém GIT a editor VIM.
 Postupný vývoj programu a jeho zdrojové kódy si lze prohlédnout na adrese { \tt https://github.com/ClaryAldringen/ZCUChess}.
 \end{document}
