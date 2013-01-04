@@ -120,8 +120,8 @@ void show_help()
  */
 void show_check()
 {
-	if(is_check(WHITE))printf("Šach bílý\n");
-	if(is_check(BLACK))printf("Šach černý\n");
+	if(is_check(WHITE))printf("Sach bily\n");
+	if(is_check(BLACK))printf("Sach cerny\n");
 }
 
 
@@ -130,6 +130,6 @@ void show_check()
  */
 void show_thinking()
 {
-	printf("Přemýšlím...\r");
+	printf("Premyslim...\r");
 }
 

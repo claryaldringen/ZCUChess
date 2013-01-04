@@ -1,6 +1,6 @@
 CC = gcc
 
-build: main.o ai.o chess.o io.o
+zcuchess.exe: main.o ai.o chess.o io.o
 	$(CC) -std=c99 -o zcuchess main.o ai.o chess.o io.o
 
 main.o: main.c

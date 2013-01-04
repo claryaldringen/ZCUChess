@@ -68,8 +68,6 @@ int main(int argc, char** argv)
 		play_move(move, true);
 		print_move(move);
 		show_check();
-		if(is_check(WHITE))printf("Šach bílý\n");
-		if(is_check(BLACK))printf("Šach černý\n");
 	}
 	return (EXIT_SUCCESS);
 }
@@ -89,12 +87,12 @@ Move parse_move(char* input)
 	move.to[ROW] = atoi(&input[4]) - 1;
 	if(move.from[ROW] == -1 || move.to[COL] == -1)
 	{
-		printf("Chyba vstupu: pravděpodobně jste udělali překlep na české klávesnici. Opakujte prosím zadání.\n");
+		printf("Chyba vstupu: pravdepodobne jste udulali preklep na ceské klavesnici. Opakujte prosim zadani.\n");
 		move.status = false;
 		return move;
 	}
 	move.status = check_move(move);
-	if(move.status == false)printf("Špatně zadaný tah.\n");
+	if(move.status == false)printf("Spatne zadany tah.\n");
 	return move;
 }
 

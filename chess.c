@@ -380,7 +380,7 @@ int get_figure()
 	if(!human_move)return QUEEN;
 	while(figure == EMPTY)
 	{
-		printf("Jakou chcete figuru? (D - dáma, V - věž, S - střelec, K - kůň): ");
+		printf("Jakou chcete figuru? (D - dama, V - vez, S - strelec, K - kun): ");
 		gets(&input);
 		if(input == 'd' || input == 'D')figure = QUEEN;
 		if(input == 'v' || input == 'V')figure = ROOK;
