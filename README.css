@@ -8,11 +8,11 @@
 .cmsy-10x-x-109{}
 .cmbx-10x-x-109{ font-weight: bold;}
 .cmbx-10x-x-109{ font-weight: bold;}
+.cmti-10x-x-109{ font-style: italic;}
 .cmr-8{font-size:72%;}
 .cmmi-10x-x-109{font-style: italic;}
 .cmmi-8{font-size:72%;font-style: italic;}
 .cmsy-8{font-size:72%;}
-.cmti-10x-x-109{ font-style: italic;}
 p.noindent { text-indent: 0em }
 td p.noindent { text-indent: 0em; margin-top:0em; }
 p.nopar { text-indent: 0em; }
@@ -121,7 +121,7 @@ div.author{white-space: nowrap;}
 .abstract p {margin-left:5%; margin-right:5%;}
 div.abstract {width:100%;}
 .figure img.graphics {margin-left:10%;}
-td#TBL-2-6-1{border-left:solid black 0.4pt;border-right:solid black 0.4pt;}
-td#TBL-2-7-4{border-left:solid black 0.4pt;border-right:solid black 0.4pt;}
+td#TBL-3-6-1{border-left:solid black 0.4pt;border-right:solid black 0.4pt;}
+td#TBL-3-7-4{border-left:solid black 0.4pt;border-right:solid black 0.4pt;}
 /* end css.sty */
 
