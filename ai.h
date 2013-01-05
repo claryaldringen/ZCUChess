@@ -10,7 +10,7 @@
 
 	#define MAT_VALUE 16000
 	#define HIGH_VALUE 15000
-	#define TWO_SEC 2000000
+	#define MAX_THINKING_DURATION 3
 	#define BIG_ALPHA 100000
 
 

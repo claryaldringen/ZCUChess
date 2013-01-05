@@ -247,6 +247,7 @@ bool is_castling(Move move)
 
 /**
  * Vrací true v případě že můžeme udělat rošádu.
+ * - Kontroluje, jestli tam ta věž ještě vůbec je :-)
  * - Kontroluje, jestli není král při začátku rošády v šachu
  * - Kontroluje, zda se král neocitne v šachu v průběhu rošády
  * - Kontroluje, zda není král v šachu po rošádě
@@ -259,6 +260,7 @@ bool can_do_castling(Move move)
 	int row = 0;
 	int temp_chessboard[8][8];
 	int side = get_side_coeficient(move.from[COL], move.from[ROW]);
+	if(chessboard[move.to[COL]][move.to[ROW]] != (-side*ROOK))return false;
 	if(is_check(side))return false;
 
 	if(side == BLACK)row = 7;

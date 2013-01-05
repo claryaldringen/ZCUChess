@@ -4,14 +4,13 @@
  *
  * Created on 26. prosinec 2012, 7:01
  */
-
 #ifndef IO_H
 	#define	IO_H
 
 	#define ASCII_VALUE_OF_A 97
 
-	#define HEADER "ZČU Chess\n\nJednoduché šachy, vytvořené pod licencí GNU/GPL jako semestrální práce do předmětu KIV/PC\nAutor: Martin Zadražil <zadram1@gmail.com> v roce 2012\nZdrojový kód: https://github.com/ClaryAldringen/ZCUChess\n\n"
-	#define HELP "Zadání tahu: <odkud> <kam> (např.: e2 e3)\nMalá rošáda: e1 h1\nVelká rošáda: e1 a1\nKonec programu: exit\nNápověda: help\n"
+	#define HEADER "ZCU Chess\n\nJednoduche sachy, vytvorene pod licenci GNU/GPL jako semestralni prace do predmetu KIV/PC\nAutor: Martin Zadrazil <zadram1@gmail.com> v roce 2012\nZdrojovy kod: https://github.com/ClaryAldringen/ZCUChess\n\n"
+	#define HELP "Zadani tahu: <odkud> <kam> (napr.: e2 e3)\nMala rosada: e1 h1\nVelka rosada: e1 a1\nKonec programu: exit\nNapoveda: help\n"
 
 	bool is_exit(char*);
 

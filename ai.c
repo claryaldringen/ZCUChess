@@ -37,15 +37,14 @@ Move get_move()
 	int value;
 	int alpha;
 	Position position;
-	double time = 0;
+	int duration = 0;
 	int depth = 0;
-	clock_t start;
-	clock_t end;
+	time_t start, end;
 
-	start = clock();
+	start = time(NULL);
 	moves = get_all_moves(BLACK);
 	position = save_position();
-	while(time < TWO_SEC)
+	while(duration < MAX_THINKING_DURATION)
 	{
 		alpha = BIG_ALPHA;
 		depth++;
@@ -64,8 +63,8 @@ Move get_move()
 			}
 			load_position(position);
 		}
-		end = clock();
-		time = (double)(end - start);
+		end = time(NULL);
+		duration = (double)(end - start);
 	}
 	if(moves.count > 0)free(moves.move);
 	return move;

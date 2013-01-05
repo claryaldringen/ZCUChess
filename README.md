@@ -1,350 +1,1047 @@
-\documentclass[11pt, titlepage]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[czech]{babel}
-\usepackage{a4wide}
-\usepackage{graphicx}
-\author{Martin Zadražil}
-\title{Semestrální práce z PC a PT}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html xml:lang="cs" > 
+<head><title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2"> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)"> 
+<!-- html --> 
+<meta name="src" content="README.tex"> 
+<meta name="date" content="2013-01-05 12:42:00"> 
+<link rel="stylesheet" type="text/css" href="README.css"> 
+</head><body 
+>
+<!--l. 11--><p class="noindent" >
+
+<div class="center" 
+>
+<!--l. 12--><p class="noindent" >
+<!--l. 13--><p class="noindent" ><img 
+src="README0x.png" alt="PIC" class="graphics" width="284.52756pt" height="111.74744pt" ><!--tex4ht:graphics  
+name="README0x.png" src="zculogo.ps"  
+-->
+<!--l. 15--><p class="noindent" ><span 
+class="cmbx-12x-x-172">Semestr</span><span 
+class="cmbx-12x-x-172">�ln</span><span 
+class="cmbx-12x-x-172">� pr</span><span 
+class="cmbx-12x-x-172">�ce z PC a PT</span><br />
+<span 
+class="cmr-12">Martin Zadra</span><span 
+class="cmr-12">&#382;il</span><br />
+<span 
+class="cmr-12">5.</span><span 
+class="cmr-12">&#x00A0;ledna 2013</span></div>
+
+   <h3 class="likesectionHead"><a 
+ id="x1-1000"></a>Obsah</h3>
+   <div class="tableofcontents">
+   <span class="sectionToc" >1 <a 
+href="#x1-20001" id="QQ2-1-2">Zad�n�</a></span>
+<br />   <span class="sectionToc" >2 <a 
+href="#x1-30002" id="QQ2-1-3">Anal&#x00FD;za �lohy</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >2.1 <a 
+href="#x1-40002.1" id="QQ2-1-4">Um&#x011B;l� inteligence a teorie &#353;achov� hry</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >2.1.1 <a 
+href="#x1-50002.1.1" id="QQ2-1-5">Od nejjednodu&#353;&#353;�ho algoritmu ke kask�dov� metod&#x011B;</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >2.1.2 <a 
+href="#x1-60002.1.2" id="QQ2-1-6">Zpomalen� je mal�</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >2.1.3 <a 
+href="#x1-70002.1.3" id="QQ2-1-7">Lep&#353;� &#x010D;asov� kontrola</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >2.1.4 <a 
+href="#x1-80002.1.4" id="QQ2-1-8">T&#x0159;�d&#x011B;n� tah&#x016F;</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >2.1.5 <a 
+href="#x1-90002.1.5" id="QQ2-1-9">Metoda ok�nka</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >2.1.6 <a 
+href="#x1-100002.1.6" id="QQ2-1-10">Prohlubov�n�</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >2.1.7 <a 
+href="#x1-110002.1.7" id="QQ2-1-11">Dopo&#x010D;et do tich� pozice</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >2.1.8 <a 
+href="#x1-120002.1.8" id="QQ2-1-12">Prohlubov�n� taktick&#x00FD;ch variant</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >2.1.9 <a 
+href="#x1-130002.1.9" id="QQ2-1-13">Ha&#353; tabulky</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >2.1.10 <a 
+href="#x1-140002.1.10" id="QQ2-1-14">Datab�ze zah�jen� a koncovek</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >2.2 <a 
+href="#x1-150002.2" id="QQ2-1-15">Reprezentace pozice</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >2.3 <a 
+href="#x1-160002.3" id="QQ2-1-16">Reprezentace pole tah&#x016F;</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >2.4 <a 
+href="#x1-170002.4" id="QQ2-1-17">Ohodnocovac� funkce</a></span>
+<br />   <span class="sectionToc" >3 <a 
+href="#x1-180003" id="QQ2-1-18">Popis implementace</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >3.1 <a 
+href="#x1-190003.1" id="QQ2-1-19">Glob�ln� datov� struktury</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >3.2 <a 
+href="#x1-200003.2" id="QQ2-1-20">Reprezentace &#353;achovnice, pozice a hodnot figur</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >3.3 <a 
+href="#x1-210003.3" id="QQ2-1-21">Reprezentace tahu a mno&#382;iny tah&#x016F;</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >3.4 <a 
+href="#x1-220003.4" id="QQ2-1-22">Statick� ohodnocovac� funkce</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >3.5 <a 
+href="#x1-230003.5" id="QQ2-1-23">Mysl�c� algoritmus</a></span>
+<br />   <span class="sectionToc" >4 <a 
+href="#x1-240004" id="QQ2-1-24">U&#382;ivatelsk� p&#x0159;�ru&#x010D;ka</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >4.1 <a 
+href="#x1-250004.1" id="QQ2-1-25">Instalace</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >4.2 <a 
+href="#x1-260004.2" id="QQ2-1-26">Ovl�d�n�</a></span>
+<br />   <span class="sectionToc" >5 <a 
+href="#x1-270005" id="QQ2-1-27">Z�v&#x011B;r</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >5.1 <a 
+href="#x1-280005.1" id="QQ2-1-28">Probl�my v pr&#x016F;b&#x011B;hu psan� programu</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >5.2 <a 
+href="#x1-290005.2" id="QQ2-1-29">Mo&#382;n� vylep&#353;en�</a></span>
+   </div>
+
+   <h3 class="sectionHead"><span class="titlemark">1   </span> <a 
+ id="x1-20001"></a>Zad�n�</h3>
+<!--l. 27--><p class="noindent" >Implementace jednoduch�ho &#353;achov�ho algoritmu, kter&#x00FD; umo&#382;&#x0148;uje hru hr�&#x010D;e proti po&#x010D;�ta&#x010D;i. Vstup
+a v&#x00FD;stup bude prob�hat na p&#x0159;�kazov� &#x0159;�dce.
+<!--l. 29--><p class="noindent" >
+   <h3 class="sectionHead"><span class="titlemark">2   </span> <a 
+ id="x1-30002"></a>Anal&#x00FD;za �lohy</h3>
+<!--l. 31--><p class="noindent" >Nejprve je pot&#x0159;eba navrhnout z�kladn� datov� struktury a rutiny, kter� mus� obsahovat ka&#382;d&#x00FD;
+&#353;achov&#x00FD; program i takov&#x00FD;, kter&#x00FD; neobsahuje &#382;�dn&#x00FD; mysl�c� algoritmus a umo&#382;&#x0148;uje nap&#x0159;�klad jen
+hru dvou lidsk&#x00FD;ch hr�&#x010D;&#x016F; po s�ti. Pat&#x0159;� sem funkce pro
+     <ul class="itemize1">
+     <li class="itemize">Nalezen� v&#353;ech leg�ln�ch tah&#x016F; z dan� pozice
+     </li>
+     <li class="itemize">Kontrola &#353;achu a matu
+     </li>
+     <li class="itemize">Funkce kontroluj�c� dodr&#382;en� pravidel p&#x0159;i ro&#353;�d&#x011B; a bran� mimochodem
+     </li>
+     <li class="itemize">Funkce, kter� zahraje samotn&#x00FD; tah</li></ul>
+<!--l. 38--><p class="noindent" >Bude n�sledovat um&#x011B;l� inteligence a chyb&#x011B;t nesm� ani n&#x011B;kolik m�lo funkc� pro komunikaci s okol�m,
+jako je zparsov�n� tahu zadan�ho z kl�vesnice, vyps�n� tahu, upozorn&#x011B;n� na p&#x0159;em&#x00FD;&#353;len�
+programu a podobn&#x011B;.
+<!--l. 40--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">2.1   </span> <a 
+ id="x1-40002.1"></a>Um&#x011B;l� inteligence a teorie &#353;achov� hry</h4>
+<!--l. 42--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">2.1.1   </span> <a 
+ id="x1-50002.1.1"></a>Od nejjednodu&#353;&#353;�ho algoritmu ke kask�dov� metod&#x011B;</h5>
+<!--l. 43--><p class="noindent" >&#352;achy jsou &#x010D;ist&#x011B; matematickou �lohou, k jej�mu&#382; vy&#x0159;e&#353;en� se d� v ka&#382;d�m p&#x0159;�pad&#x011B;
+dopo&#x010D;�tat. Za vy&#x0159;e&#353;en� �lohy m&#x016F;&#382;eme pova&#382;ovat mat v p&#x0159;�pad&#x011B; vyhran� pozice, pat v
+p&#x0159;�pad&#x011B; rem�zov� pozice nebo alespo&#x0148; co nejv&#x011B;t&#353;� oddalov�n� por�&#382;ky v p&#x0159;�pad&#x011B;
+prohran� pozice. Kl�&#x010D;ovou funkc� je statick� ohodnocovac� funkce, kter� vr�t� &#x010D;�selnou
+hodnotu dan� pozice. Nejednodu&#353;&#353;� algoritmus, kter&#x00FD; nehraje �pln&#x011B; n�hodn&#x011B;, vygeneruje
+v&#353;echny tahy ze zadan� pozice, ka&#382;d&#x00FD; z nich zahraje a vzniklou pozici ohodnot� statickou
+ohodnocovac� funkc�. Pokud je hodnota pozice vy&#353;&#353;� ne&#382; dosud nejvy&#353;&#353;�, ulo&#382;� ji i tah, kter&#x00FD;m
+jsme se na ni dostali. Pot� zahraje tah zp&#x011B;t a tak d�le, dokud nevyzkou&#353;�me v&#353;echny
+tahy. Tento algoritmus je sice lep&#353;� ne&#382; n�hodn� generov�n� tah&#x016F;, ale d�ru do sv&#x011B;ta
+rozhodn&#x011B; neud&#x011B;l�. Sebere klidn&#x011B; d�mou kryt�ho p&#x011B;&#353;ce, nepokryje jednotahov&#x00FD; mat a
+podobn&#x011B;.
+
+<!--l. 45--><p class="indent" >   Vylep&#353;en�m je p&#x0159;idat rekurzi. Zahrajeme v&#353;echny tahy z dan� pozice, na tyto tahy zahrajeme
+odpov&#x011B;&#x010F; soupe&#x0159;e, pak zase na&#353;� odpov&#x011B;&#x010F; a tak d�le a&#382; do n&#x011B;jak� hloubky n, kde zavol�me
+statickou ohodnocovac� funkci. Tento algoritmus se jmenuje minimax. Na &#353;achovnici je v
+z�kladn�m postaven� 16 p&#x011B;&#353;c&#x016F;, ka&#382;d&#x00FD; z nich m&#x016F;&#382;e t�hnout nejv&#x00FD;&#353;e &#353;estkr�t, pot� se prom&#x011B;n� v
+n&#x011B;jakou figuru. Kdy&#382; nepo&#x010D;�t�me kr�le, kter� nen� mo&#382;n� sebrat, je na &#353;achovnici 30 figur a ka&#382;d�
+z nich m&#x016F;&#382;e b&#x00FD;t sebr�na maxim�ln&#x011B; jednou. Pokud se b&#x011B;hem 50ti tah&#x016F; (50 tah&#x016F; b�l�ho a
+50 tah&#x016F; &#x010D;ern�ho, celkem 100 p&#x016F;ltah&#x016F;) net�hne p&#x011B;&#353;cem ani nesebere &#382;�dn� figura, je
+partie pova&#382;ovan� za rem�zu. D�ky tomu m&#x016F;&#382;eme shora odhadnout hloubku &#353;achov�
+partie na (16 * 6 + 30 + 1) * 100 = 12700 p&#x016F;ltah&#x016F;. Algoritmus minimax s hloubkou
+propo&#x010D;tu 12700 bude teoreticky hr�t &#353;achy �pln&#x011B; dokonale, alespo&#x0148; v tom smyslu, &#382;e
+&#382;�dnou rem�zovou pozici neprohraje, ka&#382;dou vyhranou pozici nejen vyhraje, ale dokonce
+t�m nejrychlej&#353;�m zp&#x016F;sobem a p&#x0159;i prohran� pozici bude por�&#382;ku alespo&#x0148; maxim�ln&#x011B;
+oddalovat.
+<!--l. 47--><p class="indent" >   Pam&#x011B;&#x0165;ov� slo&#382;itost minimaxu nen� p&#x0159;�li&#353; velk�, nebo&#x0165; v z�sobn�ku rekurzivn�ho propo&#x010D;tu je
+v danou chv�li pouze jedna varianta. Kdyby se tedy minimaxu opravdu poda&#x0159;ilo nal�zt variantu
+dlouhou 12 700 p&#x016F;ltah&#x016F; a jedna instance minimaxu zabrala 1 kB, ve&#353;li bychom se i s volaj�c�m
+k�dem pohodln&#x011B; do 13 MB. Na propo&#x010D;et stromu tak bohat� hry, jakou &#353;achy bezesporu jsou, n�m
+tedy sta&#x010D;� pouze p�r megabajt&#x016F; opera&#x010D;n� pam&#x011B;ti. Bohu&#382;el &#x010D;asov� slo&#382;itost minimaxu je
+exponenci�ln� <span 
+class="cmmi-10x-x-109">v</span><sup><span 
+class="cmmi-8">h</span></sup>
+, kde v je v&#x011B;tv�c� faktor a h hloubka propo&#x010D;tu. P&#x0159;edpokl�dejme, &#382;e z pozice m&#x016F;&#382;eme vygenerovat
+20 tah&#x016F; (nap&#x0159;�klad z v&#x00FD;choz�ho postaven� 16 tah&#x016F; p&#x011B;&#353;ci, 4 tahy jezdci) a &#382;e dok�&#382;eme spo&#x010D;�tat
+milion ohodnocovac�ch funkc� za sekundu. Propo&#x010D;et do hloubky 2 pak potrv� 0,008 sekundy,
+propo&#x010D;et do hloubky 5 3,2 sekundy, propo&#x010D;et do hloubky 10 zhruba 118 a p&#x016F;l dne. P&#x0159;i hloubce 12
+700 by to pak bylo 3<span 
+class="cmmi-10x-x-109">,</span>81 <span 
+class="cmsy-10x-x-109">* </span>10<sup><span 
+class="cmr-8">1</span></sup>6509
+let, konce v&#x00FD;po&#x010D;tu by se tedy nejsp�&#353; nedo&#x010D;kala ani na&#353;e galaxie.
+<!--l. 49--><p class="indent" >   &#x010C;asovou slo&#382;itost m&#x016F;&#382;eme zlep&#353;it. Pot&#x0159;ebujeme-li zmen&#353;it v&#x00FD;sledek vzorce <span 
+class="cmmi-10x-x-109">v</span><sup><span 
+class="cmmi-8">h</span></sup>
+, m&#x016F;&#382;eme zmen&#353;ovat h, co&#382; je hloubka propo&#x010D;tu a na kvalitu hry m� z�sadn� vliv. Druhou
+mo&#382;nost� je zmen&#353;it v, co&#382; je v&#x011B;tv�c� faktor a n&#x011B;kter� varianty v&#x016F;bec nepo&#x010D;�tat. I p&#x0159;esto se
+m&#x016F;&#382;eme dostat ke spr�vn�mu v&#x00FD;sledku.
+<div class="center" 
+>
+<!--l. 51--><p class="noindent" >
+
+<!--l. 52--><p class="noindent" ><img 
+src="README1x.png" alt="PIC" class="graphics" width="227.62447pt" height="227.61694pt" ><!--tex4ht:graphics  
+name="README1x.png" src="diagram1.ps"  
+--></div>
+<!--l. 55--><p class="indent" >   V pozici na diagramu je na tahu b�l&#x00FD;, jedn� se o zn�mou pozici ze zah�jen� jm�nem &#353;pan&#x011B;lsk�
+hra (1. e4 e5 2. Jf3 Jc6 3. Sb5), kde se &#x010D;ern&#x00FD; br�n� obvykl&#x00FD;m tahem 3. ...a6. Napadl
+tedy b�l�mu st&#x0159;elce a ten mus� hrozbu n&#x011B;jak pokr&#x00FD;t. B&#x011B;&#382;n� tahy jsou nyn� 4. Sa4 a
+Sxc6, hr�t by se dalo i Sc4 a snad je&#353;t&#x011B; hodn&#x011B; def�tistick� Se2, v&#353;echny ostatn� tahy
+jsou ji&#382; vylo&#382;en&#x011B; &#353;patn�. Z t�to pozice d�me programu za �kol prov�st propo&#x010D;et do
+hloubky 2 p&#x016F;ltahy. Vygeneruje tahy a zkou&#353;� jeden po druh�m zahr�t. Gener�tor tah&#x016F; je
+lehce modifikovan&#x00FD;, tak aby vracel bran� p&#x0159;ed ostatn�mi tahy. Program tedy nejprve
+propo&#x010D;�t� 4. Sxc6, projde v&#353;echny odpov&#x011B;di &#x010D;ern�ho a zjist�, &#382;e po nejlep&#353;�m 4. ...dxc6 je
+pozice p&#x0159;ibli&#382;n&#x011B; vyrovnan�. B�l&#x00FD; sice ztratil v&#x00FD;hodu dvojice st&#x0159;elc&#x016F;, ale zase &#x010D;ern�mu
+znehodnotil p&#x011B;&#353;covou strukturu. Ohodnocen� prvn�ho tahu zat�m prob&#x011B;hlo tak, jako
+v algoritmu minimax. Rozd�l nastane a&#382; u druh�ho tahu b�l�ho 4. Sxa6. Jedn� se o
+zjevnou chybu, kterou b�l&#x00FD; odevzd�v� st&#x0159;elce za pouh�ho p&#x011B;&#353;ce, ale minimax by musel
+proj�t v&#353;echny odpov&#x011B;di, aby si to uv&#x011B;domil. Tedy poctiv&#x011B; po&#x010D;�tat a ohodnocovat nejen
+4. ...bxa6 a Vxa6, ale i zcela nesmysln� tahy jako 4. ...Jh6 nebo g5. Modifikovan�mu
+algoritmu sta&#x010D;� jedin�: 4. ...Vxa6 nebo bxa6. Nav�c gener�tor tah&#x016F;, kter&#x00FD; preferuje bran�,
+vr�t� jeden z uveden&#x00FD;ch tah&#x016F; hned jako prvn�. Jak program pozn�, &#382;e m&#x016F;&#382;e propo&#x010D;et
+odpov&#x011B;d� na 4. Sxa6 p&#x0159;eru&#353;it a prohl�sit tah za neperspektivn�? Z propo&#x010D;tu 4. Sxc6 si
+zapamatoval hodnotu nejlep&#353;� odpov&#x011B;di 4. ...dxc6, tedy zhruba 0 tj. vyrovnanou pozici. P&#x0159;i
+propo&#x010D;tu dal&#353;�ch tah&#x016F; (4. Sxa6) uvedenou hodnotu pou&#382;ijeme jako pr�h. Pokud jej jak�koli
+odpov&#x011B;&#x010F; (4. ...bxa6 nebo Vxa6) p&#x0159;es�hne, propo&#x010D;et tahu (4. Sxa6) ukon&#x010D;�me, nebo&#x0165; ji&#382;
+v�me, &#382;e je &#353;patn&#x00FD;. Jin&#x00FD;mi slovy: pokud v�me, &#382;e tah je &#353;patn&#x00FD; (= hor&#353;� ne&#382; n&#x011B;jak&#x00FD;
+jin&#x00FD; - zde 4. Sxc6), nem� smysl d�le zkoumat, jestli nen� n�hodou je&#353;t&#x011B; o n&#x011B;co hor&#353;�,
+ne&#382; jsme zat�m zjistili. Pokud po&#x010D;�t�me do hloubky 3 a v�ce, dojde p&#x0159;i pro&#x0159;ez�v�n�
+na oba hr�&#x010D;e a jsou zde proto meze pro ob&#x011B; strany. Doln� se &#x0159;�k� alfa, horn� beta,
+odtud tak� n�zev algoritmu alfabeta metoda (nebo alfabeta o&#x0159;ez�v�n�). Pokud b&#x011B;hem
+propo&#x010D;tu naraz�me na variantu, kter� je hor&#353;� ne&#382; alfa, m&#x016F;&#382;eme ji zahodit. Vyjde-li
+n�m varianta lep&#353;� ne&#382; beta, m&#x016F;&#382;e se j� zase vyhnout soupe&#x0159; a zahr�t tah, kter&#x00FD; je
+lep&#353;� pro n&#x011B;j. &#x010C;asov� slo&#382;itost alfabety siln&#x011B; z�vis� na po&#x0159;ad� tah&#x016F;, co&#382; ovliv&#x0148;uje, jak
+rychle se n�m poda&#x0159;� sev&#x0159;�t meze alfa a beta. &#x010C;asov� slo&#382;itost optim�ln� alfabety je
+
+<span 
+class="cmmi-10x-x-109">v</span><sup><span 
+class="cmmi-8">h&#x2215;</span><span 
+class="cmr-8">2</span></sup>
+, m&#x016F;&#382;eme se s n� tedy za stejn&#x00FD; &#x010D;as dostat dvakr�t hloub&#x011B;ji ne&#382; s minimaxem. Je tedy &#382;�douc�
+aby nejnad&#x011B;jn&#x011B;j&#353;� varianty po&#x010D;�tal algoritmus jako prvn�. Existuje n&#x011B;kolik heuristik, jak
+odhadnout u&#382; v gener�toru tah&#x016F;, kter� varianty by mohly b&#x00FD;t nejlep&#353;�:
+     <ul class="itemize1">
+     <li class="itemize">Se&#382;er co m&#x016F;&#382;e&#353;: Zp&#x016F;sob�-li tah zm&#x011B;nu materi�lu, posuneme ho na v�ce dop&#x0159;edu.
+     Preferovat m&#x016F;&#382;eme rovn&#x011B;&#382; bran� ni&#382;&#353;� figurou.
+     </li>
+     <li class="itemize">Historick� heuristika je zalo&#382;ena na my&#353;lence, &#382;e pokud byl tah dobr&#x00FD; v jedn� variant&#x011B;,
+     nejsp�&#353; bude dobr&#x00FD; i v jin�. T&#x0159;i typy t�to metody mohou b&#x00FD;t:
+     </li>
+     <li class="itemize">Glob�ln� tabulka tah&#x016F;: Program si mus� n&#x011B;jak pamatovat tahy. Informace odkud a
+     kam se t�hne, p&#x0159;�padn&#x011B; typ nov� figury po prom&#x011B;n&#x011B; p&#x011B;&#353;ce se p&#x0159;i tro&#353;e snahy vejde
+     do 16 bit&#x016F;. Vytvo&#x0159;�me si tedy pole velikosti 216, pro ka&#382;d&#x00FD; mo&#382;n&#x00FD; tah jeden byte.
+     Na po&#x010D;�tku propo&#x010D;tu pole obsahuje sam� nuly. Kdy&#382; se n&#x011B;jak&#x00FD; tah uk�&#382;e jako dobr&#x00FD;
+     (v&#x011B;t&#353;� ne&#382; aktu�ln� hodnota alfa). Zv&#x011B;t&#353;�m hodnotu jeho pol�&#x010D;ka v poli. Kdy&#382; potom
+     po vygenerov�n� t&#x0159;�d�me tahy, uva&#382;ujeme je&#353;t&#x011B; tak� hodnotu t�to heuristiky. Jak
+     p&#x0159;esn&#x011B; se maj� zv&#x011B;t&#353;ovat hodnoty v tabulce je slo&#382;it� ot�zka. Je z&#x0159;ejm�, &#382;e dobr� tahy
+     z pozic vzd�len&#x011B;j&#353;�ch od ko&#x0159;ene maj� men&#353;� v&#x00FD;znam ne&#382; dobr� tahy z pozic bl�zk&#x00FD;ch
+     ko&#x0159;eni. Je to t�m, &#382;e pr&#x016F;m&#x011B;rn� pozice z propo&#x010D;tu je bli&#382;&#353;� ko&#x0159;eni ne&#382; n&#x011B;jak�mu listu
+     ze vzd�len� v&#x011B;tve.
+     </li>
+     <li class="itemize">Nejlep&#353;�  tahy  pro  danou  hloubku:  Pro  ka&#382;dou  hloubku  zano&#x0159;en�  v  propo&#x010D;tu  si
+     zapamatujeme  posledn�  dva  zlep&#353;uj�c�  tahy.  Tyto  tahy  dostanou  p&#x0159;i  propo&#x010D;tu  v
+     tomto zano&#x0159;en� speci�ln� bonus. Oproti glob�ln� tabulce m� metoda tu v&#x00FD;hodu, &#382;e
+     se v�ce t&#x00FD;k� aktu�ln� pozice a p&#x0159;�slu&#353;n� hloubky, chov� se tedy lok�ln&#x011B;. T�m p�dem
+     v&#x011B;t&#353;inou preferuje zlep&#353;uj�c� tahy z bl�zk&#x00FD;ch uzl&#x016F; a u nich je opravdu dost velk�
+     pravd&#x011B;podobnost, &#382;e budou dobr� i v po&#x010D;�tan� pozici. Nev&#x00FD;hodou je, &#382;e ohodnocuje
+     jen relativn&#x011B; m�lo tah&#x016F; (p&#x0159;esn&#x011B; 2).
+     </li>
+     <li class="itemize">Hlavn� varianta: Program si uchov�v� v tabulce dosavadn� hlavn� variantu, tedy v&#x011B;tev
+     v&#x00FD;po&#x010D;tu p&#x0159;i optim�ln� h&#x0159;e (optim�ln� ve smyslu ohodnoceni list&#x016F;) obou hr�&#x010D;&#x016F;. Tah,
+     kter&#x00FD; p&#x0159;�slu&#353;� k hlavn� variant&#x011B; bude z&#x0159;ejm&#x011B; dobr&#x00FD; i v cel� &#x0159;ad&#x011B; jin&#x00FD;ch variant, a proto
+     z�sk�v� bonus. Varianty se ukl�daj� do matice, vyu&#382;�v� se ale jen horn� troj�heln�k.
+     V jednom pol�&#x010D;ku matice je jeden tah. Jsme-li p&#x0159;i propo&#x010D;tu v n&#x011B;jak�m uzlu, po&#x010D;�t�me
+     v tomto okam&#382;iku vlastn&#x011B; hodnotu v&#353;ech pozic na cest&#x011B; z ko&#x0159;ene do na&#353;eho uzlu. V
+     i-t�m &#x0159;�dku (od diagon�ly d�l) si uchov�v�me nejlep&#353;� dosavadn� variantu z i-t� pozice
+     na cest&#x011B; od ko&#x0159;ene. Dejme tomu, &#382;e v hloubce i do&#353;lo k nalezen� zlep&#353;uj�c�ho tahu.
+     V &#x0159;�dku i m�me p&#x016F;vodn� nejlep&#353;� variantu (od na&#353;� pozice d�l) a v &#x0159;�dku i+1 je
+     zlep&#353;uj�c� varianta.. Za t�to situace mus�me zkop�rovat i+1-n� &#x0159;�dek na pozici i-t�ho
+     (z n&#x011B;j z&#x016F;stane jen prvn� tah na diagon�le).</li></ul>
+<!--l. 64--><p class="noindent" >Nev&#x00FD;hodou alfabety je jej� pevn� hloubka. Jsme-li v zah�jen� nebo st&#x0159;edn� h&#x0159;e, bude tah&#x016F; k
+ohodnocen� velmi mnoho. Hloubka v&#x00FD;po&#x010D;tu v t�to &#x010D;�sti hry by tedy nem&#x011B;la b&#x00FD;t p&#x0159;�li&#353; vysok�,
+
+jinak se k v&#x00FD;sledku nedopo&#x010D;�t�me v rozumn�m &#x010D;ase. Naopak v koncovce, kdy je pouze p�r
+p&#x0159;�pustn&#x00FD;ch tah&#x016F; lze hloubku propo&#x010D;tu zv&#x00FD;&#353;it. Tento probl�m &#x0159;e&#353;� kask�dov� metoda. Jedn� se
+vlastn&#x011B; o alfabeta metodu, kter� postupn&#x011B; po&#x010D;�t� do hloubky 1,2,3,...,n. Na prvn� pohled se
+m&#x016F;&#382;e zd�t zbyte&#x010D;n� po&#x010D;�tat poka&#382;d� znovu, nicm�n&#x011B; kask�dov� metoda m� n&#x011B;kolik
+v&#x00FD;hod:
+<!--l. 67--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">2.1.2   </span> <a 
+ id="x1-60002.1.2"></a>Zpomalen� je mal�</h5>
+<!--l. 69--><p class="noindent" >Proto&#382;e je slo&#382;itost alfabety exponenci�ln�, zpomal� kask�dov� metoda program cca
+jeden a p&#x016F;l kr�t. Dejme tomu, &#382;e pr&#x016F;m&#x011B;rn&#x00FD; v&#x011B;tv�c� faktor &#353;achu je 38, p&#x0159;i dobr�m
+alfabeta o&#x0159;ez�v�n� se dostaneme na v&#x011B;tv�c� faktor zhruba odmocnina z 38, dejme tomu 7.
+!7<sup><span 
+class="cmmi-8">n</span><span 
+class="cmsy-8">-</span><span 
+class="cmr-8">1</span></sup>
+je zhruba o &#x0159;�d men&#353;� ne&#382; 7<sup><span 
+class="cmmi-8">n</span></sup>
+.
+<!--l. 71--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">2.1.3   </span> <a 
+ id="x1-70002.1.3"></a>Lep&#353;� &#x010D;asov� kontrola</h5>
+<!--l. 73--><p class="noindent" >V praxi obvykle nezn� zad�n� <sub>&#8221;</sub>=ldej mi nejlep&#353;� tah do hloubky 5&#8220;, ale <sub>&#8221;</sub>=ldej mi nejlep&#353;� tah,
+m�&#353; na to 5 sekund&#8220;. Potom je velmi obt�&#382;n� stanovit hloubku propo&#x010D;tu, kter� dos�hneme v
+dan�m &#x010D;ase. U kask�dov� metody prost&#x011B; prov�d�me iterace tak dlouho, dokud m�me &#x010D;as. To n�m
+pr�v&#x011B; umo&#382;n� v koncovce (p&#x0159;�padn&#x011B; kdykoliv, kdy&#382; je mno&#382;ina mo&#382;n&#x00FD;ch tah&#x016F; dostate&#x010D;n&#x011B; mal�)
+po&#x010D;�tat do v&#x011B;t&#353;� hloubky.
+<!--l. 75--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">2.1.4   </span> <a 
+ id="x1-80002.1.4"></a>T&#x0159;�d&#x011B;n� tah&#x016F;</h5>
+<!--l. 77--><p class="noindent" >Kask�dov� metoda poskytuje lep&#353;� mo&#382;nosti t&#x0159;�d&#x011B;n� tah&#x016F;. Propo&#x010D;et do hloubky 1 za&#x010D;neme s
+tahy set&#x0159;�d&#x011B;n&#x00FD;mi podle jednoduch&#x00FD;ch heuristik v gener�toru tah&#x016F;. Nejlep&#353;� tah pot� p&#x0159;em�st�me
+na za&#x010D;�tek, pokra&#x010D;ujeme propo&#x010D;tem do hloubky 2, nejlep&#353;� taj z hloubky 2 op&#x011B;t p&#x0159;em�st�me na
+za&#x010D;�tek a tak d�le. T�m se n�m poda&#x0159;� velmi rychle sev&#x0159;�t interval alfa a beta okolo
+nejnad&#x011B;jn&#x011B;j&#353;�ch tah&#x016F;, co&#382; kask�dovou metodu je&#353;t&#x011B; d�le zrychl�. P&#x0159;�pad&#x016F;, kdy zah�j�me
+propo&#x010D;et n&#x011B;kolika &#353;patn&#x00FD;mi tahy bude velmi m�lo - obvykle se jedn� o pozice s mo&#382;nost� slo&#382;it�
+ob&#x011B;ti nebo komplikovan�ho tahu.
+<!--l. 79--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">2.1.5   </span> <a 
+ id="x1-90002.1.5"></a>Metoda ok�nka</h5>
+<!--l. 81--><p class="noindent" >Alfabeta metoda sv�r� interval alfa a beta velmi defenzivn&#x011B; - tak aby se v&#382;dy dopo&#x010D;�tala ke
+spr�vn�mu v&#x00FD;sledku. Cel&#x00FD; v&#x00FD;po&#x010D;et m&#x016F;&#382;eme zrychlit t�m, &#382;e meze alfa a beta je&#353;t&#x011B; v�ce sev&#x0159;eme -
+vytvo&#x0159;�me interval alfa2 a beta2, kter&#x00FD; bude podmno&#382;inou p&#x016F;vodn�ho alfa a beta.
+Pokud jsme m&#x011B;li pravdu, u&#353;et&#x0159;ili jsme na v&#x00FD;po&#x010D;tu n&#x011B;jak&#x00FD; &#x010D;as, pokud ne, interval prost&#x011B;
+p&#x0159;ete&#x010D;e a v n�sleduj�c� iteraci kask�dov� metody se po&#x010D;�t� interval s ji&#382; opraven&#x00FD;mi
+mezemi.
+
+<!--l. 83--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">2.1.6   </span> <a 
+ id="x1-100002.1.6"></a>Prohlubov�n�</h5>
+<!--l. 85--><p class="noindent" >Hern� algoritmus po&#x010D;�t� do n&#x011B;jak� hloubky, na jej�m&#382; konci ohodnot� pozici statickou
+ohodnocovac� funkc�. Tento postup dob&#x0159;e funguje v b&#x011B;&#382;n&#x00FD;ch pozic�ch, ale v taktick&#x00FD;ch pozic�ch
+(jako je v&#x00FD;m&#x011B;na t&#x011B;&#382;k&#x00FD;ch figur, pozice tah p&#x0159;ed matem, kdy v�t&#x011B;zn� strana ob&#x011B;tovala materi�l,
+atp.) selh�v�. P&#x0159;itom by zde sta&#x010D;ila o n&#x011B;co m�lo v&#x011B;t&#353;� hloubka propo&#x010D;tu a program by
+hrozby v&#x010D;as vid&#x011B;l. Celkovou hloubku propo&#x010D;tu nem&#x016F;&#382;eme p&#x0159;�li&#353; zvy&#353;ovat - program
+by se nedopo&#x010D;�tal. &#x0158;e&#353;en�m je tedy prohlouben� t&#x011B;ch variant, kter� jsou obzvl�&#353;t&#x011B;
+zaj�mav�.
+<!--l. 87--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">2.1.7   </span> <a 
+ id="x1-110002.1.7"></a>Dopo&#x010D;et do tich� pozice</h5>
+<!--l. 89--><p class="noindent" >Dopo&#x010D;et do tich� pozice pat&#x0159;� v &#353;achu k nejjednodu&#353;&#353;�m a z�rove&#x0148; nejd&#x016F;le&#382;it&#x011B;j&#353;�m vylep&#353;en�m
+alfabeta metody. Na �rove&#x0148; hry programu m� zcela z�sadn� vliv. Spo&#x010D;�v� v tom, &#382;e pokud se v
+propo&#x010D;tu dostaneme do listu, neodhadujeme hodnotu pozice statickou ohodnocovac� funkc�, ale
+jakousi modifikac� alfabety, kter� se li&#353;� t�m &#382;e bere v �vahu pouze bran� a prom&#x011B;ny p&#x011B;&#353;ce.
+Vzhledem k tomu, &#382;e hr�&#x010D;i odep�r�me v&#353;echny ostatn� tahy (tzv. tich� tahy), mus�me mu
+umo&#382;nit nehr�t, jinak bychom jej nutili i do nev&#x00FD;hodn&#x00FD;ch bran�. Funkce tedy vrac� maximum z
+hodnoty pozice odhadnut� statickou ohodnocovac� funkc� a rekurzivn�ho dopo&#x010D;tu bran�. Pr�v&#x011B;
+dopo&#x010D;et do tich� pozice &#x0159;e&#353;� p&#x0159;�pady nedopo&#x010D;�tan&#x00FD;ch v&#x00FD;m&#x011B;n. Dopo&#x010D;et samoz&#x0159;ejm&#x011B; hodn&#x011B;
+zdr&#382;uje a sn�&#382;� z�kladn� hloubku propo&#x010D;tu, ale pozitivn� efekt je i tak obrovsk&#x00FD;. Dopo&#x010D;et do
+tich� pozice m� nav�c kladn&#x00FD; vliv i na stabilitu v&#x00FD;po&#x010D;tu - ji&#382; se n�m nestane p&#x0159;�li&#353;
+&#x010D;asto, &#382;e by zv&#x00FD;&#353;en� z�kladn� hloubky propo&#x010D;tu m&#x011B;lo n&#x011B;jak&#x00FD; z�sadn� vliv na hodnotu
+varianty.
+<!--l. 91--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">2.1.8   </span> <a 
+ id="x1-120002.1.8"></a>Prohlubov�n� taktick&#x00FD;ch variant</h5>
+<!--l. 93--><p class="noindent" >Dopo&#x010D;et do tich� pozice je �&#x010D;inn&#x00FD;, ale ne&#x0159;e&#353;� v&#353;e. Ve zvl�&#353;&#x0165; nad&#x011B;jn&#x00FD;ch variant�ch b&#x00FD;v� dobr�
+hloubku propo&#x010D;tu o jedni&#x010D;ku zv&#x00FD;&#353;it a nemus� se p&#x0159;i tom nutn&#x011B; jednat o bran� nebo
+prom&#x011B;ny p&#x011B;&#353;ce. K prohlouben� tak� nemus� dojit jen v listu. Kdy p&#x0159;esn&#x011B; m� smysl
+prohlubovat je slo&#382;it� ot�zka. Za typick� kandid�ty na prohlouben� m&#x016F;&#382;eme ozna&#x010D;it
+tahy
+     <ul class="itemize1">
+     <li class="itemize">Kdy je sebran� figura, kter� v minul�m tahu sama brala (m&#x016F;&#382;e se jednat o dokon&#x010D;en�
+     v&#x00FD;m&#x011B;ny)
+     </li>
+     <li class="itemize">Pokryt�  &#353;achu  p&#x0159;edstaven�m  (m&#x016F;&#382;e  b&#x00FD;t  jen  odd�len�m  matu  skr&#x00FD;vaj�c�ho  se  za
+     horizontem propo&#x010D;tu)
+     </li>
+     <li class="itemize">Jak�koliv varianty s vynucen&#x00FD;mi tahy
+     </li>
+     <li class="itemize">Vidle p&#x011B;&#353;cem i jezdcem a podobn� taktick� �dery
+
+     </li>
+     <li class="itemize">Varianty s tzv. Fisherov&#x00FD;m st&#x0159;elcem
+     </li>
+     <li class="itemize">Taktick� hrozby kr�li</li></ul>
+<!--l. 102--><p class="noindent" >P&#x0159;i prohlubov�n� je pot&#x0159;eba postupovat velmi obez&#x0159;etn&#x011B;, nebo&#x0165; prohlouben� jedn� varianty zkr�t�
+v&#x00FD;po&#x010D;etn� &#x010D;as ostatn�ch variant.
+<!--l. 104--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">2.1.9   </span> <a 
+ id="x1-130002.1.9"></a>Ha&#353; tabulky</h5>
+<!--l. 106--><p class="noindent" >Dote&#x010F; jsme se sna&#382;ili zrychlit v&#x00FD;po&#x010D;et pomoc� o&#x0159;ez�v�n� a sv�rali jsme interval alfa a beta jak to
+jen &#353;lo, abychom od&#x0159;�zli co nejvy&#353;&#353;� po&#x010D;et variant, kter� nem� cenu po&#x010D;�tat. Existuje v&#353;ak je&#353;t&#x011B;
+jeden druh variant, kter� rovn&#x011B;&#382; nemus�me po&#x010D;�tat. Jde o dvojce variant, kter� se od
+sebe li&#353;� pouh&#x00FD;m prohozen�m tah&#x016F;. Pokud program po&#x010D;�t� do hloubky 5 p&#x016F;ltah&#x016F; ze
+z�kladn�ho postaven�, nevynech� ani variantu b�l&#x00FD; p&#x011B;&#353;ec na e4, &#x010D;ern&#x00FD; p&#x011B;&#353;ec na c5 v prvn�m
+tahu, b�l&#x00FD; jezdec na f3 v druh�m tahu a z t�to pozice pozice po&#x010D;�t� je&#353;t&#x011B; do zb&#x00FD;vaj�c�
+hloubky 2 p&#x016F;ltahy. Ke stejn�mu v&#x00FD;sledku se v&#353;ak dostane i z pozice, kdy v prvn�m
+tahu p&#x0159;ijde b�l&#x00FD; jezdec na f3 a &#x010D;ern&#x00FD; p&#x011B;&#353;ec na c5 a ve druh�m tahu b�l&#x00FD; p&#x011B;&#353;ec na e4.
+N�sleduj�c� dva p&#x016F;ltahy se budou po&#x010D;�tat znovu. Je p&#x0159;itom z&#x0159;ejm�, &#382;e vzniklou pozici sta&#x010D;�
+zkoumat jen jednou. V zah�jen� a st&#x0159;edn� h&#x0159;e s velk&#x00FD;m po&#x010D;tem figur a malou hloubkou
+propo&#x010D;tu doch�z� k t&#x011B;mto duplicit�m je&#353;t&#x011B; pom&#x011B;rn&#x011B; z&#x0159;�dka. Mnohem hor&#353;� je situace v
+koncovce s mal&#x00FD;m po&#x010D;tem figur. Typick&#x00FD;m p&#x0159;�kladem je koncovka dvou kr�l&#x016F;, v n�&#382;
+maj� ob&#x011B; strany u&#382; jen n&#x011B;kolik zablokovan&#x00FD;ch p&#x011B;&#353;c&#x016F;. Kr�l se obvykle sna&#382;� vytla&#x010D;it
+soupe&#x0159;ova monarchu (obvykle i s vyu&#382;it�m nev&#x00FD;hody tahu), pobrat soupe&#x0159;ovy p&#x011B;&#353;ce a
+prosadit ty sv� do d�my. Ob&#x011B; strany p&#x0159;itom maj� na v&#x00FD;b&#x011B;r jen n&#x011B;kolik m�lo p&#x0159;�pustn&#x00FD;ch
+tah&#x016F;, a tak hloubka propo&#x010D;tu roste oproti st&#x0159;edn� h&#x0159;e i dvojn�sobn&#x011B;. P&#x0159;i podobn&#x00FD;ch
+hlubok&#x00FD;ch propo&#x010D;tech doch�z� k opakovan�mu vyhodnocov�n� jedn� varianty vznikl� jen
+p&#x0159;ehozen�m tah&#x016F; zcela b&#x011B;&#382;n&#x011B;. Pr�v&#x011B; v podobn&#x00FD;ch typech pozic p&#x0159;itom m&#x016F;&#382;e m�t
+po&#x010D;�ta&#x010D; s lidsk&#x00FD;m soupe&#x0159;em probl�my. Jednoduch&#x00FD; charakter pozice toti&#382; umo&#382;n� l�pe
+oprostit pl�n v&#x00FD;hry nebo obrany od detailn�ho propo&#x010D;tu (p&#x0159;�padn&#x011B; lidsk&#x00FD; propo&#x010D;et
+degeneruje na jedinou, ale zato dlouhou variantu bez v&#x011B;tven�) a umo&#382;n� vid&#x011B;t mnohem d�l i
+&#x010D;lov&#x011B;ku.
+<!--l. 109--><p class="indent" >   &#x0158;e&#353;en�m je m�t ha&#353; tabulku s v&#x00FD;sledky jednotliv&#x00FD;ch v&#x00FD;po&#x010D;t&#x016F;, do kter� se pod�v�me a pokud
+zde v&#x00FD;sledek propo&#x010D;tu z na&#353;� pozice najdeme, okam&#382;it&#x011B; ho vr�t�me. Je pot&#x0159;eba d�t pozor na
+n&#x011B;kolik v&#x011B;c�:
+     <ul class="itemize1">
+     <li class="itemize">Ukl�dat  je  pot&#x0159;eba  i  hloubku  propo&#x010D;tu,  nebo&#x0165;  nelze  nahradit  propo&#x010D;et  v&#x00FD;sledkem
+     p&#x0159;edchoz�ho propo&#x010D;tu do men&#353;� hloubky.
+     </li>
+     <li class="itemize">Alfabeta ned�v� jen meziv&#x00FD;sledky typu pozice m� cenu = 3, ale i pozice m� cenu �= 3
+     nebo pozice m� cenu =� 3. Tyto meziv&#x00FD;sledky je rovn&#x011B;&#382; pot&#x0159;eba ukl�dat.
+     </li>
+     <li class="itemize">Mus�me pracovat velmi rychle s velk&#x00FD;m mno&#382;stv�m dat.
+
+     </li>
+     <li class="itemize">Program by nem&#x011B;l &#x010D;�st z disku - struktura se mus� za ka&#382;dou cenu vej�t do pam&#x011B;ti.
+     </li>
+     <li class="itemize">Je lep&#353;�, kdy&#382; struktura zapom�n� ne&#382; aby swapovala
+     </li>
+     <li class="itemize">Pozice  obsahuje  64  pol�  a  stavovou  informaci  o  tahu,  pr�vu  na  ro&#353;�dy  a  bran�
+     mimochodem, ale jeden z�znam ve struktu&#x0159;e by m&#x011B;l m�t Jen n&#x011B;kolik byt&#x016F;, proto
+     vol�me ha&#353; tabulku.</li></ul>
+<!--l. 119--><p class="indent" >   V t�to ha&#353; tabulce nemus�me &#x0159;e&#353;it kolize - nov� nebo cenn&#x011B;j&#353;� hodnota prost&#x011B; p&#x0159;ep�&#353;e starou.
+Je to rychlej&#353;� a jednodu&#353;&#353;� ne&#382; na jednotliv&#x00FD;ch prvc�ch vytv�&#x0159;et spojov� seznamy a zab&#x00FD;vat se
+alokov�n�m a uvol&#x0148;ov�n�m pam&#x011B;ti
+     <ul class="itemize1">
+     <li class="itemize">Je lep&#353;�, kdy&#382; struktura zapom�n� ne&#382; aby swapovala
+     </li>
+     <li class="itemize">Pozice  obsahuje  64  pol�  a  stavovou  informaci  o  tahu,  pr�vu  na  ro&#353;�dy  a  bran�
+     mimochodem, ale jeden z�znam ve struktu&#x0159;e by m&#x011B;l m�t jen n&#x011B;kolik byt&#x016F;, proto vol�me
+     ha&#353; tabulku.</li></ul>
+<!--l. 125--><p class="indent" >   V t�to ha&#353; tabulce nemus�me &#x0159;e&#353;it kolize - nov� nebo cenn&#x011B;j&#353;� hodnota prost&#x011B; p&#x0159;ep�&#353;e starou.
+Je to rychlej&#353;� a jednodu&#353;&#353;� ne&#382; na jednotliv&#x00FD;ch prvc�ch vytv�&#x0159;et spojov� seznamy a zab&#x00FD;vat se
+alokov�n�m a uvol&#x0148;ov�n�m pam&#x011B;ti.
+<!--l. 127--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">2.1.10   </span> <a 
+ id="x1-140002.1.10"></a>Datab�ze zah�jen� a koncovek</h5>
+<!--l. 129--><p class="noindent" >Ka&#382;d� &#353;achov� partie za&#x010D;�n� v&#382;dy stejnou pozic�. Je celkem pochopiteln�, &#382;e &#353;achist� velmi
+pe&#x010D;liv&#x011B; studuj� jednotliv� varianty vznikl� ze z�kladn�ho postaven� ji&#382; v klidu doma s
+po&#x010D;�ta&#x010D;em nebo v klubu b&#x011B;hem tr�ninku a ne a&#382; v omezen�m &#x010D;ase b&#x011B;hem partie. O
+konkr�tn�ch zah�jen�ch byly naps�ny stovky knih, v&#x011B;novali se jim ti nejlep&#353;� &#353;achist�
+teoretici. B&#x011B;hem zah�jen� b&#x011B;&#382;n&#x011B; vznikaj� velmi komplikovan� pozice, ve kter&#x00FD;ch se
+nevyznaj� ani velmist&#x0159;i, a mal� nen�padn� a t&#x011B;&#382;ko odhaliteln� chyba m&#x016F;&#382;e v�st k rychl�
+proh&#x0159;e nebo alespo&#x0148; k v&#x00FD;hod&#x011B; soupe&#x0159;e. Rozmotat p&#x0159;�mo za &#353;achovnic� n&#x011B;kolik del&#353;�ch a
+trochu rozv&#x011B;tven&#x00FD;ch vynucen&#x00FD;ch variant (kter� b&#x011B;hem des�tek let vymysleli &#353;achov�
+teoretici) b&#x00FD;v� bez p&#x0159;edchoz� p&#x0159;�pravy nad s�ly i t&#x011B;ch nejlep&#353;�ch hr�&#x010D;&#x016F; a dne&#353;n�ch
+program&#x016F;, ale nau&#x010D;it se &#x0159;e&#353;en� nazpam&#x011B;&#x0165; a pochopit ho se dok�&#382;e p&#x0159;i tro&#353;e snahy i
+pr&#x016F;m&#x011B;rn&#x00FD; klubov&#x00FD; &#353;achista nebo t&#x0159;eba n�&#353; program. Program nau&#x010D;�me zah�jen� tak, &#382;e
+n&#x011B;kam ulo&#382;�me pozice b&#x011B;&#382;n� v zah�jen� a/nebo jejich ha&#353; funkce a k nim sadu tah&#x016F;,
+kter� od programu v uveden� pozici o&#x010D;ek�v�me. Ka&#382;d�mu tahu z�rove&#x0148; p&#x0159;i&#x0159;ad�me
+pravd&#x011B;podobnost jeho zahr�n�. Nap&#x0159;�klad pro z�kladn� postaven� m&#x016F;&#382;e seznam vypadat
+takto:
+     <ul class="itemize1">
+     <li class="itemize">30% 1. e4
+
+     </li>
+     <li class="itemize">30% 1. d4
+     </li>
+     <li class="itemize">15% 1. c4
+     </li>
+     <li class="itemize">13% 1. Jf3
+     </li>
+     <li class="itemize">5% 1. f4
+     </li>
+     <li class="itemize">2% 1. b3
+     </li>
+     <li class="itemize">1% 1. b4
+     </li>
+     <li class="itemize">1% 1. g3
+     </li>
+     <li class="itemize">1% 1. e3
+     </li>
+     <li class="itemize">1% 1. d3
+     </li>
+     <li class="itemize">1% 1. Jc3</li></ul>
+<!--l. 145--><p class="indent" >   Nejv&#x011B;t&#353;� pravd&#x011B;podobnost budou m�t dobr� a obvykle hran� tahy, m�n&#x011B; b&#x011B;&#382;n&#x00FD;m a nep&#x0159;�li&#353;
+ambici�zn�m tah&#x016F;m, kter� v&#353;ak pozici b�l�ho nijak neohro&#382;uj� d�me jen malou pravd&#x011B;podobnost
+(hod� se ob&#x010D;as k vyprovokov�n� lidsk�ho soupe&#x0159;e) a tahy vylo&#382;en&#x011B; &#353;patn� jako nap&#x0159;�klad 1.f3?
+nebo 1.h3? nebudeme uv�d&#x011B;t v&#x016F;bec, program je tedy nebude hr�t. Podobn&#x00FD; seznam
+pravd&#x011B;podobnost� ohodnocen&#x00FD;ch tah&#x016F; budeme m�t pro ka&#382;dou nau&#x010D;enou pozici ulo&#382;en&#x00FD; v n&#x011B;jak�
+datov� struktu&#x0159;e postaven� nad ha&#353;ovac� funkc� pozice. Tah&#x016F; z pozic je prom&#x011B;nliv�
+mno&#382;stv�. Typick� vyhled�vac� datov� struktura proto nebude obsahovat p&#x0159;�mo tahy. M�sto
+nich v n� budou indexy do pole tah&#x016F; zakon&#x010D;en� nulou. Uk�&#382;eme si to na p&#x0159;�kladu se
+set&#x0159;�d&#x011B;n&#x00FD;m polem a ha&#353;ovac� funkc� kter� nen� na na&#353;� mno&#382;in&#x011B; ulo&#382;en&#x00FD;ch pozic
+prost�. Obsahovat bude jen 3 pozice: z�kladn� postaven� (ha&#353; = 368) se t&#x0159;emi tahy 1. e4
+(40
+<!--l. 149--><p class="noindent" ><!--tex4ht:inline--><div class="tabular"> <table id="TBL-1" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-1-1g"><col 
+id="TBL-1-1"></colgroup><colgroup id="TBL-1-2g"><col 
+id="TBL-1-2"></colgroup><colgroup id="TBL-1-3g"><col 
+id="TBL-1-3"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-1-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-1-1"  
+class="td11">ha&#353; 129, index 0</td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-1-2"  
+class="td11">ha&#353; 368, index 3  </td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-1-3"  
+class="td11">ha&#353; 368, index 5    </td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-2-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-2-1"  
+class="td11">pozice po 1. e4   </td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-2-2"  
+class="td11">pozice po 1. e4 e5</td><td  style="white-space:nowrap; text-align:left;" id="TBL-1-2-3"  
+class="td11">z�kladn� postaven�</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-1-3-"><td  style="white-space:nowrap; text-align:left;" id="TBL-1-3-1"  
+class="td11">              </td></tr></table>
+</div>
+<!--l. 159--><p class="indent" >   Takto by vypadala vyhled�vac� struktura. Pozice bychom si pamatovali nejsp�&#353; fyzicky
+odd&#x011B;len&#x011B;, nap&#x0159;�klad na stejn�m indexu v jin�m poli, zde je proto m�me v druh�m &#x0159;�dku. Dejme
+tomu, &#382;e hled�me tah ze z�kladn�ho postaven�. Spo&#x010D;�t�me si ha&#353;ovac� funkci 368. N&#x011B;jak&#x00FD;m
+algoritmem pro vyhled�v�n� v set&#x0159;�d&#x011B;n�m poli s rovnom&#x011B;rn&#x00FD;m rozd&#x011B;len�m dat (logaritmicky
+p&#x016F;len�m nebo je&#353;t&#x011B; l�pe d&#x011B;len�m podle hodnoty ha&#353; funkc�) najdeme pol�&#x010D;ko se spr�vnou
+
+hodnotou ha&#353; funkce, dejme tomu, &#382;e m�me sm&#x016F;lu a bude to prost&#x0159;edn� pol�&#x010D;ko. Zjist�me, &#382;e
+pozice nen� na&#353;e, nebo&#x0165; do&#353;lo ke kolizi ha&#353; funkc�. Koukneme se while cyklem doleva, tam u&#382; je
+jin� hodnota ha&#353; funkce. Tak tedy doprava na posledn� pol�&#x010D;ko, zde odpov�d� ha&#353; funkce a i
+pozice je spr�vn&#x011B;, budeme tedy hledat tahy na indexu 5 v poli tah&#x016F;. Tabulka tah&#x016F; pak m&#x016F;&#382;e
+vypadat n&#x011B;jak takto:
+<!--l. 161--><p class="indent" >   V poli od pozice 5 a&#382; k n�sleduj�c� nule jsou tahy e4, d4 a c4, vygenerujeme tedy n�hodn�
+&#x010D;�slo z rozsahu 0 a&#382; 100, padne t&#x0159;eba 50 a program zahraje 1. d4.
+<!--l. 163--><p class="indent" >   S ub&#x00FD;vaj�c�m po&#x010D;tem figur a bl�&#382;�c�m se koncem partie se pozice postupn&#x011B; zjednodu&#353;uje. P&#x0159;i
+propo&#x010D;tu ub&#x00FD;v� mo&#382;n&#x00FD;ch variant, spousta z nich vede do stejn� pozice, jin� zase brzy kon&#x010D;� matem
+nebo rem�zou. Program by m&#x011B;l tud�&#382; v jist� chv�li za&#x010D;�t po&#x010D;�tat dokonale. Pokud v&#353;ak zkus�me
+standardn�mu prohled�vac�mu algoritmu p&#x0159;edlo&#382;it t&#x0159;eba n&#x011B;jakou pozici z koncovky st&#x0159;elce a
+jezdce proti samotn�mu kr�li, kvalitn� program koncovku sice zvl�dne - zatla&#x010D;� soupe&#x0159;ova kr�le do
+rohu barvy st&#x0159;elce a tam mu nasad� mat, ale rozhodn&#x011B; nenajde ten nejrychlej&#353;� postup
+a maty t&#x0159;eba 20. tahem zd�lky prost&#x011B; neuvid�. V opravdu t&#x011B;&#382;k&#x00FD;ch koncovk�ch typu
+d�ma proti dv&#x011B;ma lehk&#x00FD;m figur�m pak b&#x011B;&#382;n&#x00FD; kvalitn� mysl�c� algoritmus ji&#382; bude
+chybovat a n&#x011B;kter� vyhran� pozice vyhr�t nedok�&#382;e. V omezen�m &#x010D;ase nen� mo&#382;n� ani v
+pom&#x011B;rn&#x011B; jednoduch� koncovce proj�t cel&#x00FD; graf hry z ko&#x0159;ene k list&#x016F;m, d�ky koliz�m v
+ha&#353;ovac� funkci nav�c budeme &#x0159;adu variant po&#x010D;�tat opakovan&#x011B;, tak&#382;e s dokonalou hrou
+nem&#x016F;&#382;eme po&#x010D;�tat ani v element�rn� koncovce d�my proti samotn�mu kr�li. Na&#353;t&#x011B;st�
+je to s pozicemi z koncovek podobn�, jako s t&#x011B;mi ze zah�jen�. Daj� se nau&#x010D;it. V&#353;ech
+mo&#382;n&#x00FD;ch pozic n&#x011B;kolikafigurov� koncovky je sice z lidsk�ho pohledu mnoho, ale po&#x010D;�ta&#x010D; m�
+posunut� m&#x011B;&#x0159;�tka. Jednoduch&#x00FD; horn� odhad pro po&#x010D;et pozic n-figurov� koncovky je
+2 <span 
+class="cmsy-10x-x-109">* </span>64<sup><span 
+class="cmmi-8">n</span></sup>
+, nebo&#x0165; ka&#382;d� figurka m&#x016F;&#382;e b&#x00FD;t na jednom ze 64 pol� a mo&#382;nosti se n�sob�. �vodn� dvojka je tam
+kv&#x016F;li pr�vu tahu, bu&#x010F; hraje b�l&#x00FD; nebo &#x010D;ern&#x00FD;. N�&#353; odhad bychom mohli i zp&#x0159;esnit na 2 * 64 * 63 *
+62 * ... * (64 - n + 1), proto&#382;e dv&#x011B; figurky nemohou b&#x00FD;t na stejn�m pol�&#x010D;ku, tak&#382;e 1.
+figurka m� 64 mo&#382;nost�, druh� jen 63 atd. Mohli bychom tak� vy&#353;krtat nep&#x0159;�pustn�
+pozice, ztoto&#382;nit stejn� figury atd., ale �vodn� vzorec n�m z�rove&#x0148; d�v� n�vod, jak
+velmi jednodu&#353;e a efektivn&#x011B; ka&#382;d� pozici zkouman� koncovky p&#x0159;id&#x011B;lit &#x010D;�slo od 0 do
+2 <span 
+class="cmsy-10x-x-109">* </span>64<sup><span 
+class="cmmi-8">n</span><span 
+class="cmsy-8">-</span><span 
+class="cmr-8">1</span></sup>
+(jej� m�sto v tabulce p&#x0159;�slu&#353;n� koncovky) a naopak ke ka&#382;d�mu &#x010D;�slu z uveden�ho intervalu
+p&#x0159;i&#x0159;adit pozici. Stanov�me si po&#x0159;ad� figur na&#353;� koncovky podle jejich barvy a materi�ln� hodnoty.
+Nap&#x0159;�klad pro koncovku jezdce a st&#x0159;elce to m&#x016F;&#382;e b&#x00FD;t po&#x0159;ad� b�l&#x00FD; kr�l, b�l&#x00FD; st&#x0159;elec, b�l&#x00FD; jezdec,
+&#x010D;ern&#x00FD; kr�l. O&#x010D;�slujeme pol�&#x010D;ka &#353;achovnice od 0 do 63, a1 bude 0, a2 1 atd., h8 bude 63.
+M�me-li n jednozna&#x010D;n&#x011B; se&#x0159;azen&#x00FD;ch figur, ozna&#x010D;�me &#x010D;�sla pol�&#x010D;ek, na nich&#382; se nach�zej�
+<span 
+class="cmmi-10x-x-109">p</span><sub><span 
+class="cmr-8">0</span></sub>
+a&#382; <span 
+class="cmmi-10x-x-109">p</span><sub><span 
+class="cmmi-8">n</span><span 
+class="cmsy-8">-</span><span 
+class="cmr-8">1</span></sub>
+. U koncovek s opakov�n�m jednoho druhu kamene (nap&#x0159;�klad koncovka kr�le proti dv&#x011B;ma
+st&#x0159;elc&#x016F;m) budeme jako prvn� uva&#382;ovat figuru s vy&#353;&#353;�m indexem pol�&#x010D;ka. &#x010C;�slo pozice pak bude
+<span 
+class="cmmi-10x-x-109">p</span><sub><span 
+class="cmr-8">0</span></sub> + 64 <span 
+class="cmsy-10x-x-109">* </span><span 
+class="cmmi-10x-x-109">p</span><sub><span 
+class="cmr-8">1</span></sub> + 64<sup><span 
+class="cmr-8">2</span></sup> <span 
+class="cmsy-10x-x-109">* </span><span 
+class="cmmi-10x-x-109">p</span><sub><span 
+class="cmr-8">2</span></sub> + <span 
+class="cmmi-10x-x-109">... </span>+ 64<sup><span 
+class="cmmi-8">n</span><span 
+class="cmsy-8">-</span><span 
+class="cmr-8">1</span></sup> <span 
+class="cmsy-10x-x-109">* </span><span 
+class="cmmi-10x-x-109">p</span><sub><span 
+class="cmmi-8">n</span><span 
+class="cmsy-8">-</span><span 
+class="cmr-8">1</span></sub> + (
+hraje b�l&#x00FD; ? 64<sup><span 
+class="cmmi-8">n</span></sup> : 0)
+.
+<div class="center" 
+>
+<!--l. 167--><p class="noindent" >
+
+<!--l. 168--><p class="noindent" ><img 
+src="README2x.png" alt="PIC" class="graphics" width="227.61694pt" height="227.61694pt" ><!--tex4ht:graphics  
+name="README2x.png" src="diagram2.ps"  
+--></div>
+<!--l. 171--><p class="indent" >   Na obr�zku je p&#x0159;�klad pozice z koncovky dvou st&#x0159;elc&#x016F;. Po&#x0159;ad� figur bude KSSk, tedy b�l&#x00FD; kr�l
+a oba st&#x0159;elci a nakonec &#x010D;ern&#x00FD; kr�l. Na tahu je b�l&#x00FD; a na na&#353;� &#353;achovnici hraje nahoru, st&#x0159;elci jsou
+tedy na d3 a e3, b�l&#x00FD; kr�l na f3 a &#x010D;ern&#x00FD; na e5. V n�sleduj�c� tabulce je v&#x00FD;po&#x010D;et &#x010D;�sla pozice v
+r�mci dan� koncovky. V&#x00FD;sledek je 26 293 525.
+<!--l. 174--><p class="noindent" ><!--tex4ht:inline--><div class="tabular"> <table id="TBL-2" class="tabular" 
+cellspacing="0" cellpadding="0" rules="groups" 
+><colgroup id="TBL-2-1g"><col 
+id="TBL-2-1"></colgroup><colgroup id="TBL-2-2g"><col 
+id="TBL-2-2"></colgroup><colgroup id="TBL-2-3g"><col 
+id="TBL-2-3"></colgroup><colgroup id="TBL-2-4g"><col 
+id="TBL-2-4"></colgroup><colgroup id="TBL-2-5g"><col 
+id="TBL-2-5"></colgroup><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-1-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-1-1"  
+class="td11"><span 
+class="cmbx-10x-x-109">Figurka           </span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-1-2"  
+class="td11"><span 
+class="cmbx-10x-x-109">Pole</span></td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-1-3"  
+class="td11"><span 
+class="cmbx-10x-x-109">Index</span></td><td  style="white-space:nowrap; text-align:right;" id="TBL-2-1-4"  
+class="td11"><span 
+class="cmbx-10x-x-109">Hodnota</span></td><td  style="white-space:nowrap; text-align:right;" id="TBL-2-1-5"  
+class="td11"><span 
+class="cmbx-10x-x-109">V</span><span 
+class="cmbx-10x-x-109">&#x00FD;sledek</span></td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-2-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-2-1"  
+class="td11">B�l&#x00FD; kr�l             </td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-2-2"  
+class="td11"> f3  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-2-3"  
+class="td11">  21   </td><td  style="white-space:nowrap; text-align:right;" id="TBL-2-2-4"  
+class="td11">      21</td><td  style="white-space:nowrap; text-align:right;" id="TBL-2-2-5"  
+class="td11">       21</td></tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-3-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-3-1"  
+class="td11">Prvn� b�l&#x00FD; st&#x0159;elec</td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-3-2"  
+class="td11"> e3 </td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-3-3"  
+class="td11"> 20 </td><td  style="white-space:nowrap; text-align:right;" id="TBL-2-3-4"  
+class="td11">20 <span 
+class="cmsy-10x-x-109">* </span>64 </td><td  style="white-space:nowrap; text-align:right;" id="TBL-2-3-5"  
+class="td11"> 1 280</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-4-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-4-1"  
+class="td11">Druh&#x00FD; b�l&#x00FD; st&#x0159;elec</td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-4-2"  
+class="td11"> d3  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-4-3"  
+class="td11">  19   </td><td  style="white-space:nowrap; text-align:right;" id="TBL-2-4-4"  
+class="td11">219 <span 
+class="cmsy-10x-x-109">* </span>64<sup><span 
+class="cmr-8">2</span></sup>  </td><td  style="white-space:nowrap; text-align:right;" id="TBL-2-4-5"  
+class="td11">   77 824</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-5-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-5-1"  
+class="td11">&#x010C;ern&#x00FD; kr�l           </td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-5-2"  
+class="td11"> e5  </td><td  style="white-space:nowrap; text-align:center;" id="TBL-2-5-3"  
+class="td11">  36   </td><td  style="white-space:nowrap; text-align:right;" id="TBL-2-5-4"  
+class="td11">36 * 264<sup><span 
+class="cmr-8">3</span></sup> </td><td  style="white-space:nowrap; text-align:right;" id="TBL-2-5-5"  
+class="td11"> 9 437 184</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-6-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-2-6-1"  
+class="td11"><div class="multicolumn"  style="white-space:nowrap; text-align:left;">B�l&#x00FD; na tahu</div>                    </td><td  style="white-space:nowrap; text-align:right;" id="TBL-2-6-4"  
+class="td11">264<sup><span 
+class="cmr-8">4</span></sup>         </td><td  style="white-space:nowrap; text-align:right;" id="TBL-2-6-5"  
+class="td11">16 777 216</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-7-"><td colspan="3" style="white-space:nowrap; text-align:left;" id="TBL-2-7-1"  
+class="td11"></td><div class="multicolumn"  style="white-space:nowrap; text-align:left;">Suma</div>                                      <td  style="white-space:nowrap; text-align:right;" id="TBL-2-7-5"  
+class="td11">26 293 525</td>
+</tr><tr 
+class="hline"><td><hr></td><td><hr></td><td><hr></td><td><hr></td><td><hr></td></tr><tr  
+ style="vertical-align:baseline;" id="TBL-2-8-"><td  style="white-space:nowrap; text-align:left;" id="TBL-2-8-1"  
+class="td11">                </td></tr></table></div>
+<!--l. 194--><p class="indent" >   Opa&#x010D;n&#x00FD; p&#x0159;evod z &#x010D;�sla na pozici bude analogick&#x00FD;, &#x010D;�slo rozlo&#382;�me na cifry v 64-kov� soustav&#x011B; a
+to budou indexy pol�&#x010D;ek jednotliv&#x00FD;ch kamen&#x016F;.
+<!--l. 196--><p class="indent" >   Vlastn� algoritmus vygenerov�n� datab�ze n-figurov� koncovky bude vypadat n&#x011B;jak
+takto:
+     <ul class="itemize1">
+     <li class="itemize">Rekurzivn&#x011B; stejn&#x00FD;m algoritmem vygeneruj datab�ze koncovek, kter� z na&#353;� koncovky
+     mohou  vzniknout.  (Nap&#x0159;�klad  pro  koncovku  d�my  proti  v&#x011B;&#382;i  vygeneruj  nejprve
+     koncovku se samotnou d�mou a se samotnou v&#x011B;&#382;�.)
+     </li>
+     <li class="itemize">Naalokuj m�sto pro 2 <span 
+class="cmsy-10x-x-109">* </span>64<sup><span 
+class="cmmi-8">n</span></sup>
+     &#x010D;�sel a vypl&#x0148; je nulami
+     </li>
+     <li class="itemize">Projdi p&#x0159;irozen� &#x010D;�sla od 0 do 2 <span 
+class="cmsy-10x-x-109">* </span>64<sup><span 
+class="cmmi-8">n</span></sup> <span 
+class="cmsy-10x-x-109">- </span>1
+     , ke ka&#382;d�mu vygeneruj pozici. Je-li nep&#x0159;�pustn� (2 figury na sob&#x011B;, &#353;ach nehraj�c�mu), vlo&#382;
+     do pole &#x010D;�sel na dan&#x00FD; index konstantu CHYBA, je-li &#x010D;ern&#x00FD; v matu vlo&#382; 1, je-li b�l&#x00FD; v matu,
+     vlo&#382; -1.
+
+     </li>
+     <li class="itemize">Projdi p&#x0159;irozen� &#x010D;�sla od 0 do 2 <span 
+class="cmsy-10x-x-109">* </span>64<sup><span 
+class="cmmi-8">n</span></sup> <span 
+class="cmsy-10x-x-109">- </span>1
+     , p&#x0159;esko&#x010D; ty, kde je na dan�m indexu v poli jin� &#x010D;�slo ne&#382; nula. Ke ka&#382;d�mu &#x010D;�slu vygeneruj
+     pozici. Na n�&#353; index do pole vlo&#382; stru&#x010D;n&#x011B; &#x0159;e&#x010D;eno hodnotu propo&#x010D;tu minimaxem do hloubky 1
+     s ohodnocen�m pomoc� ji&#382; spo&#x010D;�tan&#x00FD;ch hodnot a nul v poli. Podrobn&#x011B; &#x0159;e&#x010D;eno: Dejme tomu,
+     &#382;e hraje b�l&#x00FD; (pro &#x010D;ern�ho budeme postupovat analogicky). Vygeneruj z pozice tahy, zahraj
+     je. Pokud zahran&#x00FD;m tahem p&#x0159;e&#353;la pozice do jin�ho druhu koncovky (prom&#x011B;na p&#x011B;&#353;ce,
+     bran�), pod�vej se do tabulky pro tuto koncovku, kolik�t&#x00FD;m p&#x016F;ltahem b�l&#x00FD; d�v�
+     nebo dost�v� mat, p&#x0159;�padn&#x011B; zda je pozice rem�zov�. Pokud z&#x016F;stal zachov�n typ
+     koncovky, spo&#x010D;�tej si index pozice a pod�vej se do pole, zda a jak ji&#382; m�me pozici
+     ohodnocenou. 0 znamen�, &#382;e zat�m nev�me, kladn� &#x010D;�slo, &#382;e je pozice vyhran� za b�l�ho,
+     z�porn�, &#382;e za &#x010D;ern�ho. Je-li mezi &#x010D;�sly alespo&#x0148; jedno kladn� vlo&#382; do pole na n�&#353;
+     index to nejmen&#353;� z t&#x011B;ch kladn&#x00FD;ch &#x010D;�sel zv&#x011B;t&#353;en� o 1. (Nap&#x0159;�klad z 0, 0, 0, 5,
+     3, -2, 0, 0, -2, -4 vyber 3 a do pole na n�&#353; index dej 3 + 1 = 4. Znamen� o, &#382;e
+     d�v�me mat 2. tahem, nebo&#x0165; jsme o 3 p&#x016F;ltahy od 1, co&#382; je mat.) Jsou-li v&#353;echna
+     &#x010D;�sla z�porn�, je pozice za b�l�ho prohran�, vyber z nich to nejmen&#353;� (s nejv&#x011B;t&#353;�
+     absolutn� hodnotou) a do pole na n�&#353; index ho dej zmen&#353;en� o 1. (Nap&#x0159;�klad z -2, -4,
+     -6, -6, -4 vyber -6 a do pole dej -7. To jsme na tahu a dost�v�me mat 3. tahem.)
+     Posledn� mo&#382;nost� je, &#382;e mezi &#x010D;�sly je alespo&#x0148; jedna 0 a zbytek jsou bu&#x010F; nuly nebo
+     z�porn� &#x010D;�sla. V tom p&#x0159;�pad&#x011B; je&#353;t&#x011B; nem&#x016F;&#382;eme rozhodnout a v poli nech�me
+     nulu.
+     </li>
+     <li class="itemize">Pokud jsme zapsali do pole alespo&#x0148; jednu nenulu, pokra&#x010D;uj bodem 4.
+     </li>
+     <li class="itemize">Ulo&#382; pole tak, jak je, do souboru.</li></ul>
+<!--l. 205--><p class="noindent" >M�me-li vygenerovanou tabulku, je ji&#382; velmi jednoduch� napsat optim�ln� algoritmus hry. Jedn� se o
+prost&#x00FD; minimax do hloubky 1. M�sto b&#x011B;&#382;n� ohodnocovac� funkce se budeme d�vat do tabulky. 0
+znamen�, &#382;e &#382;�dn� ze stran nem&#x016F;&#382;e vyhr�t, tedy rem�za. Kladn� &#x010D;�sla jsou pozice vyhran� za
+b�l�ho, &#x010D;�m d�l od jedni&#x010D;ky, t�m d�l od matu. Tot�&#382; plat� s &#x010D;ern&#x00FD;m pro z�porn� &#x010D;�sla. V
+rem�zov&#x00FD;ch pozic�ch pak m&#x016F;&#382;eme spustit i klasick&#x00FD; mysl�c� algoritmus omezen&#x00FD; na tahy, kter�
+nevedou k na&#353;� proh&#x0159;e. Jde jen o to, aby v rem�zov&#x00FD;ch pozic�ch, kde ov&#353;em o rem�zu bojuje
+soupe&#x0159;, program nerezignoval na teoreticky marnou, ale prakticky proti re�ln�mu soupe&#x0159;i &#x010D;asto
+nad&#x011B;jnou snahu o v&#x00FD;hru a nezahr�l prost&#x011B; jak&#x00FD;koli neprohr�vaj�c� tah. Nap&#x0159;�klad v t&#x011B;&#382;k� (pro
+2 jezdce), ale rem�zov� koncovce d�my proti dv&#x011B;ma jezdc&#x016F;m by program asi nem&#x011B;l
+nastavit d�mu. To sice objektivn&#x011B; nen� chyba, nebo&#x0165; i koncovka kr�le a dvou jezdc&#x016F; proti
+samotn�mu kr�li je rem�zov�, ale subjektivn&#x011B; to jist&#x011B; chyba je a u&#382;ivatel by to asi programu
+neodpustil.
+<!--l. 207--><p class="indent" >   Bohu&#382;el tento algoritmus nen� na sou&#x010D;asn&#x00FD;ch po&#x010D;�ta&#x010D;�ch dostate&#x010D;n&#x011B; rychl&#x00FD; - na po&#x010D;k�n�
+z�sk�me jen t&#x0159;�figurov� koncovky, p&#x0159;es noc pak &#x010D;ty&#x0159;figurov�. Jednou z nejjednodu&#353;&#353;�ch a z�rove&#x0148;
+velmi �&#x010D;inn&#x00FD;ch metod, jak v&#x00FD;po&#x010D;et zrychlit a zmen&#353;it i objem vygenerovan&#x00FD;ch dat je vyu&#382;it�
+nejr&#x016F;zn&#x011B;j&#353;�ch symetri�. 50V tabulce jak�koli koncovky se pom&#x011B;rn&#x011B; &#x010D;asto a relativn&#x011B; pravideln&#x011B;
+opakuj� &#x010D;�seln� hodnoty. Je z&#x0159;ejm�, &#382;e data p&#x016F;jde �sp&#x011B;&#353;n&#x011B; komprimovat t�m&#x011B;&#x0159; jakoukoli
+rozumnou metodou. Vzhledem ke zp&#x016F;sobu vyu&#382;it� je nutn�, aby pro p&#x0159;e&#x010D;ten� hodnoty
+z komprimovan� tabulky sta&#x010D;ilo dekomprimovat jen n&#x011B;jak� mal� okol� a nikoli celou
+tabulku.
+
+<!--l. 210--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">2.2   </span> <a 
+ id="x1-150002.2"></a>Reprezentace pozice</h4>
+<!--l. 212--><p class="noindent" >Nejednodu&#353;� reprezentace &#353;achovnice je dvourozm&#x011B;rn� pole 8x8. To m&#x016F;&#382;eme v p&#x0159;�pad&#x011B;
+pot&#x0159;eby rozvinout na jednorozm&#x011B;rn� pole o 64 prvc�ch. V&#x00FD;hodou tohoto p&#x0159;�stupu je
+snadn&#x011B;j&#353;� &#x010D;itelnost programu, nev&#x00FD;hodou je nutnost o&#353;et&#x0159;it mo&#382;n� p&#x0159;ete&#x010D;en� pole.
+(Nap&#x0159;. tah jezdce z okraje &#353;achovnice mimo jej� okraj. Toto se d� &#x0159;e&#353;it polem 10x12,
+pota&#382;mo jednorozm&#x011B;rn&#x00FD;m polem o 120 prvc�ch, co&#382; je vlastn&#x011B; klasick� &#353;achovnice 8x8 s
+mantinely.
+<!--l. 214--><p class="indent" >   Nejednodu&#353;&#353;� reprezentace &#353;achov&#x00FD;ch figur je cel&#x00FD;m &#x010D;�slem - kladn&#x00FD;m pro b�l�, z�porn&#x00FD;m pro
+&#x010D;ern�. Pr�zdn� pole je pak neutr�ln� a m� hodnotu 0, mantinely (jsou-li p&#x0159;�tomny) maj� n&#x011B;jakou
+konstantn� hodnotu, kter� se neuva&#382;uje pro v&#x00FD;po&#x010D;et.
+<!--l. 216--><p class="indent" >   Dal&#353;� mo&#382;nou reprezentac� &#353;achovnice m&#x016F;&#382;e b&#x00FD;t bitov� pole. N&#x011B;jak&#x00FD; jev na &#353;achovnici je pak
+reprezentov�n 64-bitov&#x00FD;m &#x010D;�slem. Nap&#x0159;�klad v&#x00FD;skyt b�l&#x00FD;ch v&#x011B;&#382;� v z�kladn�m postaven� je pak
+reprezentov�n &#x010D;�slem 129 (00000000 00000000 00000000 00000000 00000000 00000000 00000000
+10000001) Kdy&#382; budeme m�t pro ka&#382;d&#x00FD; typ kamene jednu prom&#x011B;nnou, 12 prom&#x011B;nn&#x00FD;ch m&#x016F;&#382;e
+reprezentovat celou &#353;achovnici. V&#x00FD;hodou tohoto p&#x0159;�stupu je velmi efektivn� zpracov�n� zejm�na
+na 64-bitov� architektu&#x0159;e, kde je ka&#382;d� operace jedna velmi jednoduch� instrukce. Nev&#x00FD;hodou, je,
+&#382;e zejm�na pro za&#x010D;�naj�c� program�tory m&#x016F;&#382;e b&#x00FD;t tento p&#x0159;�stup velmi matouc� a
+ne&#x010D;iteln&#x00FD;.
+<!--l. 218--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">2.3   </span> <a 
+ id="x1-160002.3"></a>Reprezentace pole tah&#x016F;</h4>
+<!--l. 220--><p class="noindent" >Proto&#382;e tah&#x016F; bude v pr&#x016F;b&#x011B;hu v&#x00FD;po&#x010D;tu generov�no velmi mnoho, m&#x011B;l by b&#x00FD;t typ, reprezentuj�c�
+tah, velmi mal&#x00FD;. Ka&#382;dop�dn&#x011B; mus� obsahovat minim�ln&#x011B; polo&#382;ky odkud a kam. V p&#x0159;�pad&#x011B;
+reprezentace &#353;achovnice dvourozm&#x011B;rn&#x00FD;m polem, budou polo&#382;ky odkud a kam reprezentov�ny
+dvouprvkov&#x00FD;m polem - na indexu 0 bude sloupec, na indexu 1 &#x0159;�dek. V p&#x0159;�pad&#x011B;, &#382;e je &#353;achovnice
+reprezentov�na jednorozm&#x011B;rn&#x00FD;m polem, polo&#382;ky odkud a kam jsou reprezentov�ny pouze cel&#x00FD;m
+&#x010D;�slem.
+<!--l. 222--><p class="indent" >   K ulo&#382;en� mno&#382;iny tah&#x016F; se b&#x011B;&#382;n&#x011B; pou&#382;�v� glob�ln� z�sobn�k tah&#x016F;, kter&#x00FD; m&#x016F;&#382;e vypadat
+n&#x011B;jak takto:
+
+   <div class="verbatim" id="verbatim-1">
+Move&#x00A0;moves[MANY]
+&#x00A0;<br />int&#x00A0;borders[DEPTH]
+&#x00A0;<br />int&#x00A0;index_in_stack
+</div>
+<!--l. 227--><p class="nopar" >
+<!--l. 229--><p class="indent" >   Tahy jsou ulo&#382;eny v jedin�m glob�ln�m jednorozm&#x011B;rn�m poli, p&#x0159;i&#x010D;em&#382; tahy z aktu�ln&#x011B;
+propo&#x010D;�t�van� pozice maj� index borders[index_in_stack] a&#382; borders[index_in_stack+1]-1.
+Konstanta DEPTH je nejvy&#353;&#353;� mo&#382;n� hloubka zano&#x0159;en� rekurze. Na dne&#353;n�ch po&#x010D;�ta&#x010D;�ch by
+m&#x011B;lo sta&#x010D;it 32. Velikost konstanty MANY pak p&#x016F;jde shora odhadnout jako sou&#x010D;in maxim�ln�ho
+po&#x010D;tu tah&#x016F; z pozice * DEPTH. Program p&#x0159;i tomto postupu sice m&#x016F;&#382;e trochu pl&#x00FD;tvat pam&#x011B;t�, ale
+achillovou patou &#353;achov&#x00FD;ch program&#x016F; obvykle neb&#x00FD;v� nedostatek pam&#x011B;ti, n&#x00FD;br&#382; nedostatek &#x010D;asu
+na dostate&#x010D;n&#x011B; hlubok&#x00FD; v&#x00FD;po&#x010D;et. Toto &#x0159;e&#353;en� u&#353;et&#x0159;� cenn� mikrosekundy, kter� by st�lo
+dynamick� p&#x0159;ealokov�v�n� pole v cyklu.
+<!--l. 231--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">2.4   </span> <a 
+ id="x1-170002.4"></a>Ohodnocovac� funkce</h4>
+<!--l. 233--><p class="noindent" >&#352;achov&#x00FD; program prov�d� propo&#x010D;et do ur&#x010D;it� hloubky, na jeho&#382; konci zavol� ohodnocovac�
+funkci, kter� vr�t� cenu dan� pozice. Nejednodu&#353;&#353;� a nejd&#x016F;le&#382;it&#x011B;j&#353;� je samoz&#x0159;ejm&#x011B;
+se&#x010D;�st materi�l. Cena jednotliv&#x00FD;ch figur se v r&#x016F;zn&#x00FD;ch programech li&#353;�. Pokud m� p&#x011B;&#353;ec
+cenu 1, bude cena jezdce a st&#x0159;elce p&#x0159;ibli&#382;n&#x011B; 3, v&#x011B;&#382;e 5 a d�my 9. N&#x011B;kdy b&#x00FD;v� hodnota
+st&#x0159;elce nepatrn&#x011B; vy&#353;&#353;� ne&#382; hodnota jezdce a podobn&#x011B;. &#352;achov&#x00FD; program s ohodnocovac�
+funkc� degenerovanou na prost&#x00FD; sou&#x010D;et materi�lu se pochopiteln&#x011B; bude chovat divn&#x011B;.
+Cesta i od velmi zjevn� pozi&#x010D;n� chyby k matu je velmi dlouh� a p&#x0159;esahuje hloubku
+propo&#x010D;tu dne&#353;n�ch program&#x016F;, tak&#382;e prost&#x00FD; sou&#x010D;et materi�lu nesta&#x010D;�. Proto se p&#x0159;id�v�
+pozi&#x010D;n� slo&#382;ka. Pozi&#x010D;n� slo&#382;ka b&#x00FD;v� oby&#x010D;ejn&#x011B; velmi mal�, jen z&#x0159;�dka v re�ln&#x00FD;ch parti�ch
+p&#x0159;es�hne v absolutn� hodnot&#x011B; cenu p&#x011B;&#353;ce. &#x0158;ada pozi&#x010D;n�ch faktor&#x016F; se d� ocenit statickou
+tabulkou pro jednotliv� pol�&#x010D;ka. Nap&#x0159;�klad pozi&#x010D;n� bonus pro figury bl�&#382;e ke st&#x0159;edu
+&#353;achovnice (a t�m i v&#x011B;t&#353;�m man�vrovac�m prostorem) bude vy&#353;&#353;� ne&#382; pro figury u
+kraje nebo v rohu &#353;achovnice. Takov�to &#x0159;e&#353;en� pozi&#x010D;n� slo&#382;ky jist&#x011B; nebude dokonal�,
+zato bude velmi rychl�. Pozi&#x010D;n� tabulku m&#x016F;&#382;eme pro jednotliv� figury lehce upravit.
+Pro p&#x011B;&#353;ce existuje cel� &#x0159;ada heuristik. M&#x016F;&#382;eme pozi&#x010D;n&#x011B; v�ce ocenit p&#x011B;&#353;ce, kte&#x0159;� jsou
+d�le od v&#x00FD;choz�ho postaven� - to p&#x011B;&#353;ce p&#x0159;im&#x011B;je ut�kat sm&#x011B;rem k d�m&#x011B;. V z�kladn�m
+postaven� pak m&#x016F;&#382;eme ocenit vy&#353;&#353;� bonusem p&#x011B;&#353;ce na vykro&#x010D;iv&#353;� na st&#x0159;edu. D�le
+m&#x016F;&#382;eme ocenit je-li p&#x011B;&#353;ec voln&#x00FD; (&#382;�dn� figura mu nebr�n� v b&#x011B;hu do d�my), &#x010D;i je-li
+kryt&#x00FD; jin&#x00FD;m p&#x011B;&#353;ce. Rovn&#x011B;&#382; m&#382;e dostat postih, je-li opo&#382;d&#x011B;n&#x00FD;. Jezdec stoj� dob&#x0159;e v
+centru, v rohu se mu obvykle neda&#x0159;�. Rovn&#x011B;&#382; m&#x016F;&#382;eme ocenit jezdce &#353;ikovn&#x011B; kryt�ho
+p&#x011B;&#353;cem. Pro st&#x0159;elce sice nen� pozi&#x010D;n� ohodnocen� tak podstatn�, p&#x0159;esto se o to m&#x016F;&#382;eme
+pokusit. Dob&#x0159;e um�st&#x011B;n&#x00FD; st&#x0159;elec by m&#x011B;l dostat bonus za soupe&#x0159;ovy p&#x011B;&#353;ce na stejn�
+barv&#x011B; pole, kter� m&#x016F;&#382;e napadat a naopak postih za p&#x011B;&#353;ce, kter� napadat nem&#x016F;&#382;e.
+T�m n�m vyjde, &#382;e dva st&#x0159;elci budou m�t spolu nepatrn&#x011B; vy&#353;&#353;� hodnotu ne&#382; je prost&#x00FD;
+sou&#x010D;et jejich hodnot. U v&#x011B;&#382;e nem� statick� ohodnocovac� tabulka smysl. V&#x011B;&#382; pat&#x0159;�
+na voln&#x00FD; sloupec, m� tla&#x010D;it na opo&#382;d&#x011B;n� nebo nekryt� p&#x011B;&#353;ce a ob&#x011B; v&#x011B;&#382;e by se m&#x011B;ly
+
+navz�jem kr&#x00FD;t. U d�my je pot&#x0159;eba snad jen zabr�nit p&#x0159;ed&#x010D;asn�mu v&#x00FD;vinu - soupe&#x0159;
+pak prost&#x011B; napad� d�mu s tempy b&#x011B;&#382;n&#x00FD;ch v&#x00FD;vinov&#x00FD;ch tah&#x016F; leh&#x010D;�ch figur. U kr�le je
+v zah�jen� a st&#x0159;edn� h&#x0159;e d&#x016F;le&#382;it� p&#x0159;edev&#353;�m bezpe&#x010D;nost. Jde jednak o um�st&#x011B;n�,
+zachovan� pr�vo ro&#353;�dy, p&#x011B;&#353;cov&#x00FD; kryt kr�le a napadnutelnost pol� v okol�. V koncovce se
+�loha kr�le radik�ln&#x011B; m&#x011B;n� a st�v� se z n&#x011B;j aktivn&#x011B; bojuj�c� figura, kter� mus� opustit
+�kryt a bojovat o st&#x0159;ed. V matov� koncovce se pak kr�l siln&#x011B;j&#353;� strany sna&#382;� p&#x0159;ibl�&#382;it
+soupe&#x0159;ovu kr�li. Ohodnocovac� funkce napsan� pomoc� statick&#x00FD;ch tabulek je velmi rychl�,
+ale m� jednu v�&#382;nou slabinu. Tabulky jsou naps�ny obecn&#x011B;, mohou tedy b&#x00FD;t dobr�
+pro b&#x011B;&#382;nou pozici, ale sta&#x010D;� n&#x011B;kolik netypick&#x00FD;ch tah&#x016F; a spr�vn� ohodnocen� pol�&#x010D;ek
+nap&#x0159;�klad pro jezdce m&#x016F;&#382;e b&#x00FD;t �pln&#x011B; jin�. &#x0158;e&#353;en�m je m�sto samotn�ho pole oce&#x0148;ovat
+pohyblivost figur, napadnuteln� pole a tak podobn&#x011B;. To v&#353;e je ov&#353;em za cenu vy&#353;&#353;� &#x010D;asov�
+n�ro&#x010D;nosti.
+<!--l. 243--><p class="noindent" >
+   <h3 class="sectionHead"><span class="titlemark">3   </span> <a 
+ id="x1-180003"></a>Popis implementace</h3>
+<!--l. 245--><p class="noindent" >Program je rozd&#x011B;len na 4 moduly:
+     <ul class="itemize1">
+     <li class="itemize">main.c s hlavi&#x010D;kov&#x00FD;m souborem zcuchess.h obsahuje hlavn� funkci a pomocn� funkce
+     pro spr�vu pam&#x011B;ti.
+     </li>
+     <li class="itemize">io.c s hlavi&#x010D;kov&#x00FD;m souborem io.h funkce pro vstupn� a v&#x00FD;stupn� operace
+     </li>
+     <li class="itemize">chess.c s hlavi&#x010D;kov&#x00FD;m souborem chess.h z�kladn� rutiny umo&#382;&#x0148;uj�c� &#353;achovou hru
+     </li>
+     <li class="itemize">ai.c s hlavi&#x010D;kov&#x00FD;m souborem ai.h obsahuje um&#x011B;lou &#8221;inteligenci&#8221;</li></ul>
+<!--l. 253--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">3.1   </span> <a 
+ id="x1-190003.1"></a>Glob�ln� datov� struktury</h4>
+     <ul class="itemize1">
+     <li class="itemize">int chessboard[8][8]
+     </li>
+     <li class="itemize">reprezentace &#353;achovnice pota&#382;mo pozice.
+     </li>
+     <li class="itemize">bool castlings[4]
+     </li>
+     <li class="itemize">pole s p&#x0159;�znaky ro&#353;�d, kter� je&#353;t&#x011B; m&#x016F;&#382;eme prov�st (mal� b�l�, velk� b�l�, mal� &#x010D;ern�,
+     velk� &#x010D;ern�).
+
+     </li>
+     <li class="itemize">int en_passant[2]
+     </li>
+     <li class="itemize">Udr&#382;uje aktu�ln� pozici p&#x011B;&#353;ce, kter�ho m&#x016F;&#382;eme sebrat mimochodem. Na indexu 0 je
+     sloupec, na indexu 1 je &#x0159;�dek
+     </li>
+     <li class="itemize">bool human_move
+     </li>
+     <li class="itemize">p&#x0159;�znak, zda-li je na tahu &#x010D;lov&#x011B;k.
+     </li>
+     <li class="itemize">int position_bonus[8][8]
+     </li>
+     <li class="itemize">tabulka s pozi&#x010D;n�mi bonusy pro statickou ohodnocovac� funkci.</li></ul>
+<!--l. 262--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">3.2   </span> <a 
+ id="x1-200003.2"></a>Reprezentace &#353;achovnice, pozice a hodnot figur</h4>
+<!--l. 263--><p class="noindent" >Pro n�zornost byla za reprezentaci &#353;achovnice, pota&#382;mo pozic, zvolena matice 8x8. B�l� figury jsou
+reprezentov�ny cel&#x00FD;m kladn&#x00FD;m &#x010D;�slem n�sledovn&#x011B;:
+     <ul class="itemize1">
+     <li class="itemize">1 P&#x011B;&#353;ec (konstanta PAWN), hodnota 100 (konstanta PAWN_VALUE)
+     </li>
+     <li class="itemize">2 V&#x011B;&#382; (konstanta ROOK), hodnota 400 (konstanta ROOK_VALUE)
+     </li>
+     <li class="itemize">3 Jezdec (konstanta KNIGHT), hodnota 300 (konstanta KNIGHT_VALUE)
+     </li>
+     <li class="itemize">4 St&#x0159;elec (konstanta BISHOP), hodnota 350 (konstanta BISHOP_VALUE)
+     </li>
+     <li class="itemize">5 D�ma (konstanta QUEEN), hodnota 750 (konstanta QUEEN_VALUE)
+     </li>
+     <li class="itemize">6 Kr�l (konstanta KING)</li></ul>
+
+<!--l. 272--><p class="noindent" >&#x010C;ern� figury jsou reprezentov�ny stejn&#x011B;, akor�t s opa&#x010D;n&#x00FD;m znam�nkem. &#x010C;�slo 0 (konstanta EMPTY)
+pak reprezentuje pr�zdn� pole.
+<!--l. 274--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">3.3   </span> <a 
+ id="x1-210003.3"></a>Reprezentace tahu a mno&#382;iny tah&#x016F;</h4>
+<!--l. 276--><p class="noindent" >Tah je reprezentov�n datovou strukturou Move:
+
+   <div class="verbatim" id="verbatim-2">
+typedef&#x00A0;struct&#x00A0;{
+&#x00A0;<br />&#x00A0;&#x00A0;int&#x00A0;from[2];
+//na&#x00A0;indexu&#x00A0;0&#x00A0;je&#x00A0;sloupec&#x00A0;odkud&#x00A0;se&#x00A0;t�hne,&#x00A0;na&#x00A0;indexu&#x00A0;1&#x00A0;je&#x00A0;&#x0159;�dek&#x00A0;odkud&#x00A0;se&#x00A0;t�hne
+&#x00A0;<br />&#x00A0;&#x00A0;int&#x00A0;to[2];
+//na&#x00A0;indexu&#x00A0;0&#x00A0;je&#x00A0;sloupec&#x00A0;kam&#x00A0;se&#x00A0;t�hne,&#x00A0;na&#x00A0;indexu&#x00A0;1&#x00A0;je&#x00A0;&#x0159;�dek&#x00A0;kam&#x00A0;se&#x00A0;t�hne
+&#x00A0;<br />&#x00A0;&#x00A0;bool&#x00A0;status; //p&#x0159;�znak&#x00A0;je-li&#x00A0;tah&#x00A0;validn�
+&#x00A0;<br />}&#x00A0;Move;
+</div>
+<!--l. 283--><p class="nopar" >
+<!--l. 285--><p class="indent" >   V programu jsou pro indexy pol� <span 
+class="cmti-10x-x-109">from </span>a <span 
+class="cmti-10x-x-109">to </span>p&#x0159;ipraveny konstanty <span 
+class="cmti-10x-x-109">COL </span>(sloupec, index 0) a
+<span 
+class="cmti-10x-x-109">ROW </span>(&#x0159;�dek, index 1). V cel�m programu se pak tyto sou&#x0159;adnice pou&#382;�vaj� konzistentn&#x011B;, tzn.
+v&#382;dy je sloupec prvn� a &#x0159;�dek druh&#x00FD;.
+<!--l. 287--><p class="indent" >   Mno&#382;ina tah&#x016F; se ukl�d� do struktury Moves:
+
+   <div class="verbatim" id="verbatim-3">
+typedef&#x00A0;struct&#x00A0;{
+&#x00A0;<br />&#x00A0;&#x00A0;int&#x00A0;count; //Po&#x010D;et&#x00A0;tah&#x016F;&#x00A0;v&#x00A0;mno&#382;in&#x011B;
+&#x00A0;<br />&#x00A0;&#x00A0;Move&#x00A0;*move; //Pole&#x00A0;tah&#x016F;
+&#x00A0;<br />}&#x00A0;Moves;
+</div>
+<!--l. 293--><p class="nopar" >
+<!--l. 295--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">3.4   </span> <a 
+ id="x1-220003.4"></a>Statick� ohodnocovac� funkce</h4>
+<!--l. 296--><p class="noindent" >Prov�d� prost&#x00FD; sou&#x010D;et hodnoty materi�lu a p&#x0159;ipo&#x010D;�t�v� pozi&#x010D;n� bonus. Pozi&#x010D;n� bonus je
+reprezentov�n matic� 8x8 typu int a je pro v&#353;echny figury stejn&#x00FD;. Vych�z� z my&#353;lenky, &#382;e ka&#382;d�
+figura je u&#382;ite&#x010D;n&#x011B;j&#353;� bl�&#382;e ke st&#x0159;edu &#353;achovnice.
+<!--l. 298--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">3.5   </span> <a 
+ id="x1-230003.5"></a>Mysl�c� algoritmus</h4>
+<!--l. 299--><p class="noindent" >Jako mysl�c� algoritmus byl postupn&#x011B; pou&#382;it minimax, alfabeta a nakonec velmi prost�
+implementace kask�dov� metody. V&#353;echny tyto algoritmy jsou pops�ny v &#x010D;�sti o anal&#x00FD;ze.
+<!--l. 301--><p class="noindent" >
+   <h3 class="sectionHead"><span class="titlemark">4   </span> <a 
+ id="x1-240004"></a>U&#382;ivatelsk� p&#x0159;�ru&#x010D;ka</h3>
+<!--l. 303--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">4.1   </span> <a 
+ id="x1-250004.1"></a>Instalace</h4>
+<!--l. 305--><p class="noindent" >Pokud jste u&#382;ivatli Linuxu:
+     <ul class="itemize1">
+     <li class="itemize">V ko&#x0159;enov�m adres�&#x0159;i projektu napi&#353;te do konzole p&#x0159;�kaz <span 
+class="cmti-10x-x-109">make</span>.</li></ul>
+<!--l. 309--><p class="noindent" >Pokud jste u&#382;ivateli Windows 7:
+     <ul class="itemize1">
+     <li class="itemize">St�hn&#x011B;te a nainstalujte n&#x011B;jak&#x00FD; C p&#x0159;eklada&#x010D; zalo&#382;en&#x00FD; na gcc (nap&#x0159;. MinGW).
+     </li>
+     <li class="itemize">Klikn&#x011B;te na tla&#x010D;�tko  <span 
+class="cmbx-10x-x-109">Start </span>a vyberte polo&#382;ku  <span 
+class="cmbx-10x-x-109">Tento po</span><span 
+class="cmbx-10x-x-109">&#x010D;</span><span 
+class="cmbx-10x-x-109">�ta</span><span 
+class="cmbx-10x-x-109">&#x010D;</span>.
+     </li>
+     <li class="itemize">Klikn&#x011B;te prav&#x00FD;m tla&#x010D;�tkem my&#353;i do okna, kter� se v�m zobrazilo, a z menu vyberte
+     <span 
+class="cmbx-10x-x-109">Vlastnosti</span>.
+
+     </li>
+     <li class="itemize">V n�sleduj�c�m okn&#x011B; vyberte vpravo polo&#382;ku  <span 
+class="cmbx-10x-x-109">Up</span><span 
+class="cmbx-10x-x-109">&#x0159;esnit nastaven</span><span 
+class="cmbx-10x-x-109">� syst</span><span 
+class="cmbx-10x-x-109">�mu</span>, otev&#x0159;e
+     se dal&#353;� dialogov� okno.
+     </li>
+     <li class="itemize">V tom klikn&#x011B;te na tla&#x010D;�tko  <span 
+class="cmbx-10x-x-109">Prom</span><span 
+class="cmbx-10x-x-109">&#x011B;nn</span><span 
+class="cmbx-10x-x-109">� prost</span><span 
+class="cmbx-10x-x-109">&#x0159;ed</span><span 
+class="cmbx-10x-x-109">�... </span>vpravo dole. Zobraz� se okno,
+     v n&#x011B;m&#382; je mo&#382;n� nastavit prom&#x011B;nn� syst�mu.
+     </li>
+     <li class="itemize">Najd&#x011B;te prom&#x011B;nnou  <span 
+class="cmti-10x-x-109">PATH </span>a klikn&#x011B;te na upravit. Na konec t�to prom&#x011B;nn� napi&#353;te za
+     st&#x0159;edn�k cestu k adres�&#x0159;i obsahuj�c�mu soubor gcc.exe (Tedy nap&#x0159;.: ;C:<span 
+class="cmsy-10x-x-109">\</span>MinGW<span 
+class="cmsy-10x-x-109">\</span>bin<span 
+class="cmsy-10x-x-109">\</span>)
+     </li>
+     <li class="itemize">Pokud prom&#x011B;nn�  <span 
+class="cmti-10x-x-109">PATH </span>neexistuje, vytvo&#x0159;te ji.
+     </li>
+     <li class="itemize">Pozav�rejte v&#353;echna okna.
+     </li>
+     <li class="itemize">Znovu klikn&#x011B;te na tla&#x010D;�tko  <span 
+class="cmbx-10x-x-109">Start</span>, vyberte  <span 
+class="cmbx-10x-x-109">P</span><span 
+class="cmbx-10x-x-109">&#x0159;</span><span 
+class="cmbx-10x-x-109">�slu</span><span 
+class="cmbx-10x-x-109">&#353;enstv</span><span 
+class="cmbx-10x-x-109">� </span>a  <span 
+class="cmbx-10x-x-109">P</span><span 
+class="cmbx-10x-x-109">&#x0159;</span><span 
+class="cmbx-10x-x-109">�kazov</span><span 
+class="cmbx-10x-x-109">&#x00FD; </span><span 
+class="cmbx-10x-x-109">&#x0159;</span><span 
+class="cmbx-10x-x-109">�dek</span>.
+     </li>
+     <li class="itemize">V p&#x0159;�kazov�m &#x0159;�dku p&#x0159;ejd&#x011B;te do slo&#382;ky projektu a napi&#353;te  <span 
+class="cmtt-10x-x-109">mingw32-make</span>.</li></ul>
+<!--l. 323--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">4.2   </span> <a 
+ id="x1-260004.2"></a>Ovl�d�n�</h4>
+<!--l. 325--><p class="noindent" >Program je konzolov&#x00FD;, ovl�d� se tedy z kl�vesnice. Spust�me ho klasicky p&#x0159;�kazem ./zcuchess
+(zcuchess.exe na platform&#x011B; Windows). Program p&#x0159;i spu&#353;t&#x011B;n� vyp�&#353;e hlavi&#x010D;ku, jej�&#382;
+sou&#x010D;�st� je i n�pov&#x011B;da a &#x010D;ek� na zad�n� prvn�ho tahu. Tah se zapisuje ve form�tu odkud
+mezera kam, tedy nap&#x0159; e2 e3. Pot� program chv�li p&#x0159;em&#x00FD;&#353;l�, na&#x010D;e&#382; vyp�&#353;e sv&#x016F;j tah.
+Automaticky se p&#x0159;edpokl�d�, &#382;e &#x010D;lov&#x011B;k hraje za b�l�ho. N�pov&#x011B;du je mo&#382;no kdykoliv vypsat
+veps�n�m kl�&#x010D;ov�ho slova help nam�sto tahu. Stejn&#x011B; tak je mo&#382;n� program kdykoliv
+ukon&#x010D;it veps�n�m slova exit nam�sto tahu. Pokud nastane mat, program se ukon&#x010D;�
+s�m.
+<!--l. 327--><p class="noindent" >
+   <h3 class="sectionHead"><span class="titlemark">5   </span> <a 
+ id="x1-270005"></a>Z�v&#x011B;r</h3>
+<!--l. 328--><p class="noindent" >Program hraje &#353;achy dostate&#x010D;n&#x011B; dob&#x0159;e na to aby v nich porazil sv�ho tv&#x016F;rce, zad�n�
+semestr�ln� pr�ce proto pova&#382;uji za spln&#x011B;n�, i kdy&#382; k dobr� h&#x0159;e m� program st�le je&#353;t&#x011B; velice
+daleko.
+
+<!--l. 330--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">5.1   </span> <a 
+ id="x1-280005.1"></a>Probl�my v pr&#x016F;b&#x011B;hu psan� programu</h4>
+<!--l. 331--><p class="noindent" >P&#x0159;i b&#x011B;hu programu doch�zelo ke zna&#x010D;n&#x00FD;m �nik&#x016F;m pam&#x011B;ti, kter� se nakonec poda&#x0159;ilo naj�t a
+vy&#x0159;e&#353;it za pomoci programu  <span 
+class="cmti-10x-x-109">Valgrind</span>. V&#x011B;t&#353;� probl�my nastaly p&#x0159;i pokusech p&#x0159;elo&#382;it program na
+syst�mu Windows a to zejm�na:
+     <ul class="itemize1">
+     <li class="itemize">Bylo  pot&#x0159;eba  si  opat&#x0159;it  po&#x010D;�ta&#x010D;  vybaven&#x00FD;  t�mto  syst�mem.  Nakonec  jsem  pou&#382;il
+     virtu�ln� server s Windows, kter&#x00FD; m�me k dispozici v pr�ci.
+     </li>
+     <li class="itemize">Nastaven�  prom&#x011B;nn�  prost&#x0159;ed�   <span 
+class="cmti-10x-x-109">PATH</span>.  Zde  bych  cht&#x011B;l  pod&#x011B;kovat  kolegovi  Karlu
+     Vl&#x010D;kovi za trp&#x011B;livost.
+     </li>
+     <li class="itemize">Samotn� pr�ce s p&#x0159;�kazov&#x00FD;m &#x0159;�dkem ve Windows.
+     </li>
+     <li class="itemize">Po p&#x0159;ekladu jsem zjistil, &#382;e je rozbit� &#x010D;e&#353;tina (to mi mohlo doj�t hned), tak jsem
+     program upravil tak aby pou&#382;�val  <span 
+class="cmti-10x-x-109">cestinu</span>.
+     </li>
+     <li class="itemize">Funkce   <span 
+class="cmtt-10x-x-109">clock() </span>nevracela ve Windows spr�vn� v&#x00FD;sledky, zm&#x011B;nil jsem ji na funkci
+     <span 
+class="cmtt-10x-x-109">time()</span>.</li></ul>
+<!--l. 340--><p class="noindent" >Na posledn� chv�li jsem p&#x0159;i h&#x0159;e sv�ho programu proti programu GNU Chess 4 objevil chybu v
+ro&#353;�d&#x011B; - program sice kontroloval, zda-li nebylo t�hnuto kr�lem &#x010D;i v&#x011B;&#382;� a zda-li nen� kr�l
+p&#x0159;ed, po a b&#x011B;hem ro&#353;�dy v &#353;achu, ale u&#382; nekontroloval, jestli je v&#x011B;&#382; je&#353;t&#x011B; na sv�m
+m�st&#x011B;.
+<!--l. 342--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">5.2   </span> <a 
+ id="x1-290005.2"></a>Mo&#382;n� vylep&#353;en�</h4>
+<!--l. 343--><p class="noindent" >Podle profileru tr�v� program a&#382; &#x010D;tvrtinu &#x010D;asu ve funkci <span 
+class="cmtt-10x-x-109">add</span><span 
+class="cmtt-10x-x-109">_move </span>(p&#x0159;id�n� tahu do
+mno&#382;iny tah&#x016F;). Toto by se dalo vy&#x0159;e&#353;it glob�ln�m z�sobn�kem tah&#x016F;. Proto&#382;e je glob�ln�
+z�sobn�k tah&#x016F; statick&#x00FD;, nebylo by z�rove&#x0148; pot&#x0159;eba &#x0159;e&#353;it �niky pam&#x011B;ti. Dal&#353;�m vylep&#353;en�m
+zlep&#353;uj�c� hloubku propo&#x010D;tu by bylo nasazen� n&#x011B;jak&#x00FD;ch heuristik do gener�toru tah&#x016F; a
+t&#x0159;�d&#x011B;n� tah&#x016F; pro pr&#x016F;b&#x011B;hu kask�dov� metody. V podstat&#x011B; nasazen� jak&#x00FD;chkoli heuristik
+uveden&#x00FD;ch u kask�dov� metody v anal&#x00FD;ze. Hru programu by samoz&#x0159;ejm&#x011B; zlep&#353;ila tak�
+implementace datab�ze zah�jen� a koncovek. Dal&#353;�m drobn&#x00FD;m zrychlen�m by bylo rozvinut�
+pole 8x8, reprezentuj�c�ho &#353;achovnici, na jednorozm&#x011B;rn� pole o 64 prvc�ch. V&#x016F;bec
+nejzaj�mav&#x011B;j&#353;� by bylo pou&#382;�t reprezentaci v podob&#x011B; bitov� mapy, ale to by si vy&#382;�dalo n&#x011B;kolik
+m&#x011B;s�c&#x016F; studia. Z u&#382;ivatelsk�ho hlediska by se jist&#x011B; hodila mo&#382;nost d�t u&#382;ivateli na
+v&#x00FD;b&#x011B;r barvu strany, za kterou chce hr�t, &#x010D;i mo&#382;nost partii ulo&#382;it do souboru a op&#x011B;tovn&#x011B;
+na&#x010D;�st.
+<!--l. 349--><p class="indent" >   Program byl vyv�jen v integrovan�m v&#x00FD;vojov�m prost&#x0159;ed� NetBeans IDE 7.2.1 na platform&#x011B;
+Xubuntu Linux. Mezi dal&#353;� n�stroje pou&#382;it� p&#x0159;i v&#x00FD;voji pat&#x0159;� Valgrind, verzovac� syst�m GIT a
+editor VIM. Postupn&#x00FD; v&#x00FD;voj programu a jeho zdrojov� k�dy si lze prohl�dnout na adrese
+<span 
+class="cmti-10x-x-109">https://github.com/ClaryAldringen/ZCUChess</span>.  
+</body></html> 
 
-\begin{document}
 
-\begin{titlepage}
-	\begin{center}
-		\includegraphics[width=10cm]{zculogo.ps}
-		\vskip 5cm
-		{\huge \bfseries Semestrální práce z PC a PT} \\
-		\vskip 1cm
-		{ \large Martin Zadražil} \\
-		{ \large \today }
-	\end{center}
-\end{titlepage}
 
-\tableofcontents
-\newpage
-
-\section{Zadání}
-
-Implementace jednoduchého šachového algoritmu, který umožňuje hru hráče proti počítači. Vstup a výstup bude probíhat na příkazové řádce.
-
-\section{Analýza úlohy}
-
-Nejprve je potřeba navrhnout základní datové struktury a rutiny, které musí obsahovat každý šachový program i takový, který neobsahuje žádný myslící algoritmus a umožňuje například jen hru dvou lidských hráčů po síti. Patří sem funkce pro
-\begin{itemize}
-	\item Nalezení všech legálních tahů z dané pozice
-	\item Kontrola šachu a matu
-	\item Funkce kontrolující dodržení pravidel při rošádě a braní mimochodem
-	\item Funkce, která zahraje samotný tah
-\end{itemize}
-Bude následovat umělá inteligence a chybět nesmí ani několik málo funkcí pro komunikaci s okolím, jako je zparsování tahu zadaného z klávesnice, vypsání tahu, upozornění na přemýšlení programu a podobně.
-
-\subsection{Umělá inteligence a teorie šachové hry}
-
-\subsubsection{Od nejjednoduššího algoritmu ke kaskádové metodě}
-Šachy jsou čistě matematickou úlohou, k jejímuž vyřešení se dá v každém případě dopočítat. Za vyřešení úlohy můžeme považovat mat v případě vyhrané pozice, pat v případě remízové pozice nebo alespoň co největší oddalování porážky v případě prohrané pozice. Klíčovou funkcí je statická ohodnocovací funkce, která vrátí číselnou hodnotu dané pozice. Nejednodušší algoritmus, který nehraje úplně náhodně, vygeneruje všechny tahy ze zadané pozice, každý z nich zahraje a vzniklou pozici ohodnotí statickou ohodnocovací funkcí. Pokud je hodnota pozice vyšší než dosud nejvyšší, uloží ji i tah, kterým jsme se na ni dostali. Poté zahraje tah zpět a tak dále, dokud nevyzkoušíme všechny tahy. Tento algoritmus je sice lepší než náhodné generování tahů, ale díru do světa rozhodně neudělá. Sebere klidně dámou krytého pěšce, nepokryje jednotahový mat a podobně.
-
-Vylepšením je přidat rekurzi. Zahrajeme všechny tahy z dané pozice, na tyto tahy zahrajeme odpověď soupeře, pak zase naší odpověď a tak dále až do nějaké hloubky n, kde zavoláme statickou ohodnocovací funkci. Tento algoritmus se jmenuje minimax. Na šachovnici je v základním postavení 16 pěšců, každý z nich může táhnout nejvýše šestkrát, poté se promění v nějakou figuru. Když nepočítáme krále, které není možné sebrat, je na šachovnici 30 figur a každá z nich může být sebrána maximálně jednou. Pokud se během 50ti tahů (50 tahů bílého a 50 tahů černého, celkem 100 půltahů) netáhne pěšcem ani nesebere žádná figura, je partie považovaná za remízu. Díky tomu můžeme shora odhadnout hloubku šachové partie na (16 * 6 + 30 + 1) * 100 = 12700 půltahů. Algoritmus minimax s hloubkou propočtu 12700 bude teoreticky hrát šachy úplně dokonale, alespoň v tom smyslu, že žádnou remízovou pozici neprohraje, každou vyhranou pozici nejen vyhraje, ale dokonce tím nejrychlejším způsobem a při prohrané pozici bude porážku alespoň maximálně oddalovat.
-
-Paměťová složitost minimaxu není příliš velká, neboť v zásobníku rekurzivního propočtu je v danou chvíli pouze jedna varianta. Kdyby se tedy minimaxu opravdu podařilo nalézt variantu dlouhou 12 700 půltahů a jedna instance minimaxu zabrala 1 kB, vešli bychom se i s volajícím kódem pohodlně do 13 MB. Na propočet stromu tak bohaté hry, jakou šachy bezesporu jsou, nám tedy stačí pouze pár megabajtů operační paměti. Bohužel časová složitost minimaxu je exponenciální \begin{math}v^h\end{math}, kde v je větvící faktor a h hloubka propočtu. Předpokládejme, že z pozice můžeme vygenerovat 20 tahů (například z výchozího postavení 16 tahů pěšci, 4 tahy jezdci) a že dokážeme spočítat milion ohodnocovacích funkcí za sekundu. Propočet do hloubky 2 pak potrvá 0,008 sekundy, propočet do hloubky 5 3,2 sekundy, propočet do hloubky 10 zhruba 118 a půl dne. Při hloubce 12 700 by to pak bylo \begin{math}3,81 * 10^16509\end{math} let, konce výpočtu by se tedy nejspíš nedočkala ani naše galaxie.
-
-Časovou složitost můžeme zlepšit. Potřebujeme-li zmenšit výsledek vzorce \begin{math}v^h\end{math}, můžeme zmenšovat h, což je hloubka propočtu a na kvalitu hry má zásadní vliv. Druhou možností je zmenšit v, což je větvící faktor a některé varianty vůbec nepočítat. I přesto se můžeme dostat ke správnému výsledku.
-
-\begin{center}
-	\includegraphics[width=8cm, height=8cm]{diagram1.ps}
-\end{center}
-
-V pozici na diagramu je na tahu bílý, jedná se o známou pozici ze zahájení jménem španělská hra (1. e4 e5 2. Jf3 Jc6 3. Sb5), kde se černý brání obvyklým tahem 3. ...a6. Napadl tedy bílému střelce a ten musí hrozbu nějak pokrýt. Běžné tahy jsou nyní 4. Sa4 a Sxc6, hrát by se dalo i Sc4 a snad ještě hodně defétistické Se2, všechny ostatní tahy jsou již vyloženě špatné. Z této pozice dáme programu za úkol provést propočet do hloubky 2 půltahy. Vygeneruje tahy a zkouší jeden po druhém zahrát. Generátor tahů je lehce modifikovaný, tak aby vracel braní před ostatními tahy. Program tedy nejprve propočítá 4. Sxc6, projde všechny odpovědi černého a zjistí, že po nejlepším 4. ...dxc6 je pozice přibližně vyrovnaná. Bílý sice ztratil výhodu dvojice střelců, ale zase černému znehodnotil pěšcovou strukturu. Ohodnocení prvního tahu zatím proběhlo tak, jako v algoritmu minimax. Rozdíl nastane až u druhého tahu bílého 4. Sxa6. Jedná se o zjevnou chybu, kterou bílý odevzdává střelce za pouhého pěšce, ale minimax by musel projít všechny odpovědi, aby si to uvědomil. Tedy poctivě počítat a ohodnocovat nejen 4. ...bxa6 a Vxa6, ale i zcela nesmyslné tahy jako 4. ...Jh6 nebo g5. Modifikovanému algoritmu stačí jediná: 4. ...Vxa6 nebo bxa6. Navíc generátor tahů, který preferuje braní, vrátí jeden z uvedených tahů hned jako první. Jak program pozná, že může propočet odpovědí na 4. Sxa6 přerušit a prohlásit tah za neperspektivní? Z propočtu 4. Sxc6 si zapamatoval hodnotu nejlepší odpovědi 4. ...dxc6, tedy zhruba 0 tj. vyrovnanou pozici. Při propočtu dalších tahů (4. Sxa6) uvedenou hodnotu použijeme jako práh. Pokud jej jakákoli odpověď (4. ...bxa6 nebo Vxa6) přesáhne, propočet tahu (4. Sxa6) ukončíme, neboť již víme, že je špatný. Jinými slovy: pokud víme, že tah je špatný (= horší než nějaký jiný - zde 4. Sxc6), nemá smysl dále zkoumat, jestli není náhodou ještě o něco horší, než jsme zatím zjistili.
-Pokud počítáme do hloubky 3 a více, dojde při prořezávání na oba hráče a jsou zde proto meze pro obě strany. Dolní se říká alfa, horní beta, odtud také název algoritmu alfabeta metoda (nebo alfabeta ořezávání). Pokud během propočtu narazíme na variantu, která je horší než alfa, můžeme ji zahodit. Vyjde-li nám varianta lepší než beta, může se jí zase vyhnout soupeř a zahrát tah, který je lepší pro něj. Časová složitost alfabety silně závisí na pořadí tahů, což ovlivňuje, jak rychle se nám podaří sevřít meze alfa a beta. Časová složitost optimální alfabety je \begin{math}v^{h/2}\end{math}, můžeme se s ní tedy za stejný čas dostat dvakrát hlouběji než s minimaxem. Je tedy žádoucí aby nejnadějnější varianty počítal algoritmus jako první. Existuje několik heuristik, jak odhadnout už v generátoru tahů, které varianty by mohly být nejlepší:
-\begin{itemize}
-	\item Sežer co můžeš: Způsobí-li tah změnu materiálu, posuneme ho na více dopředu. Preferovat můžeme rovněž braní nižší figurou.
-	\item Historická heuristika je založena na myšlence, že pokud byl tah dobrý v jedné variantě, nejspíš bude dobrý i v jiné. Tři typy této metody mohou být:
-	\item Globální tabulka tahů: Program si musí nějak pamatovat tahy. Informace odkud a kam se táhne, případně typ nové figury po proměně pěšce se při troše snahy vejde do 16 bitů. Vytvoříme si tedy pole velikosti 216, pro každý možný tah jeden byte. Na počátku propočtu pole obsahuje samé nuly. Když se nějaký tah ukáže jako dobrý (větší než aktuální hodnota alfa). Zvětším hodnotu jeho políčka v poli. Když potom po vygenerování třídíme tahy, uvažujeme ještě také hodnotu této heuristiky. Jak přesně se mají zvětšovat hodnoty v tabulce je složitá otázka. Je zřejmé, že dobré tahy z pozic vzdálenějších od kořene mají menší význam než dobré tahy z pozic blízkých kořeni. Je to tím, že průměrná pozice z propočtu je bližší kořeni než nějakému listu ze vzdálené větve.
-	\item Nejlepší tahy pro danou hloubku: Pro každou hloubku zanoření v propočtu si zapamatujeme poslední dva zlepšující tahy. Tyto tahy dostanou při propočtu v tomto zanoření speciální bonus. Oproti globální tabulce má metoda tu výhodu, že se více týká aktuální pozice a příslušné hloubky, chová se tedy lokálně. Tím pádem většinou preferuje zlepšující tahy z blízkých uzlů a u nich je opravdu dost velká pravděpodobnost, že budou dobré i v počítané pozici. Nevýhodou je, že ohodnocuje jen relativně málo tahů (přesně 2).
-	\item Hlavní varianta: Program si uchovává v tabulce dosavadní hlavní variantu, tedy větev výpočtu při optimální hře (optimální ve smyslu ohodnoceni listů) obou hráčů. Tah, který přísluší k hlavní variantě bude zřejmě dobrý i v celé řadě jiných variant, a proto získává bonus. Varianty se ukládají do matice, využívá se ale jen horní trojúhelník. V jednom políčku matice je jeden tah. Jsme-li při propočtu v nějakém uzlu, počítáme v tomto okamžiku vlastně hodnotu všech pozic na cestě z kořene do našeho uzlu. V i-tém řádku (od diagonály dál) si uchováváme nejlepší dosavadní variantu z i-té pozice na cestě od kořene. Dejme tomu, že v hloubce i došlo k nalezení zlepšujícího tahu. V řádku i máme původní nejlepší variantu (od naší pozice dál) a v řádku i+1 je zlepšující varianta.. Za této situace musíme zkopírovat i+1-ní řádek na pozici i-tého (z něj zůstane jen první tah na diagonále).
-\end{itemize}
-Nevýhodou alfabety je její pevná hloubka. Jsme-li v zahájení nebo střední hře, bude tahů k ohodnocení velmi mnoho. Hloubka výpočtu v této části hry by tedy neměla být příliš vysoká, jinak se k výsledku nedopočítáme v rozumném čase. Naopak v koncovce, kdy je pouze pár přípustných tahů lze hloubku propočtu zvýšit.
-Tento problém řeší kaskádová metoda. Jedná se vlastně o alfabeta metodu, která postupně počítá do hloubky 1,2,3,...,n. Na první pohled se může zdát zbytečné počítat pokaždé znovu, nicméně kaskádová metoda má několik výhod:
-
-\subsubsection{Zpomalení je malé}
-
-Protože je složitost alfabety exponenciální, zpomalí kaskádová metoda program cca jeden a půl krát. Dejme tomu, že průměrný větvící faktor šachu je 38, při dobrém alfabeta ořezávání se dostaneme na větvící faktor zhruba odmocnina z 38, dejme tomu 7. \begin{math}!7^{n-1}\end{math}je zhruba o řád menší než \begin{math}7^n\end{math}.
-
-\subsubsection{Lepší časová kontrola}
-
-V praxi obvykle nezní zadání \uv{dej mi nejlepší tah do hloubky 5}, ale \uv{dej mi nejlepší tah, máš na to 5 sekund}. Potom je velmi obtížné stanovit hloubku propočtu, které dosáhneme v daném čase. U kaskádové metody prostě provádíme iterace tak dlouho, dokud máme čas. To nám právě umožní v koncovce (případně kdykoliv, když je množina možných tahů dostatečně malá) počítat do větší hloubky.
-
-\subsubsection{Třídění tahů}
-
-Kaskádová metoda poskytuje lepší možnosti třídění tahů. Propočet do hloubky 1 začneme s tahy setříděnými podle jednoduchých heuristik v generátoru tahů. Nejlepší tah poté přemístíme na začátek, pokračujeme propočtem do hloubky 2, nejlepší taj z hloubky 2 opět přemístíme na začátek a tak dále. Tím se nám podaří velmi rychle sevřít interval alfa a beta okolo nejnadějnějších tahů, což kaskádovou metodu ještě dále zrychlí. Případů, kdy zahájíme propočet několika špatnými tahy bude velmi málo - obvykle se jedná o pozice s možností složité oběti nebo komplikovaného tahu.
-
-\subsubsection{Metoda okénka}
-
-Alfabeta metoda svírá interval alfa a beta velmi defenzivně - tak aby se vždy dopočítala ke správnému výsledku. Celý výpočet můžeme zrychlit tím, že meze alfa a beta ještě více sevřeme - vytvoříme interval alfa2 a beta2, který bude podmnožinou původního alfa a beta. Pokud jsme měli pravdu, ušetřili jsme na výpočtu nějaký čas, pokud ne, interval prostě přeteče a v následující iteraci kaskádové metody se počítá interval s již opravenými mezemi.
-
-\subsubsection{Prohlubování}
-
-Herní algoritmus počítá do nějaké hloubky, na jejímž konci ohodnotí pozici statickou ohodnocovací funkcí. Tento postup dobře funguje v běžných pozicích, ale v taktických pozicích (jako je výměna těžkých figur, pozice tah před matem, kdy vítězná strana obětovala materiál, atp.) selhává. Přitom by zde stačila o něco málo větší hloubka propočtu a program by hrozby včas viděl. Celkovou hloubku propočtu nemůžeme příliš zvyšovat - program by se nedopočítal. Řešením je tedy prohloubení těch variant, které jsou obzvláště zajímavé.
-
-\subsubsection{Dopočet do tiché pozice}
-
-Dopočet do tiché pozice patří v šachu k nejjednodušším a zároveň nejdůležitějším vylepšením alfabeta metody. Na úroveň hry programu má zcela zásadní vliv. Spočívá v tom, že pokud se v propočtu dostaneme do listu, neodhadujeme hodnotu pozice statickou ohodnocovací funkcí, ale jakousi modifikací alfabety, která se liší tím že bere v úvahu pouze braní a proměny pěšce. Vzhledem k tomu, že hráči odepíráme všechny ostatní tahy (tzv. tiché tahy), musíme mu umožnit nehrát, jinak bychom jej nutili i do nevýhodných braní. Funkce tedy vrací maximum z hodnoty pozice odhadnuté statickou ohodnocovací funkcí a rekurzivního dopočtu braní. Právě dopočet do tiché pozice řeší případy nedopočítaných výměn. Dopočet samozřejmě hodně zdržuje a sníží základní hloubku propočtu, ale pozitivní efekt je i tak obrovský. Dopočet do tiché pozice má navíc kladný vliv i na stabilitu výpočtu - již se nám nestane příliš často, že by zvýšení základní hloubky propočtu mělo nějaký zásadní vliv na hodnotu varianty.
-
-\subsubsection{Prohlubování taktických variant}
-
-Dopočet do tiché pozice je účinný, ale neřeší vše. Ve zvlášť nadějných variantách bývá dobré hloubku propočtu o jedničku zvýšit a nemusí se při tom nutně jednat o braní nebo proměny pěšce. K prohloubení také nemusí dojit jen v listu. Kdy přesně má smysl prohlubovat je složitá otázka. Za typické kandidáty na prohloubení můžeme označit tahy
-\begin{itemize}
-	\item Kdy je sebraná figura, která v minulém tahu sama brala (může se jednat o dokončení výměny)
-	\item Pokrytí šachu představením (může být jen oddálením matu skrývajícího se za horizontem propočtu)
-	\item Jakékoliv varianty s vynucenými tahy
-	\item Vidle pěšcem i jezdcem a podobné taktické údery
-	\item Varianty s tzv. Fisherovým střelcem
-	\item Taktické hrozby králi
-\end{itemize}
-Při prohlubování je potřeba postupovat velmi obezřetně, neboť prohloubení jedné varianty zkrátí výpočetní čas ostatních variant.
-
-\subsubsection{Haš tabulky}
-
-Doteď jsme se snažili zrychlit výpočet pomocí ořezávání a svírali jsme interval alfa a beta jak to jen šlo, abychom odřízli co nejvyšší počet variant, které nemá cenu počítat. Existuje však ještě jeden druh variant, které rovněž nemusíme počítat. Jde o dvojce variant, které se od sebe liší pouhým prohozením tahů. Pokud program počítá do hloubky 5 půltahů ze základního postavení, nevynechá ani variantu bílý pěšec na e4, černý pěšec na c5 v prvním tahu, bílý jezdec na f3 v druhém tahu a z této pozice pozice počítá ještě do zbývající hloubky 2 půltahy. Ke stejnému výsledku se však dostane i z pozice, kdy v prvním tahu přijde bílý jezdec na f3 a černý pěšec na c5 a ve druhém tahu bílý pěšec na e4. Následující dva půltahy se budou počítat znovu. Je přitom zřejmé, že vzniklou pozici stačí zkoumat jen jednou.
-V zahájení a střední hře s velkým počtem figur a malou hloubkou propočtu dochází k těmto duplicitám ještě poměrně zřídka. Mnohem horší je situace v koncovce s malým počtem figur. Typickým příkladem je koncovka dvou králů, v níž mají obě strany už jen několik zablokovaných pěšců. Král se obvykle snaží vytlačit soupeřova monarchu (obvykle i s využitím nevýhody tahu), pobrat soupeřovy pěšce a prosadit ty své do dámy. Obě strany přitom mají na výběr jen několik málo přípustných tahů, a tak hloubka propočtu roste oproti střední hře i dvojnásobně. Při podobných hlubokých propočtech dochází k opakovanému vyhodnocování jedné varianty vzniklé jen přehozením tahů zcela běžně. Právě v podobných typech pozic přitom může mít počítač s lidským soupeřem problémy. Jednoduchý charakter pozice totiž umožní lépe oprostit plán výhry nebo obrany od detailního propočtu (případně lidský propočet degeneruje na jedinou, ale zato dlouhou variantu bez větvení) a umožní vidět mnohem dál i člověku.
-
-Řešením je mít haš tabulku s výsledky jednotlivých výpočtů, do které se podíváme a pokud zde výsledek propočtu z naší pozice najdeme, okamžitě ho vrátíme. Je potřeba dát pozor na několik věcí:
-\begin{itemize}
-	\item Ukládat je potřeba i hloubku propočtu, neboť nelze nahradit propočet výsledkem předchozího propočtu do menší hloubky.
-	\item Alfabeta nedává jen mezivýsledky typu pozice má cenu = 3, ale i pozice má cenu <= 3 nebo pozice má cenu => 3. Tyto mezivýsledky je rovněž potřeba ukládat.
-	\item Musíme pracovat velmi rychle s velkým množstvím dat.
-	\item Program by neměl číst z disku - struktura se musí za každou cenu vejít do paměti.
-	\item Je lepší, když struktura zapomíná než aby swapovala
-	\item Pozice obsahuje 64 polí a stavovou informaci o tahu, právu na rošády a braní mimochodem, ale jeden záznam ve struktuře by měl mít Jen několik bytů, proto volíme haš tabulku.
-\end{itemize}
-
-V této haš tabulce nemusíme řešit kolize - nová nebo cennější hodnota prostě přepíše starou. Je to rychlejší a jednodušší než na jednotlivých prvcích vytvářet spojové seznamy a zabývat se alokováním a uvolňováním paměti
-\begin{itemize}
-	\item Je lepší, když struktura zapomíná než aby swapovala
-	\item Pozice obsahuje 64 polí a stavovou informaci o tahu, právu na rošády a braní mimochodem, ale jeden záznam ve struktuře by měl mít jen několik bytů, proto volíme haš tabulku.
-\end{itemize}
-
-V této haš tabulce nemusíme řešit kolize - nová nebo cennější hodnota prostě přepíše starou. Je to rychlejší a jednodušší než na jednotlivých prvcích vytvářet spojové seznamy a zabývat se alokováním a uvolňováním paměti.
-
-\subsubsection{Databáze zahájení a koncovek}
-
-Každá šachová partie začíná vždy stejnou pozicí. Je celkem pochopitelné, že šachisté velmi pečlivě studují jednotlivé varianty vzniklé ze základního postavení již v klidu doma s počítačem nebo v klubu během tréninku a ne až v omezeném čase během partie. O konkrétních zahájeních byly napsány stovky knih, věnovali se jim ti nejlepší šachisté teoretici. Během zahájení běžně vznikají velmi komplikované pozice, ve kterých se nevyznají ani velmistři, a malá nenápadná a těžko odhalitelná chyba může vést k rychlé prohře nebo alespoň k výhodě soupeře. Rozmotat přímo za šachovnicí několik delších a trochu rozvětvených vynucených variant (které během desítek let vymysleli šachoví teoretici) bývá bez předchozí přípravy nad síly i těch nejlepších hráčů a dnešních programů, ale naučit se řešení nazpaměť a pochopit ho se dokáže při troše snahy i průměrný klubový šachista nebo třeba náš program.
-Program naučíme zahájení tak, že někam uložíme pozice běžné v zahájení a/nebo jejich haš funkce a k nim sadu tahů, které od programu v uvedené pozici očekáváme. Každému tahu zároveň přiřadíme pravděpodobnost jeho zahrání. Například pro základní postavení může seznam vypadat takto:
-\begin{itemize}
-	\item 30\% 1. e4
-	\item 30\% 1. d4
-	\item 15\% 1. c4
-	\item 13\% 1. Jf3
-	\item 5\% 1. f4
-	\item 2\% 1. b3
-	\item 1\% 1. b4
-	\item 1\% 1. g3
-	\item 1\% 1. e3
-	\item 1\% 1. d3
-	\item 1\% 1. Jc3
-\end{itemize}
-
-Největší pravděpodobnost budou mít dobré a obvykle hrané tahy, méně běžným a nepříliš ambiciózním tahům, které však pozici bílého nijak neohrožují dáme jen malou pravděpodobnost (hodí se občas k vyprovokování lidského soupeře) a tahy vyloženě špatné jako například 1.f3? nebo 1.h3? nebudeme uvádět vůbec, program je tedy nebude hrát.
-Podobný seznam pravděpodobností ohodnocených tahů budeme mít pro každou naučenou pozici uložený v nějaké datové struktuře postavené nad hašovací funkcí pozice. Tahů z pozic je proměnlivé množství. Typická vyhledávací datová struktura proto nebude obsahovat přímo tahy. Místo nich v ní budou indexy do pole tahů zakončené nulou. Ukážeme si to na příkladu se setříděným polem a hašovací funkcí která není na naší množině uložených pozic prostá. Obsahovat bude jen 3 pozice: základní postavení (haš = 368) se třemi tahy 1. e4 (40%), 1. d4 (40%) a 1. c4 (20%), pozici po 1. e4 (haš = 129) se dvěma tahy 1. ...c5 (50%) a 1. ... e5 (50%) a nakonec pozici po 1. e4 e5
-
-\vskip 0.5cm
-\noindent
-\begin{tabular}{|l|l|l|}
-\hline
-haš 129, index 0 & haš 368, index 3 & haš 368, index 5 \\
-\hline
-pozice po 1. e4 & pozice po 1. e4 e5 & základní postavení \\
-\hline
-\end{tabular}
-\vskip 0.5cm
-
-Takto by vypadala vyhledávací struktura. Pozice bychom si pamatovali nejspíš fyzicky odděleně, například na stejném indexu v jiném poli, zde je proto máme v druhém řádku. Dejme tomu, že hledáme tah ze základního postavení. Spočítáme si hašovací funkci 368. Nějakým algoritmem pro vyhledávání v setříděném poli s rovnoměrným rozdělením dat (logaritmicky půlením nebo ještě lépe dělením podle hodnoty haš funkcí) najdeme políčko se správnou hodnotou haš funkce, dejme tomu, že máme smůlu a bude to prostřední políčko. Zjistíme, že pozice není naše, neboť došlo ke kolizi haš funkcí. Koukneme se while cyklem doleva, tam už je jiná hodnota haš funkce. Tak tedy doprava na poslední políčko, zde odpovídá haš funkce a i pozice je správně, budeme tedy hledat tahy na indexu 5 v poli tahů. Tabulka tahů pak může vypadat nějak takto:
-
-V poli od pozice 5 až k následující nule jsou tahy e4, d4 a c4, vygenerujeme tedy náhodné číslo z rozsahu 0 až 100, padne třeba 50 a program zahraje 1. d4.
-
-S ubývajícím počtem figur a blížícím se koncem partie se pozice postupně zjednodušuje. Při propočtu ubývá možných variant, spousta z nich vede do stejné pozice, jiné zase brzy končí matem nebo remízou. Program by měl tudíž v jisté chvíli začít počítat dokonale. Pokud však zkusíme standardnímu prohledávacímu algoritmu předložit třeba nějakou pozici z koncovky střelce a jezdce proti samotnému králi, kvalitní program koncovku sice zvládne - zatlačí soupeřova krále do rohu barvy střelce a tam mu nasadí mat, ale rozhodně nenajde ten nejrychlejší postup a maty třeba 20. tahem zdálky prostě neuvidí. V opravdu těžkých koncovkách typu dáma proti dvěma lehkým figurám pak běžný kvalitní myslící algoritmus již bude chybovat a některé vyhrané pozice vyhrát nedokáže. V omezeném čase není možné ani v poměrně jednoduché koncovce projít celý graf hry z kořene k listům, díky kolizím v hašovací funkci navíc budeme řadu variant počítat opakovaně, takže s dokonalou hrou nemůžeme počítat ani v elementární koncovce dámy proti samotnému králi.
-Naštěstí je to s pozicemi z koncovek podobné, jako s těmi ze zahájení. Dají se naučit. Všech možných pozic několikafigurové koncovky je sice z lidského pohledu mnoho, ale počítač má posunutá měřítka. Jednoduchý horní odhad pro počet pozic n-figurové koncovky je \begin{math}2 * 64^n\end{math}, neboť každá figurka může být na jednom ze 64 polí a možnosti se násobí. Úvodní dvojka je tam kvůli právu tahu, buď hraje bílý nebo černý. Náš odhad bychom mohli i zpřesnit na 2 * 64 * 63 * 62 * ... * (64 - n + 1), protože dvě figurky nemohou být na stejném políčku, takže 1. figurka má 64 možností, druhá jen 63 atd. Mohli bychom také vyškrtat nepřípustné pozice, ztotožnit stejné figury atd., ale úvodní vzorec nám zároveň dává návod, jak velmi jednoduše a efektivně každé pozici zkoumané koncovky přidělit číslo od 0 do \begin{math}2 * 64^{n-1}\end{math} (její místo v tabulce příslušné koncovky) a naopak ke každému číslu z uvedeného intervalu přiřadit pozici.
-Stanovíme si pořadí figur naší koncovky podle jejich barvy a materiální hodnoty. Například pro koncovku jezdce a střelce to může být pořadí bílý král, bílý střelec, bílý jezdec, černý král. Očíslujeme políčka šachovnice od 0 do 63, a1 bude 0, a2 1 atd., h8 bude 63. Máme-li n jednoznačně seřazených figur, označíme čísla políček, na nichž se nacházejí \begin{math}p_0\end{math} až \begin{math}p_{n-1}\end{math}. U koncovek s opakováním jednoho druhu kamene (například koncovka krále proti dvěma střelcům) budeme jako první uvažovat figuru s vyšším indexem políčka. Číslo pozice pak bude \begin{math}p_0 + 64 * p_1 + 64^2 * p_2 + ... + 64^{n-1} * p_{n-1} + (\end{math}hraje bílý ? \begin{math}64^n : 0)\end{math}.
-
-\begin{center}
-	\includegraphics[width=8cm, height=8cm]{diagram2.ps}
-\end{center}
-
-Na obrázku je příklad pozice z koncovky dvou střelců. Pořadí figur bude KSSk, tedy bílý král a oba střelci a nakonec černý král. Na tahu je bílý a na naší šachovnici hraje nahoru, střelci jsou tedy na d3 a e3, bílý král na f3 a černý na e5. V následující tabulce je výpočet čísla pozice v rámci dané koncovky. Výsledek je 26 293 525.
-
-\vskip 0.5cm
-\noindent
-\begin{tabular}{|l|c|c|r|r|}
-\hline
-	{\bf Figurka} & {\bf Pole} & {\bf Index} & {\bf Hodnota} & {\bf Výsledek} \\
-\hline
-	Bílý král & f3 & 21 & 21 & 21 \\
-\hline
-	První bílý střelec & e3 & 20 & \begin{math}20 * 64\end{math} & 1 280 \\
-\hline
-	Druhý bílý střelec & d3 & 19 & \begin{math}219 * 64^2\end{math}	& 77 824 \\
-\hline
-	Černý král & e5 & 36 & 36 * \begin{math}264^3\end{math} & 9 437 184 \\
-\hline
-	\multicolumn{3}{|l|}{Bílý na tahu} & \begin{math}264^4\end{math} & 16 777 216 \\
-\hline
-	\multicolumn{4}{|l|}{Suma} & 26 293 525 \\
-\hline
-\end{tabular}
-\vskip 0.5cm
-
-Opačný převod z čísla na pozici bude analogický, číslo rozložíme na cifry v 64-kové soustavě a to budou indexy políček jednotlivých kamenů.
-
-Vlastní algoritmus vygenerování databáze n-figurové koncovky bude vypadat nějak takto:
-\begin{itemize}
-	\item Rekurzivně stejným algoritmem vygeneruj databáze koncovek, které z naší koncovky mohou vzniknout. (Například pro koncovku dámy proti věži vygeneruj nejprve koncovku se samotnou dámou a se samotnou věží.)
-	\item Naalokuj místo pro \begin{math}2 * 64^n\end{math} čísel a vyplň je nulami
-	\item Projdi přirozená čísla od 0 do \begin{math}2 * 64^n -1\end{math}, ke každému vygeneruj pozici. Je-li nepřípustná (2 figury na sobě, šach nehrajícímu), vlož do pole čísel na daný index konstantu CHYBA, je-li černý v matu vlož 1, je-li bílý v matu, vlož -1.
-	\item Projdi přirozená čísla od 0 do \begin{math}2 * 64^n -1\end{math}, přeskoč ty, kde je na daném indexu v poli jiné číslo než nula. Ke každému číslu vygeneruj pozici. Na náš index do pole vlož stručně řečeno hodnotu propočtu minimaxem do hloubky 1 s ohodnocením pomocí již spočítaných hodnot a nul v poli. Podrobně řečeno: Dejme tomu, že hraje bílý (pro černého budeme postupovat analogicky). Vygeneruj z pozice tahy, zahraj je. Pokud zahraným tahem přešla pozice do jiného druhu koncovky (proměna pěšce, braní), podívej se do tabulky pro tuto koncovku, kolikátým půltahem bílý dává nebo dostává mat, případně zda je pozice remízová. Pokud zůstal zachován typ koncovky, spočítej si index pozice a podívej se do pole, zda a jak již máme pozici ohodnocenou. 0 znamená, že zatím nevíme, kladné číslo, že je pozice vyhraná za bílého, záporné, že za černého. Je-li mezi čísly alespoň jedno kladné vlož do pole na náš index to nejmenší z těch kladných čísel zvětšené o 1. (Například z 0, 0, 0, 5, 3, -2, 0, 0, -2, -4 vyber 3 a do pole na náš index dej 3 + 1 = 4. Znamená o, že dáváme mat 2. tahem, neboť jsme o 3 půltahy od 1, což je mat.) Jsou-li všechna čísla záporná, je pozice za bílého prohraná, vyber z nich to nejmenší (s největší absolutní hodnotou) a do pole na náš index ho dej zmenšené o 1. (Například z -2, -4, -6, -6, -4 vyber -6 a do pole dej -7. To jsme na tahu a dostáváme mat 3. tahem.) Poslední možností je, že mezi čísly je alespoň jedna 0 a zbytek jsou buď nuly nebo záporná čísla. V tom případě ještě nemůžeme rozhodnout a v poli necháme nulu.
-	\item Pokud jsme zapsali do pole alespoň jednu nenulu, pokračuj bodem 4.
-	\item Ulož pole tak, jak je, do souboru.
-\end{itemize}
-Máme-li vygenerovanou tabulku, je již velmi jednoduché napsat optimální algoritmus hry. Jedná se o prostý minimax do hloubky 1. Místo běžné ohodnocovací funkce se budeme dívat do tabulky. 0 znamená, že žádná ze stran nemůže vyhrát, tedy remíza. Kladná čísla jsou pozice vyhrané za bílého, čím dál od jedničky, tím dál od matu. Totéž platí s černým pro záporná čísla. V remízových pozicích pak můžeme spustit i klasický myslící algoritmus omezený na tahy, které nevedou k naší prohře. Jde jen o to, aby v remízových pozicích, kde ovšem o remízu bojuje soupeř, program nerezignoval na teoreticky marnou, ale prakticky proti reálnému soupeři často nadějnou snahu o výhru a nezahrál prostě jakýkoli neprohrávající tah. Například v těžké (pro 2 jezdce), ale remízové koncovce dámy proti dvěma jezdcům by program asi neměl nastavit dámu. To sice objektivně není chyba, neboť i koncovka krále a dvou jezdců proti samotnému králi je remízová, ale subjektivně to jistě chyba je a uživatel by to asi programu neodpustil.
-
-Bohužel tento algoritmus není na současných počítačích dostatečně rychlý - na počkání získáme jen třífigurové koncovky, přes noc pak čtyřfigurové. Jednou z nejjednodušších a zároveň velmi účinných metod, jak výpočet zrychlit a zmenšit i objem vygenerovaných dat je využití nejrůznějších symetrií. 50% ušetříme, pokud jednotlivé koncovky budeme generovat jen pro jednu stranu tj. nikoliv celkem dvakrát: jednou pro bílého a jednou pro černého. Dále můžeme ušetřit překlápěním šachovnice. Pokud vyloučíme rošády, můžeme pozici ztotožnit s jejím osově souměrným obrazem, kdy osa vede mezi sloupci d a e. Generovat tedy budeme jen pozice, na nichž je bílý král na sloupcích a až d a jejich dvojčata budeme pomocí osové souměrnosti transformovat. V bezpěšcových koncovkách můžeme podobně překlápět i podle vodorovné osy mezi 4. a 5. řadou a dokonce i podle na hlavní diagonály a1 - h8. Bílý král tak bude vždy v trojúhelníku a1-d1-d4. Místo 64 možných polí tak zbude bílému králi pouze 10 polí, lze tedy očekávat díky osovým souměrnostem zhruba 6,4-násobné zrychlení a úsporu paměti při generování i při uložení výsledků.
-V tabulce jakékoli koncovky se poměrně často a relativně pravidelně opakují číselné hodnoty. Je zřejmé, že data půjde úspěšně komprimovat téměř jakoukoli rozumnou metodou. Vzhledem ke způsobu využití je nutné, aby pro přečtení hodnoty z komprimované tabulky stačilo dekomprimovat jen nějaké malé okolí a nikoli celou tabulku.
-
-\subsection{Reprezentace pozice}
-
-Nejednoduší reprezentace šachovnice je dvourozměrné pole 8x8. To můžeme v případě potřeby rozvinout na jednorozměrné pole o 64 prvcích. Výhodou tohoto přístupu je snadnější čitelnost programu, nevýhodou je nutnost ošetřit možné přetečení pole. (Např. tah jezdce z okraje šachovnice mimo její okraj. Toto se dá řešit polem 10x12, potažmo jednorozměrným polem o 120 prvcích, což je vlastně klasická šachovnice 8x8 s mantinely.
-
-Nejednodušší reprezentace šachových figur je celým číslem - kladným pro bílé, záporným pro černé. Prázdné pole je pak neutrální a má hodnotu 0, mantinely (jsou-li přítomny) mají nějakou konstantní hodnotu, která se neuvažuje pro výpočet.
-
-Další možnou reprezentací šachovnice může být bitové pole. Nějaký jev na šachovnici je pak reprezentován 64-bitovým číslem. Například výskyt bílých věží v základním postavení je pak reprezentován číslem 129 (00000000 00000000 00000000 00000000 00000000 00000000 00000000 10000001) Když budeme mít pro každý typ kamene jednu proměnnou, 12 proměnných může reprezentovat celou šachovnici. Výhodou tohoto přístupu je velmi efektivní zpracování zejména na 64-bitové architektuře, kde je každá operace jedna velmi jednoduchá instrukce. Nevýhodou, je, že zejména pro začínající programátory může být tento přístup velmi matoucí a nečitelný.
-
-\subsection{Reprezentace pole tahů}
-
-Protože tahů bude v průběhu výpočtu generováno velmi mnoho, měl by být typ, reprezentující tah, velmi malý. Každopádně musí obsahovat minimálně položky odkud a kam. V případě reprezentace šachovnice dvourozměrným polem, budou položky odkud a kam reprezentovány dvouprvkovým polem - na indexu 0 bude sloupec, na indexu 1 řádek. V případě, že je šachovnice reprezentována jednorozměrným polem, položky odkud a kam jsou reprezentovány pouze celým číslem.
-
-K uložení množiny tahů se běžně používá globální zásobník tahů, který může vypadat nějak takto:
-\begin{verbatim}
-Move moves[MANY]
-int borders[DEPTH]
-int index_in_stack
-\end{verbatim}
-
-Tahy jsou uloženy v jediném globálním jednorozměrném poli, přičemž tahy z aktuálně propočítávané pozice mají index borders[index\_in\_stack] až borders[index\_in\_stack+1]-1. Konstanta DEPTH je nejvyšší možná hloubka zanoření rekurze. Na dnešních počítačích by mělo stačit 32. Velikost konstanty MANY pak půjde shora odhadnout jako součin maximálního počtu tahů z pozice * DEPTH. Program při tomto postupu sice může trochu plýtvat pamětí, ale achillovou patou šachových programů obvykle nebývá nedostatek paměti, nýbrž nedostatek času na dostatečně hluboký výpočet. Toto řešení ušetří cenné mikrosekundy, které by stálo dynamické přealokovávání pole v cyklu.
-
-\subsection{Ohodnocovací funkce}
-
-Šachový program provádí propočet do určité hloubky, na jehož konci zavolá ohodnocovací funkci, která vrátí cenu dané pozice. Nejednodušší a nejdůležitější je samozřejmě sečíst materiál. Cena jednotlivých figur se v různých programech liší. Pokud má pěšec cenu 1, bude cena jezdce a střelce přibližně 3, věže 5 a dámy 9. Někdy bývá hodnota střelce nepatrně vyšší než hodnota jezdce a podobně. Šachový program s ohodnocovací funkcí degenerovanou na prostý součet materiálu se pochopitelně bude chovat divně. Cesta i od velmi zjevné poziční chyby k matu je velmi dlouhá a přesahuje hloubku propočtu dnešních programů, takže prostý součet materiálu nestačí. Proto se přidává poziční složka.
-Poziční složka bývá obyčejně velmi malá, jen zřídka v reálných partiích přesáhne v absolutní hodnotě cenu pěšce. Řada pozičních faktorů se dá ocenit statickou tabulkou pro jednotlivá políčka. Například poziční bonus pro figury blíže ke středu šachovnice (a tím i větším manévrovacím prostorem) bude vyšší než pro figury u kraje nebo v rohu šachovnice. Takovéto řešení poziční složky jistě nebude dokonalé, zato bude velmi rychlé. Poziční tabulku můžeme pro jednotlivé figury lehce upravit.
-Pro pěšce existuje celá řada heuristik. Můžeme pozičně více ocenit pěšce, kteří jsou dále od výchozího postavení - to pěšce přiměje utíkat směrem k dámě. V základním postavení pak můžeme ocenit vyšší bonusem pěšce na vykročivší na středu. Dále můžeme ocenit je-li pěšec volný (žádná figura mu nebrání v běhu do dámy), či je-li krytý jiným pěšce. Rovněž mže dostat postih, je-li opožděný.
-Jezdec stojí dobře v centru, v rohu se mu obvykle nedaří. Rovněž můžeme ocenit jezdce šikovně krytého pěšcem.
-Pro střelce sice není poziční ohodnocení tak podstatné, přesto se o to můžeme pokusit. Dobře umístěný střelec by měl dostat bonus za soupeřovy pěšce na stejné barvě pole, které může napadat a naopak postih za pěšce, které napadat nemůže. Tím nám vyjde, že dva střelci budou mít spolu nepatrně vyšší hodnotu než je prostý součet jejich hodnot.
-U věže nemá statická ohodnocovací tabulka smysl. Věž patří na volný sloupec, má tlačit na opožděné nebo nekryté pěšce a obě věže by se měly navzájem krýt.
-U dámy je potřeba snad jen zabránit předčasnému vývinu - soupeř pak prostě napadá dámu s tempy běžných vývinových tahů lehčích figur.
-U krále je v zahájení a střední hře důležitá především bezpečnost. Jde jednak o umístění, zachované právo rošády, pěšcový kryt krále a napadnutelnost polí v okolí. V koncovce se úloha krále radikálně mění a stává se z něj aktivně bojující figura, která musí opustit úkryt a bojovat o střed. V matové koncovce se pak král silnější strany snaží přiblížit soupeřovu  králi.
-Ohodnocovací funkce napsaná pomocí statických tabulek je velmi rychlá, ale má jednu vážnou slabinu. Tabulky jsou napsány obecně, mohou tedy být dobré pro běžnou pozici, ale stačí několik netypických tahů a správné ohodnocení políček například pro jezdce může být úplně jiné. Řešením je místo samotného pole oceňovat pohyblivost figur, napadnutelná pole a tak podobně. To vše je ovšem za cenu vyšší časové náročnosti.
-
-\section{Popis implementace}
-
-Program je rozdělen na 4 moduly:
-\begin{itemize}
-	\item main.c s hlavičkovým souborem zcuchess.h obsahuje hlavní funkci a pomocné funkce pro správu paměti.
-	\item io.c s hlavičkovým souborem io.h funkce pro vstupní a výstupní operace
-	\item chess.c s hlavičkovým souborem chess.h základní rutiny umožňující šachovou hru
-	\item ai.c s hlavičkovým souborem ai.h obsahuje umělou "inteligenci"
-\end{itemize}
-
-\subsection{Globální datové struktury}
-\begin{itemize}
-	\item int chessboard[8][8]\item reprezentace šachovnice potažmo pozice.
-	\item bool castlings[4]\item pole s příznaky rošád, které ještě můžeme provést (malá bílá, velká bílá, malá černá, velká černá).
-	\item int en\_passant[2]\item Udržuje aktuální pozici pěšce, kterého můžeme sebrat mimochodem. Na indexu 0 je sloupec, na indexu 1 je řádek
-	\item bool human\_move\item příznak, zda-li je na tahu člověk.
-	\item int position\_bonus[8][8]\item tabulka s pozičními bonusy pro statickou ohodnocovací funkci.
-\end{itemize}
-
-\subsection{Reprezentace šachovnice, pozice a hodnot figur}
-Pro názornost byla za reprezentaci šachovnice, potažmo pozic, zvolena matice 8x8. Bílé figury jsou reprezentovány celým kladným číslem následovně:
-\begin{itemize}
-	\item 1 Pěšec (konstanta PAWN), hodnota 100 (konstanta PAWN\_VALUE)
-	\item 2 Věž (konstanta ROOK), hodnota 400 (konstanta ROOK\_VALUE)
-	\item 3 Jezdec (konstanta KNIGHT), hodnota 300 (konstanta KNIGHT\_VALUE)
-	\item 4 Střelec (konstanta BISHOP), hodnota 350 (konstanta BISHOP\_VALUE)
-	\item 5 Dáma (konstanta QUEEN), hodnota 750 (konstanta QUEEN\_VALUE)
-	\item 6 Král (konstanta KING)
-\end{itemize}
-Černé figury jsou reprezentovány stejně, akorát s opačným znaménkem. Číslo 0 (konstanta EMPTY) pak reprezentuje prázdné pole.
-
-\subsection{Reprezentace tahu a množiny tahů}
-
-Tah je reprezentován datovou strukturou Move:
-\begin{verbatim}
-typedef struct {
-  int from[2];	//na indexu 0 je sloupec odkud se táhne, na indexu 1 je řádek odkud se táhne
-  int to[2];	//na indexu 0 je sloupec kam se táhne, na indexu 1 je řádek kam se táhne
-  bool status;	//příznak je-li tah validní
-} Move;
-\end{verbatim}
-
-V programu jsou pro indexy polí {\it from} a {\it to} připraveny konstanty {\it COL} (sloupec, index 0) a {\it ROW} (řádek, index 1). V celém programu se pak tyto souřadnice používají konzistentně, tzn. vždy je sloupec první a řádek druhý.
-
-Množina tahů se ukládá do struktury Moves:
-\begin{verbatim}
-typedef struct {
-  int count;	//Počet tahů v množině
-  Move *move;	//Pole tahů
-} Moves;
-\end{verbatim}
-
-\subsection{Statická ohodnocovací funkce}
-Provádí prostý součet hodnoty materiálu a připočítává poziční bonus. Poziční bonus je reprezentován maticí 8x8 typu int a je pro všechny figury stejný. Vychází z myšlenky, že každá figura je užitečnější blíže ke středu šachovnice.
-
-\subsection{Myslící algoritmus}
-Jako myslící algoritmus byl postupně použit minimax, alfabeta a nakonec velmi prostá implementace kaskádové metody. Všechny tyto algoritmy jsou popsány v části o analýze.
-
-\section{Uživatelská příručka}
-
-\subsection{Instalace}
-
-Pokud jste uživatli Linuxu
-\begin{itemize}
-	\item V kořenovém adresáři projektu napište do konzole příkaz {\it make}.
-\end{itemize}
-
-Pokud jste uživateli Windows 7 
-\begin{itemize}
-	\item Stáhněte a nainstalujte nějaký C překladač založený na gcc (např. MinGW).
-	\item Klikněte na tlačítko { \bf Start} a vyberte položku { \bf Tento počítač}.
-	\item Klikněte pravým tlačítkem myši do okna, které se vám zobrazilo, a z menu vyberte { \bf Vlastnosti}.
-	\item V následujícím okně vyberte vpravo položku { \bf Upřesnit nastavení systému}, otevře se další dialogové okno.
-	\item V tom klikněte na tlačítko { \bf Proměnné prostředí...} vpravo dole. Zobrazí se okno, v němž je možné nastavit proměnné systému.
-	\item Najděte proměnnou { \it PATH} a klikněte na upravit. Na konec této proměnné napište za středník cestu k adresáři obsahujícímu soubor gcc.exe (Tedy např.: ;C:\MinGW\bin\)
-	\item Pokud proměnná { \it PATH} neexistuje, vytvořte ji.
-	\item Pozavírejte všechna okna.
-	\item Znovu klikněte na tlačítko Start, vyberte Příslušenství a Příkazový řádek.
-	\item V příkazovém řádku přejděte do složky projektu a spusťte program make (mingw32-make.exe) s parametrem make.win.
-\end{itemize}
-
-\subsection{Ovládání}
-
-Program je konzolový, ovládá se tedy z klávesnice. Spustíme ho klasicky příkazem ./zcuchess (zcuchess.exe na platformě Windows). Program při spuštění vypíše hlavičku, jejíž součástí je i nápověda a čeká na zadání prvního tahu. Tah se zapisuje ve formátu odkud mezera kam, tedy např e2 e3. Poté program chvíli přemýšlí, načež vypíše svůj tah. Automaticky se předpokládá, že člověk hraje za bílého. Nápovědu je možno kdykoliv vypsat vepsáním klíčového slova help namísto tahu. Stejně tak je možné program kdykoliv ukončit vepsáním slova exit namísto tahu. Pokud nastane mat, program se ukončí sám.
-
-\section{Závěr}
-Program hraje šachy dostatečně dobře na to aby v nich porazil svého tvůrce, zadání semestrální práce proto považuji za splněné, i když k dobré hře má program stále ještě velice daleko.
-
-\subsection{Problémy v průběhu psaní programu}
-Při běhu programu docházelo ke značným únikům paměti, které se nakonec podařilo najít a vyřešit za pomoci programu { \it Valgrind}.
-Větší problémy nastaly při pokusech přeložit program na systému Windows a to zejména:
-\begin{itemize}
-	Bylo potřeba si opatřit počítač vybavený tímto systémem. Nakonec jsem použil virtuální server s Windows, který máme k dispozici v práci.
-	Nastavení proměnné prostředí { \it PATH}. Zde bych chtěl poděkovat kolegovi Karlu Vlčkovi za trpělivost.
-	Samotná práce s příkazovým řádkem ve Windows.
-	Po překladu jsem zjistil, že je rozbitá čeština (to mi mohlo dojít hned), tak jsem program upravil tak aby používal { \it cestinu}.
-\end{itemize}
-
-\subsection{Možná vylepšení}
-Podle profileru tráví program až čtvrtinu času ve funkci {\it add\_move} (přidání tahu do množiny tahů). Toto by se dalo vyřešit globálním zásobníkem tahů. Protože je globální zásobník tahů statický, nebylo by zároveň potřeba řešit úniky paměti.
-Dalším vylepšením zlepšující hloubku propočtu by bylo nasazení nějakých heuristik do generátoru tahů a třídění tahů pro průběhu kaskádové metody. V podstatě nasazení jakýchkoli heuristik uvedených u kaskádové metody v analýze.
-Hru programu by samozřejmě zlepšila také implementace databáze zahájení a koncovek.
-Dalším drobným zrychlením by bylo rozvinutí pole 8x8, reprezentujícího šachovnici, na jednorozměrné pole o 64 prvcích. Vůbec nejzajímavější by bylo použít reprezentaci v podobě bitové mapy, ale to by si vyžádalo několik měsíců studia.
-Z uživatelského hlediska by se jistě hodila možnost dát uživateli na výběr barvu strany, za kterou chce hrát, či možnost partii uložit do souboru a opětovně načíst.
-
-Program byl vyvíjen v integrovaném vývojovém prostředí NetBeans IDE 7.2.1 na platformě Xubuntu linux. Mezi další nástroje použité při vývoji patří Valgrind, verzovací systém GIT a editor VIM.
-Postupný vývoj programu a jeho zdrojové kódy si lze prohlédnout na adrese { \tt https://github.com/ClaryAldringen/ZCUChess}.
-\end{document}
